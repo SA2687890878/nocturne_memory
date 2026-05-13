@@ -7,7 +7,7 @@ hierarchical browser. Every path is just a node with content and children.
 
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
-from db import get_graph_service, get_glossary_service, get_db_manager
+from db import get_graph_service, get_glossary_service, get_db_manager, get_search_indexer
 from db.models import Path as PathModel, Edge as EdgeModel, ROOT_NODE_UUID
 from db.namespace import get_namespace
 from sqlalchemy import select, distinct
@@ -28,6 +28,15 @@ class GlossaryAdd(BaseModel):
 
 class GlossaryRemove(BaseModel):
     keyword: str
+
+
+class MemoryCreate(BaseModel):
+    parent_path: str = ""
+    content: str
+    priority: int = 5
+    disclosure: str | None = None
+    title: str | None = None
+    domain: str = "daming"
     node_uuid: str
 
 
@@ -69,6 +78,37 @@ async def list_domains():
             {"domain": row.domain, "root_count": row.node_count}
             for row in result.all()
         ]
+
+
+@router.get("/search")
+async def search_memories(
+    query: str = Query(..., description="搜索关键词"),
+    domain: str = Query("daming", description="域过滤"),
+    limit: int = Query(10, description="最大结果数"),
+):
+    """Search memories by content using full-text search."""
+    search = get_search_indexer()
+    results = await search.search(query, limit, domain, namespace=get_namespace())
+    return {"results": results}
+
+
+@router.post("/node")
+async def create_node(body: MemoryCreate):
+    """Create a new memory node under a parent path."""
+    graph = get_graph_service()
+    try:
+        result = await graph.create_memory(
+            parent_path=body.parent_path,
+            content=body.content,
+            priority=body.priority,
+            title=body.title,
+            disclosure=body.disclosure,
+            domain=body.domain,
+            namespace=get_namespace(),
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=422, detail=str(e))
 
 
 @router.get("/node")
