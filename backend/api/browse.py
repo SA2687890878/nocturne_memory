@@ -37,7 +37,6 @@ class MemoryCreate(BaseModel):
     disclosure: str | None = None
     title: str | None = None
     domain: str = "daming"
-    node_uuid: str
 
 
 @router.get("/namespaces")
