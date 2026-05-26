@@ -28,6 +28,7 @@ class GlossaryAdd(BaseModel):
 
 class GlossaryRemove(BaseModel):
     keyword: str
+    node_uuid: str
 
 
 class MemoryCreate(BaseModel):

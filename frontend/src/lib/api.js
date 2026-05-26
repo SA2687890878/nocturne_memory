@@ -59,4 +59,12 @@ export const getDomains = () =>
 export const getNamespaces = () =>
   api.get('/browse/namespaces').then(res => res.data);
 
+// ============ System API (database switching) ============
+
+export const getDatabases = () =>
+  api.get('/system/databases').then(res => res.data);
+
+export const switchDatabase = (dbPath) =>
+  api.post('/system/switch-database', { db_path: dbPath }).then(res => res.data);
+
 export default api;

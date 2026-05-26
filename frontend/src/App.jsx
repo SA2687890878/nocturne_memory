@@ -7,7 +7,67 @@ import ReviewPage from './features/review/ReviewPage';
 import MemoryBrowser from './features/memory/MemoryBrowser';
 import MaintenancePage from './features/maintenance/MaintenancePage';
 import TokenAuth from './components/TokenAuth';
-import { AUTH_ERROR_EVENT, getNamespaces } from './lib/api';
+import { AUTH_ERROR_EVENT, getNamespaces, getDatabases, switchDatabase } from './lib/api';
+
+// ---------------------------------------------------------------------------
+// DatabaseSelector — lets the user switch between .db files.
+// ---------------------------------------------------------------------------
+function DatabaseSelector() {
+  const [databases, setDatabases] = useState([]);
+  const [current, setCurrent] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const loadDatabases = useCallback(() => {
+    getDatabases()
+      .then(data => {
+        setDatabases(data.databases);
+        setCurrent(data.current_db);
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    loadDatabases();
+  }, [loadDatabases]);
+
+  const handleSwitch = async (e) => {
+    const dbPath = e.target.value;
+    if (!dbPath || dbPath === current) return;
+    setLoading(true);
+    try {
+      await switchDatabase(dbPath);
+      setCurrent(dbPath);
+      window.location.reload();
+    } catch (err) {
+      alert('切换失败: ' + (err.response?.data?.detail || err.message));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Display helper: show only the filename part of the current path
+  const currentName = current ? current.replace(/\\/g, '/').split('/').pop() : '';
+
+  return (
+    <div className="flex items-center gap-2 text-sm">
+      <Database size={14} className="text-slate-400 flex-shrink-0" />
+      <select
+        value={current}
+        onChange={handleSwitch}
+        disabled={loading}
+        className="bg-slate-800 border border-slate-700 text-slate-200 rounded px-2 py-1 text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 disabled:opacity-50"
+        title={`当前数据库: ${current}`}
+      >
+        {databases.map(db => (
+          <option key={db.path} value={db.path}>
+            {db.name} ({db.size_mb}MB)
+          </option>
+        ))}
+      </select>
+      {loading && <span className="text-xs text-slate-500">切换中…</span>}
+    </div>
+  );
+}
 
 // ---------------------------------------------------------------------------
 // NamespaceSelector — lets the user switch between agent namespaces.
@@ -148,6 +208,7 @@ function Layout() {
         </nav>
 
         {!isReviewPage && <NamespaceSelector />}
+        <DatabaseSelector />
       </div>
 
       {/* Main Area */}
