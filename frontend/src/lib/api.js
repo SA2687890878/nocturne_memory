@@ -136,10 +136,18 @@ export const getDatabaseStatus = () =>
 export const testDatabase = (database_url) =>
   api.post('/settings/database/test', { database_url }).then(res => res.data);
 
+// Switches this server process only (browsing); does not persist to config.json.
+export const switchDatabase = (database_url) =>
+  api.post('/settings/database/switch', { database_url }).then(res => res.data);
+
 export const createDatabase = (path) =>
   api.post('/settings/database/create', { path }).then(res => res.data);
 
 export const openDbFolder = () =>
   api.post('/settings/database/open-folder').then(res => res.data);
+
+// mode: 'open' an existing DB file, 'save' a new file name.
+export const pickDatabasePath = (mode) =>
+  api.post('/settings/database/pick-path', { mode }).then(res => res.data);
 
 export default api;

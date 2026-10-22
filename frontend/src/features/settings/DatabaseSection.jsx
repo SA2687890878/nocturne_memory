@@ -4,7 +4,7 @@ import {
 } from 'lucide-react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
-import { testDatabase, createDatabase, openDbFolder } from '../../lib/api';
+import { testDatabase, createDatabase, openDbFolder, switchDatabase, pickDatabasePath } from '../../lib/api';
 import { toast } from '../../components/Toast';
 
 function parseSqlitePathFromUrl(url) {
@@ -13,9 +13,39 @@ function parseSqlitePathFromUrl(url) {
   return m ? m[1] : '';
 }
 
-export default function DatabaseSection({ settings, dbStatus, onRefreshStatus, onSave }) {
+// Recents live in this browser: switching DB is a process-wide page action that
+// config.json deliberately does not persist, so there is nothing server-side.
+const RECENT_DBS_KEY = 'nocturne:recent_dbs';
+const MAX_RECENT_DBS = 5;
+
+function loadRecentDbs() {
+  try {
+    const list = JSON.parse(localStorage.getItem(RECENT_DBS_KEY));
+    return Array.isArray(list) ? list.filter((u) => typeof u === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveRecentDbs(list) {
+  try {
+    localStorage.setItem(RECENT_DBS_KEY, JSON.stringify(list));
+  } catch {
+    // private mode / quota: recents are a convenience, never fail the switch over them
+  }
+  return list;
+}
+
+function rememberDb(url) {
+  return saveRecentDbs([url, ...loadRecentDbs().filter((u) => u !== url)].slice(0, MAX_RECENT_DBS));
+}
+
+const dbFileName = (url) => parseSqlitePathFromUrl(url).split('/').filter(Boolean).pop() || url;
+
+export default function DatabaseSection({ settings, dbStatus, onRefreshStatus }) {
   const { t } = useTranslation();
-  const currentUrl = settings?.database_url || '';
+  // effective_url is what the server process is actually serving (browsing override).
+  const currentUrl = dbStatus?.effective_url || settings?.database_url || '';
   const isSqliteCurrent = currentUrl.includes('sqlite');
 
   const [mode, setMode] = useState(isSqliteCurrent ? 'sqlite' : 'postgresql');
@@ -26,12 +56,17 @@ export default function DatabaseSection({ settings, dbStatus, onRefreshStatus, o
   const [testResult, setTestResult] = useState(null);
   const [busy, setBusy] = useState(false);
   const [dirty, setDirty] = useState(false);
+  const [recentDbs, setRecentDbs] = useState(loadRecentDbs);
+  const [openingDb, setOpeningDb] = useState(null);
+  const [picking, setPicking] = useState(false);
 
   useEffect(() => {
     if (!currentUrl) return;
     if (currentUrl.includes('sqlite')) {
       setMode('sqlite');
       setSqlitePath(parseSqlitePathFromUrl(currentUrl));
+      // The DB this page booted on was opened too, so it must be one click away.
+      setRecentDbs(rememberDb(currentUrl));
     } else {
       setMode('postgresql');
       setPgUrl(currentUrl);
@@ -72,10 +107,10 @@ export default function DatabaseSection({ settings, dbStatus, onRefreshStatus, o
     try {
       const result = await testDatabase(url);
       if (result.success) {
-        await onSave({ database_url: url });
-        setDirty(false);
-        setTestResult({ success: true, message: t('settings.database.connected_saved') });
-        onRefreshStatus();
+        await switchDatabase(url);   // browsing only, config.json untouched
+        setRecentDbs(rememberDb(url));
+        setTestResult({ success: true, message: t('settings.database.switched') });
+        window.location.reload();    // reload so the whole app reads the new DB
       } else {
         setTestResult(result);
       }
@@ -102,6 +137,42 @@ export default function DatabaseSection({ settings, dbStatus, onRefreshStatus, o
       setTestResult({ success: false, message: e.response?.data?.detail || e.message });
     } finally {
       setCreating(false);
+    }
+  };
+
+  const handleBrowse = async (target) => {
+    setPicking(true);
+    try {
+      const result = await pickDatabasePath(target === 'new' ? 'save' : 'open');
+      if (!result.success) return;   // user cancelled the dialog
+      if (target === 'new') {
+        setNewDbPath(result.path);
+      } else {
+        setSqlitePath(result.path);
+        setDirty(true);
+        setTestResult(null);
+      }
+    } catch (e) {
+      setTestResult({ success: false, message: e.response?.data?.detail || e.message });
+    } finally {
+      setPicking(false);
+    }
+  };
+
+  const handleOpenRecent = async (url) => {
+    setOpeningDb(url);
+    try {
+      await switchDatabase(url);
+      rememberDb(url);
+      window.location.reload();
+    } catch (e) {
+      setTestResult({ success: false, message: e.response?.data?.detail || e.message });
+      // 404: the file moved or was deleted, so stop offering a dead entry.
+      if (e.response?.status === 404) {
+        setRecentDbs(saveRecentDbs(loadRecentDbs().filter((u) => u !== url)));
+      }
+    } finally {
+      setOpeningDb(null);
     }
   };
 
@@ -141,6 +212,10 @@ export default function DatabaseSection({ settings, dbStatus, onRefreshStatus, o
               <span className="text-slate-400">{t('settings.database.url_label')}</span>
               <span className="text-slate-300 font-mono text-xs">{dbStatus.url_masked}</span>
             </div>
+          )}
+          {dbStatus.effective_url && dbStatus.database_url &&
+            dbStatus.effective_url !== dbStatus.database_url && (
+            <div className="text-xs text-amber-400/90">{t('settings.database.browsing_note')}</div>
           )}
           <div className="flex items-center justify-end gap-3 pt-1">
             {dbStatus.type === 'sqlite' && dbStatus.path && (
@@ -185,13 +260,24 @@ export default function DatabaseSection({ settings, dbStatus, onRefreshStatus, o
           {mode === 'sqlite' ? t('settings.database.file_path_label') : t('settings.database.connection_url_label')}
         </label>
         {mode === 'sqlite' ? (
-          <input
-            type="text"
-            value={sqlitePath}
-            onChange={e => { setSqlitePath(e.target.value); setDirty(true); setTestResult(null); }}
-            placeholder={t('settings.database.sqlite_placeholder')}
-            className="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm font-mono placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 shadow-inner"
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={sqlitePath}
+              onChange={e => { setSqlitePath(e.target.value); setDirty(true); setTestResult(null); }}
+              placeholder={t('settings.database.sqlite_placeholder')}
+              className="flex-1 bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm font-mono placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 shadow-inner"
+            />
+            <button
+              type="button"
+              onClick={() => handleBrowse('path')}
+              disabled={picking}
+              aria-label={t('settings.database.browse')}
+              className="px-3 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-40 text-slate-200 rounded-lg text-sm flex items-center gap-1.5 transition-colors whitespace-nowrap"
+            >
+              <FolderOpen size={14} /> {t('settings.database.browse')}
+            </button>
+          </div>
         ) : (
           <input
             type="text"
@@ -200,6 +286,24 @@ export default function DatabaseSection({ settings, dbStatus, onRefreshStatus, o
             placeholder={t('settings.database.pg_placeholder')}
             className="w-full bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm font-mono placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 shadow-inner"
           />
+        )}
+
+        {mode === 'sqlite' && recentDbs.some(u => u !== currentUrl) && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-slate-500">{t('settings.database.recent_label')}</span>
+            {recentDbs.filter(u => u !== currentUrl).map(url => (
+              <button
+                key={url}
+                type="button"
+                onClick={() => handleOpenRecent(url)}
+                disabled={!!openingDb}
+                title={parseSqlitePathFromUrl(url)}
+                className="max-w-[220px] truncate px-2 py-1 text-xs font-mono rounded-md bg-slate-900 border border-slate-700 text-slate-300 hover:border-indigo-500 hover:text-slate-100 disabled:opacity-40 transition-colors"
+              >
+                {openingDb === url ? t('settings.database.opening') : dbFileName(url)}
+              </button>
+            ))}
+          </div>
         )}
 
         {hasInput && (
@@ -235,6 +339,16 @@ export default function DatabaseSection({ settings, dbStatus, onRefreshStatus, o
               placeholder={t('settings.database.new_db_placeholder')}
               className="flex-1 bg-slate-950 border border-slate-700 text-slate-200 rounded-lg px-3 py-2 text-sm font-mono placeholder:text-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 shadow-inner"
             />
+            <button
+              type="button"
+              onClick={() => handleBrowse('new')}
+              disabled={picking}
+              aria-label={t('settings.database.browse')}
+              title={t('settings.database.browse')}
+              className="px-3 py-2 bg-slate-700 hover:bg-slate-600 disabled:opacity-40 text-slate-200 rounded-lg flex items-center transition-colors"
+            >
+              <FolderOpen size={14} />
+            </button>
             <button
               onClick={handleCreate}
               disabled={creating || !newDbPath.trim()}

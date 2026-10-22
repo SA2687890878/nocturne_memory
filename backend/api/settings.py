@@ -2,11 +2,14 @@
 Settings API — read and update server configuration from the admin UI.
 """
 
+import asyncio
+import os
 import re
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from sqlalchemy.engine import make_url
 
 import config
 from db.namespace import get_namespace
@@ -44,6 +47,14 @@ class DatabaseCreate(BaseModel):
 
 class DatabaseTest(BaseModel):
     database_url: str
+
+
+class DatabaseSwitch(BaseModel):
+    database_url: str
+
+
+class DatabasePickPath(BaseModel):
+    mode: str = "open"  # "open" existing file, "save" new file name
 
 
 # ---------------------------------------------------------------------------
@@ -241,8 +252,12 @@ async def delete_boot_uris_for_ns(namespace: str):
 @router.get("/database/status")
 async def database_status():
     """Return current DB info: type, path (SQLite), size, etc."""
-    url = config.get("database_url") or ""
-    info: dict = {"database_url": url, "type": "unknown"}
+    from db import get_effective_database_url
+
+    configured_url = config.get("database_url") or ""
+    # effective_url = what this process is actually serving (override > env > config).
+    url = get_effective_database_url()
+    info: dict = {"database_url": configured_url, "effective_url": url, "type": "unknown"}
 
     if not url:
         return info
@@ -317,6 +332,53 @@ async def create_database(body: DatabaseCreate):
     }
 
 
+@router.post("/database/switch")
+async def switch_database(body: DatabaseSwitch):
+    """Switch this process's DB for browsing. Never writes config.json."""
+    # Pinned processes (agent MCP sessions) must keep their own DB; switching here
+    # would silently move the agent's writes to another file.
+    if os.environ.get("NOCTURNE_DB_URL"):
+        raise HTTPException(status_code=409, detail=t("api.settings.db_pinned_by_env"))
+
+    url = body.database_url.strip()
+    # Browsing is a local SQLite affair; PG/remote DBs stay in config.json so a
+    # typo can't make this process create tables inside someone else's server DB.
+    if not url.startswith("sqlite+aiosqlite:///"):
+        raise HTTPException(status_code=422, detail=t("api.settings.switch_sqlite_only"))
+
+    db_path = Path(make_url(url).database)
+    if not db_path.exists():
+        # Don't let a typo create an empty DB that looks like data loss.
+        raise HTTPException(
+            status_code=404,
+            detail=t("api.settings.db_file_missing").format(path=db_path),
+        )
+    if not _is_nocturne_db(db_path):
+        # init_db() would otherwise create Nocturne tables inside someone else's file.
+        raise HTTPException(
+            status_code=422,
+            detail=t("api.settings.db_not_nocturne").format(path=db_path),
+        )
+
+    from db import close_db, get_db_manager, set_runtime_database_url, get_runtime_database_url
+
+    previous = get_runtime_database_url()
+    set_runtime_database_url(url)
+    # shortcut: in-flight requests can hit the disposed engine once (local single-user only).
+    await close_db()
+    try:
+        await get_db_manager().init_db()
+    except Exception as e:
+        set_runtime_database_url(previous)
+        await close_db()
+        raise HTTPException(
+            status_code=500,
+            detail=t("api.settings.db_failed").format(error=e),
+        ) from e
+
+    return {"success": True, "database_url": url}
+
+
 @router.post("/database/open-folder")
 async def open_database_folder():
     """Open the current SQLite DB's containing folder in the OS file manager."""
@@ -330,7 +392,9 @@ async def open_database_folder():
             detail=t("api.settings.open_folder_docker"),
         )
 
-    url = config.get("database_url") or ""
+    from db import get_effective_database_url
+
+    url = get_effective_database_url()
     if "sqlite" not in url:
         raise HTTPException(status_code=400, detail=t("api.settings.sqlite_only"))
 
@@ -352,9 +416,91 @@ async def open_database_folder():
     else:
         subprocess.Popen(["xdg-open", str(folder)])
 
+
+def _pick_path_with_dialog(mode: str, initial_dir: str | None) -> str:
+    """Show the OS file dialog on this machine; return the path or "" on cancel."""
+    import tkinter as tk
+    from tkinter import filedialog
+
+    root = tk.Tk()
+    root.withdraw()
+    try:
+        root.attributes("-topmost", True)
+    except tk.TclError:
+        pass  # some WMs reject -topmost; the dialog still opens
+    try:
+        options: dict = {
+            "title": t("api.settings.pick_path_title"),
+            "filetypes": [("SQLite", "*.db"), (t("api.settings.pick_path_all_files"), "*.*")],
+        }
+        if initial_dir:
+            options["initialdir"] = initial_dir
+        if mode == "save":
+            return filedialog.asksaveasfilename(defaultextension=".db", **options) or ""
+        return filedialog.askopenfilename(**options) or ""
+    finally:
+        root.destroy()
+
+
+@router.post("/database/pick-path")
+async def pick_database_path(body: DatabasePickPath):
+    """Pick a SQLite file through the OS dialog of the machine running the server.
+
+    A browser cannot read a local path from <input type=file>, so for this
+    local single-user server the dialog runs server-side and only the path
+    travels back.
+    """
+    if Path("/.dockerenv").exists():
+        raise HTTPException(status_code=501, detail=t("api.settings.pick_path_docker"))
+    if body.mode not in ("open", "save"):
+        raise HTTPException(status_code=422, detail=t("api.settings.pick_path_mode"))
+
+    from db import get_effective_database_url
+
+    initial_dir = None
+    match = re.search(r"///(.+)$", get_effective_database_url() or "")
+    if match:
+        # Start where the current DB lives; wrong/missing dirs are ignored by Tk.
+        initial_dir = str(Path(match.group(1)).parent)
+
+    try:
+        picked = await asyncio.to_thread(_pick_path_with_dialog, body.mode, initial_dir)
+    except Exception as e:  # no tkinter / no display on this host
+        raise HTTPException(
+            status_code=501,
+            detail=t("api.settings.pick_path_failed").format(error=e),
+        ) from e
+
+    if not picked:
+        return {"success": False, "cancelled": True}
+    return {"success": True, "path": Path(picked).as_posix()}
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+def _is_nocturne_db(path: Path) -> bool:
+    """True if the SQLite file already has Nocturne's core tables.
+
+    Reads the schema with a read-only connection (a few ms on a local file);
+    init_db() would otherwise add our tables to an arbitrary .db.
+    """
+    import sqlite3
+
+    for params in ("mode=ro", "mode=ro&immutable=1"):
+        # immutable fallback: a WAL file whose -shm can't be opened (read-only dir)
+        # still has its schema in the main file.
+        try:
+            con = sqlite3.connect(f"file:{path}?{params}", uri=True)
+            try:
+                names = {r[0] for r in con.execute("select name from sqlite_master where type='table'")}
+            finally:
+                con.close()
+            return {"nodes", "memories"} <= names
+        except sqlite3.Error:
+            continue
+    return False
+
 
 def _format_size(size_bytes: int) -> str:
     for unit in ("B", "KB", "MB", "GB"):

@@ -357,4 +357,32 @@ async def test_settings_api_bloat_min_bytes(api_client, monkeypatch, tmp_path):
     assert config.get("bloat_min_bytes") == 4096
 
 
+async def test_database_pick_path_returns_chosen_file(api_client, monkeypatch, tmp_path):
+    import api.settings as settings_api
+
+    chosen = tmp_path / "记忆 库.db"
+    monkeypatch.setattr(settings_api, "_pick_path_with_dialog", lambda mode, initial_dir: str(chosen))
+    res = await api_client.post("/settings/database/pick-path", json={"mode": "open"})
+    assert res.status_code == 200
+    assert res.json() == {"success": True, "path": chosen.as_posix()}
+
+
+async def test_database_pick_path_cancel_bad_mode_and_dialog_failure(api_client, monkeypatch):
+    import api.settings as settings_api
+
+    monkeypatch.setattr(settings_api, "_pick_path_with_dialog", lambda mode, initial_dir: "")
+    cancelled = await api_client.post("/settings/database/pick-path", json={"mode": "save"})
+    assert cancelled.json() == {"success": False, "cancelled": True}
+
+    bad_mode = await api_client.post("/settings/database/pick-path", json={"mode": "rename"})
+    assert bad_mode.status_code == 422
+
+    def _boom(mode, initial_dir):
+        raise RuntimeError("no display")
+
+    monkeypatch.setattr(settings_api, "_pick_path_with_dialog", _boom)
+    failed = await api_client.post("/settings/database/pick-path", json={"mode": "open"})
+    assert failed.status_code == 501
+
+
 
