@@ -6,7 +6,7 @@ Overwrite semantics:
   - Subsequent touches of the same PK: overwrite `after` only; `before` is frozen.
   - Net-zero changes (before == after) are filtered from display automatically.
 
-Storage: one JSON file at `snapshots/changeset.json`.
+Storage: one JSON file at `snapshots/<db-hash>/changeset.json`.
 """
 
 import os
@@ -370,11 +370,22 @@ class ChangesetStore:
 # ---------------------------------------------------------------------------
 
 _store: Optional[ChangesetStore] = None
+_store_key: Optional[str] = None
 
 
 def get_changeset_store() -> ChangesetStore:
-    """Return the global ChangesetStore."""
-    global _store
-    if _store is None:
-        _store = ChangesetStore()
+    """Return the store for the DB this process is serving.
+
+    One pool per DB: rolling back a changeset recorded against DB A into DB B
+    would write the wrong rows, so browsing/pinned DBs each get their own file.
+    """
+    global _store, _store_key
+    import hashlib
+    from db import get_effective_database_url  # local import: db imports this module
+
+    key = get_effective_database_url()
+    if _store is None or _store_key != key:
+        sub = hashlib.sha1(key.encode("utf-8")).hexdigest()[:12]
+        _store = ChangesetStore(os.path.join(_default_snapshot_dir(), sub))
+        _store_key = key
     return _store

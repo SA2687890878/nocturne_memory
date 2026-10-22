@@ -11,6 +11,7 @@ import SettingsDrawer from './features/settings/SettingsDrawer';
 import TokenAuth from './components/TokenAuth';
 import { ToastContainer } from './components/Toast';
 import { AUTH_ERROR_EVENT, getNamespaces } from './lib/api';
+import { watchDatabaseChanges } from './lib/dbSync';
 import { detectLocale } from './i18n/index';
 
 const NAMESPACE_SWITCH_ROOT_REDIRECT_KEY = 'nocturne:namespace-switch-root-redirect';
@@ -130,6 +131,9 @@ function Layout() {
   const location = useLocation();
   const isReviewPage = location.pathname.startsWith('/review');
   const isMaintenancePage = location.pathname.startsWith('/maintenance');
+
+  // Another tab may have switched the DB of this server process; see lib/dbSync.
+  useEffect(() => watchDatabaseChanges(), []);
 
   return (
     <div className="flex flex-col h-screen bg-slate-950 text-slate-200">

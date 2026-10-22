@@ -88,7 +88,7 @@ async def lifespan(server: FastMCP):
 
         # In stdio mode, spin up an embedded HTTP server for the admin UI.
         # run_sse.py sets _NOCTURNE_SSE_MODE to prevent a duplicate.
-        if not os.environ.get("_NOCTURNE_SSE_MODE"):
+        if not os.environ.get("_NOCTURNE_SSE_MODE") and not os.environ.get("NOCTURNE_NO_UI"):
             import uvicorn
             from auth import enforce_network_auth
 

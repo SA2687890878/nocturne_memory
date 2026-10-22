@@ -169,7 +169,6 @@ export default function SettingsDrawer() {
                       settings={settings}
                       dbStatus={dbStatus}
                       onRefreshStatus={refreshDbStatus}
-                      onSave={handleSave}
                     />
                   </Section>
                 </div>

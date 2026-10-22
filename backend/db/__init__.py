@@ -28,12 +28,37 @@ _search_indexer: Optional["SearchIndexer"] = None
 _glossary_service: Optional["GlossaryService"] = None
 _preset_service: Optional["PresetService"] = None
 
+# Process-wide override: lets the UI browse other DBs, and lets an MCP process
+# pin its own DB, without touching config.json.
+_runtime_url: Optional[str] = None
+
+
+def set_runtime_database_url(url: Optional[str]) -> None:
+    """Override the database for this process only."""
+    global _runtime_url
+    _runtime_url = url
+
+
+def get_runtime_database_url() -> Optional[str]:
+    return _runtime_url
+
+
+def get_effective_database_url() -> str:
+    """The URL this process will actually connect to (override > env > config)."""
+    return _resolve_database_url()
+
 
 def _resolve_database_url() -> str:
-    """Resolve DATABASE_URL from config.json."""
+    """Resolve DATABASE_URL: runtime override > NOCTURNE_DB_URL env > config.json."""
+    import os
     import sys
     from pathlib import Path
-    
+
+    if _runtime_url:
+        return _runtime_url
+    if os.environ.get("NOCTURNE_DB_URL"):
+        return os.environ["NOCTURNE_DB_URL"]
+
     # Ensure backend directory is in sys.path so we can import config
     backend_dir = str(Path(__file__).resolve().parent.parent)
     if backend_dir not in sys.path:
@@ -114,6 +139,7 @@ __all__ = [
     "get_search_indexer", "get_glossary_service",
     "get_preset_service",
     "close_db",
+    "set_runtime_database_url", "get_runtime_database_url", "get_effective_database_url",
     "ChangesetStore", "get_changeset_store",
     "get_namespace", "set_namespace",
     "Base", "ROOT_NODE_UUID", "Node", "Memory", "Edge", "Path",
