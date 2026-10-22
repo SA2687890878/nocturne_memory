@@ -26,3 +26,7 @@ backups/
 
 # Sisyphus tooling artifacts
 .sisyphus/
+
+# DSH tooling artifacts
+.codegraph/
+.dsh-ops/
