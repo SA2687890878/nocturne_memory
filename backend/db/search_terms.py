@@ -98,7 +98,7 @@ def build_document_search_terms(
     the application layer before entering the database index.
     """
     glossary_tokens = [token for token in glossary_text.split() if token]
-    SearchTokenizer.register_custom_words(glossary_tokens)
+    # Keep segmentation stable across processes; whole glossary phrases are indexed below.
 
     tokens = list(glossary_tokens)
     for value in (path, uri, content, disclosure or "", glossary_text):
