@@ -1,0 +1,701 @@
+{
+  "mapping": [
+    {
+      "caseKey": "396afeb5d327",
+      "originalId": "R01-P"
+    },
+    {
+      "caseKey": "81b33f1e8740",
+      "originalId": "R01-N"
+    },
+    {
+      "caseKey": "8fc75200c455",
+      "originalId": "R02-P"
+    },
+    {
+      "caseKey": "9932e8419ef5",
+      "originalId": "R02-N"
+    },
+    {
+      "caseKey": "61a4602c65eb",
+      "originalId": "R03-P"
+    },
+    {
+      "caseKey": "b402256b0ae8",
+      "originalId": "R03-N"
+    },
+    {
+      "caseKey": "9aae3fb5003f",
+      "originalId": "R04-P"
+    },
+    {
+      "caseKey": "f8806e60a8f6",
+      "originalId": "R04-N"
+    },
+    {
+      "caseKey": "f9a53dab5e6b",
+      "originalId": "R05-P"
+    },
+    {
+      "caseKey": "4cf5ec70162f",
+      "originalId": "R05-N"
+    },
+    {
+      "caseKey": "14f6f495c366",
+      "originalId": "R06-P"
+    },
+    {
+      "caseKey": "ee0e8c04b1cd",
+      "originalId": "R06-N"
+    },
+    {
+      "caseKey": "cea85745a931",
+      "originalId": "R07-P"
+    },
+    {
+      "caseKey": "031d7da1e5e4",
+      "originalId": "R07-N"
+    },
+    {
+      "caseKey": "9fb83cd077db",
+      "originalId": "R08-P"
+    },
+    {
+      "caseKey": "c2613515ef26",
+      "originalId": "R08-N"
+    },
+    {
+      "caseKey": "7781f9da3a4f",
+      "originalId": "R09-P"
+    },
+    {
+      "caseKey": "6a3f80c11186",
+      "originalId": "R09-N"
+    },
+    {
+      "caseKey": "37d9c863c2af",
+      "originalId": "R10-P"
+    },
+    {
+      "caseKey": "3f4da13cd959",
+      "originalId": "R10-N"
+    },
+    {
+      "caseKey": "8f745a03ead2",
+      "originalId": "R11-P"
+    },
+    {
+      "caseKey": "4dae05db133a",
+      "originalId": "R11-N"
+    },
+    {
+      "caseKey": "6d51ad0856b4",
+      "originalId": "R12-P"
+    },
+    {
+      "caseKey": "c7b63b789a3b",
+      "originalId": "R12-N"
+    },
+    {
+      "caseKey": "48d3d0355cba",
+      "originalId": "R13-P"
+    },
+    {
+      "caseKey": "f49cf2751c01",
+      "originalId": "R13-N"
+    },
+    {
+      "caseKey": "15d6cb5bed35",
+      "originalId": "R14-P"
+    },
+    {
+      "caseKey": "f1adb31f383b",
+      "originalId": "R14-N"
+    },
+    {
+      "caseKey": "0a1021d560a3",
+      "originalId": "R15-P"
+    },
+    {
+      "caseKey": "bd9e3a5917d2",
+      "originalId": "R15-N"
+    },
+    {
+      "caseKey": "197ab4f24c57",
+      "originalId": "R16-P"
+    },
+    {
+      "caseKey": "9ba920519863",
+      "originalId": "R16-N"
+    },
+    {
+      "caseKey": "f48f8b7ef764",
+      "originalId": "R17-P"
+    },
+    {
+      "caseKey": "7e430d018d35",
+      "originalId": "R17-N"
+    },
+    {
+      "caseKey": "c90d5fabcccf",
+      "originalId": "R18-P"
+    },
+    {
+      "caseKey": "403f922d96e7",
+      "originalId": "R18-N"
+    },
+    {
+      "caseKey": "b27c3cca578f",
+      "originalId": "R19-P"
+    },
+    {
+      "caseKey": "5bd52bcc7a6a",
+      "originalId": "R19-N"
+    },
+    {
+      "caseKey": "0649e870ea14",
+      "originalId": "R20-P"
+    },
+    {
+      "caseKey": "be146d1f9b7e",
+      "originalId": "R20-N"
+    },
+    {
+      "caseKey": "ba2613869a14",
+      "originalId": "R21-P"
+    },
+    {
+      "caseKey": "e34f01c461c1",
+      "originalId": "R21-N"
+    },
+    {
+      "caseKey": "b59b8eec293f",
+      "originalId": "R22-P"
+    },
+    {
+      "caseKey": "e690d66d8e35",
+      "originalId": "R22-N"
+    },
+    {
+      "caseKey": "28b6e25dc7ba",
+      "originalId": "R23-P"
+    },
+    {
+      "caseKey": "7e8d136c9336",
+      "originalId": "R23-N"
+    },
+    {
+      "caseKey": "e2294223b87a",
+      "originalId": "R24-P"
+    },
+    {
+      "caseKey": "420cc9742cd7",
+      "originalId": "R24-N"
+    },
+    {
+      "caseKey": "29b60de4a633",
+      "originalId": "F01-P"
+    },
+    {
+      "caseKey": "1f010bc6e02f",
+      "originalId": "F01-N"
+    },
+    {
+      "caseKey": "9a00d6b12897",
+      "originalId": "F02-P"
+    },
+    {
+      "caseKey": "a4f2b324cc3c",
+      "originalId": "F02-N"
+    },
+    {
+      "caseKey": "768a30629240",
+      "originalId": "F03-P"
+    },
+    {
+      "caseKey": "7eb5455bfeab",
+      "originalId": "F03-N"
+    },
+    {
+      "caseKey": "60fb89bb8c09",
+      "originalId": "F04-P"
+    },
+    {
+      "caseKey": "11083eae5041",
+      "originalId": "F04-N"
+    },
+    {
+      "caseKey": "40953ce1dcfc",
+      "originalId": "F05-P"
+    },
+    {
+      "caseKey": "ef3f214bee86",
+      "originalId": "F05-N"
+    },
+    {
+      "caseKey": "d583f419095c",
+      "originalId": "F06-P"
+    },
+    {
+      "caseKey": "65547e2322eb",
+      "originalId": "F06-N"
+    },
+    {
+      "caseKey": "29d3008c96d5",
+      "originalId": "F07-P"
+    },
+    {
+      "caseKey": "6703a9e00741",
+      "originalId": "F07-N"
+    },
+    {
+      "caseKey": "5f4cc223313f",
+      "originalId": "F08-P"
+    },
+    {
+      "caseKey": "bb3421329214",
+      "originalId": "F08-N"
+    },
+    {
+      "caseKey": "84422e153db9",
+      "originalId": "F09-P"
+    },
+    {
+      "caseKey": "b6ddd0fd29c2",
+      "originalId": "F09-N"
+    },
+    {
+      "caseKey": "95c59211d598",
+      "originalId": "F10-P"
+    },
+    {
+      "caseKey": "c7d705d23d8d",
+      "originalId": "F10-N"
+    },
+    {
+      "caseKey": "f0eb33cae9f2",
+      "originalId": "F11-P"
+    },
+    {
+      "caseKey": "e10e617fe01e",
+      "originalId": "F11-N"
+    },
+    {
+      "caseKey": "9cbd3cd54c47",
+      "originalId": "F12-P"
+    },
+    {
+      "caseKey": "d96ab8bf247d",
+      "originalId": "F12-N"
+    },
+    {
+      "caseKey": "7f5dcf4c2cac",
+      "originalId": "F13-P"
+    },
+    {
+      "caseKey": "acfd1c9d3984",
+      "originalId": "F13-N"
+    },
+    {
+      "caseKey": "0a266fb30d13",
+      "originalId": "F14-P"
+    },
+    {
+      "caseKey": "2b34b3b5f98f",
+      "originalId": "F14-N"
+    },
+    {
+      "caseKey": "cef31b0b8a4b",
+      "originalId": "F15-P"
+    },
+    {
+      "caseKey": "a9685af708d0",
+      "originalId": "F15-N"
+    },
+    {
+      "caseKey": "f67e252a2f21",
+      "originalId": "F16-P"
+    },
+    {
+      "caseKey": "84605100af77",
+      "originalId": "F16-N"
+    },
+    {
+      "caseKey": "383b3e49cb75",
+      "originalId": "F17-P"
+    },
+    {
+      "caseKey": "46c27ac36b34",
+      "originalId": "F17-N"
+    },
+    {
+      "caseKey": "c80114088f6b",
+      "originalId": "F18-P"
+    },
+    {
+      "caseKey": "b18025906998",
+      "originalId": "F18-N"
+    },
+    {
+      "caseKey": "8aa18c1c6c75",
+      "originalId": "F19-P"
+    },
+    {
+      "caseKey": "ccd5c14672d0",
+      "originalId": "F19-N"
+    },
+    {
+      "caseKey": "8605bff5d902",
+      "originalId": "F20-P"
+    },
+    {
+      "caseKey": "0191346d757e",
+      "originalId": "F20-N"
+    },
+    {
+      "caseKey": "39dc5f838485",
+      "originalId": "F21-P"
+    },
+    {
+      "caseKey": "7ad97827cda0",
+      "originalId": "F21-N"
+    },
+    {
+      "caseKey": "5fead33a4654",
+      "originalId": "F22-P"
+    },
+    {
+      "caseKey": "98c352f66193",
+      "originalId": "F22-N"
+    },
+    {
+      "caseKey": "0e9ae0ffe76b",
+      "originalId": "F23-P"
+    },
+    {
+      "caseKey": "150a23fe9788",
+      "originalId": "F23-N"
+    },
+    {
+      "caseKey": "e6dd1d1cc0a6",
+      "originalId": "F24-P"
+    },
+    {
+      "caseKey": "a84fa5d8bb36",
+      "originalId": "F24-N"
+    },
+    {
+      "caseKey": "e9a006ba66e2",
+      "originalId": "F25-P"
+    },
+    {
+      "caseKey": "fe2f182890e0",
+      "originalId": "F25-N"
+    },
+    {
+      "caseKey": "6dd82d73b07d",
+      "originalId": "F26-P"
+    },
+    {
+      "caseKey": "6eb892c62dfe",
+      "originalId": "F26-N"
+    },
+    {
+      "caseKey": "1f143efd21ad",
+      "originalId": "F27-P"
+    },
+    {
+      "caseKey": "03f24e98501c",
+      "originalId": "F27-N"
+    },
+    {
+      "caseKey": "7c6f507ec1d7",
+      "originalId": "F28-P"
+    },
+    {
+      "caseKey": "97a24e0e28b5",
+      "originalId": "F28-N"
+    },
+    {
+      "caseKey": "4362e908274b",
+      "originalId": "F29-P"
+    },
+    {
+      "caseKey": "d41a2396d177",
+      "originalId": "F29-N"
+    },
+    {
+      "caseKey": "2dbd61367c3b",
+      "originalId": "F30-P"
+    },
+    {
+      "caseKey": "d38fafbcc213",
+      "originalId": "F30-N"
+    },
+    {
+      "caseKey": "550a6ed4f29f",
+      "originalId": "F31-P"
+    },
+    {
+      "caseKey": "5dc3cb14a9cf",
+      "originalId": "F31-N"
+    },
+    {
+      "caseKey": "7a8b2362e13d",
+      "originalId": "F32-P"
+    },
+    {
+      "caseKey": "f9b969406e3e",
+      "originalId": "F32-N"
+    },
+    {
+      "caseKey": "014cd429ac02",
+      "originalId": "F33-P"
+    },
+    {
+      "caseKey": "6e64ae88abbd",
+      "originalId": "F33-N"
+    },
+    {
+      "caseKey": "ff9b121bb62e",
+      "originalId": "F34-P"
+    },
+    {
+      "caseKey": "0dd4a4f78cae",
+      "originalId": "F34-N"
+    },
+    {
+      "caseKey": "a836f3cfbe73",
+      "originalId": "F35-P"
+    },
+    {
+      "caseKey": "63457cb54150",
+      "originalId": "F35-N"
+    },
+    {
+      "caseKey": "d8829946d5e1",
+      "originalId": "F36-P"
+    },
+    {
+      "caseKey": "fc0fff89e405",
+      "originalId": "F36-N"
+    },
+    {
+      "caseKey": "e9452588bd00",
+      "originalId": "F37-P"
+    },
+    {
+      "caseKey": "ce06620574c1",
+      "originalId": "F37-N"
+    },
+    {
+      "caseKey": "fbe514f9440c",
+      "originalId": "F38-P"
+    },
+    {
+      "caseKey": "d480101bbc7f",
+      "originalId": "F38-N"
+    },
+    {
+      "caseKey": "4c182373b6cb",
+      "originalId": "F39-P"
+    },
+    {
+      "caseKey": "06643c8d2118",
+      "originalId": "F39-N"
+    },
+    {
+      "caseKey": "78eccd3122bd",
+      "originalId": "F40-P"
+    },
+    {
+      "caseKey": "eb60b2af34e0",
+      "originalId": "F40-N"
+    },
+    {
+      "caseKey": "b4144bd10200",
+      "originalId": "F41-P"
+    },
+    {
+      "caseKey": "54442204e16c",
+      "originalId": "F41-N"
+    },
+    {
+      "caseKey": "60a1478d6cc5",
+      "originalId": "K01-P"
+    },
+    {
+      "caseKey": "0cdfc0ef1d22",
+      "originalId": "K01-N"
+    },
+    {
+      "caseKey": "e209f51b629e",
+      "originalId": "K02-P"
+    },
+    {
+      "caseKey": "ce20ca019ea3",
+      "originalId": "K02-N"
+    },
+    {
+      "caseKey": "cafee6f0352e",
+      "originalId": "K03-P"
+    },
+    {
+      "caseKey": "a3c00f143fb7",
+      "originalId": "K03-N"
+    },
+    {
+      "caseKey": "5d8e9e979596",
+      "originalId": "K04-P"
+    },
+    {
+      "caseKey": "dd93ff49b68a",
+      "originalId": "K04-N"
+    },
+    {
+      "caseKey": "4a2266bab671",
+      "originalId": "K05-P"
+    },
+    {
+      "caseKey": "70713f36251a",
+      "originalId": "K05-N"
+    },
+    {
+      "caseKey": "6d33f23c2a18",
+      "originalId": "K06-P"
+    },
+    {
+      "caseKey": "90ac20cd6ec7",
+      "originalId": "K06-N"
+    },
+    {
+      "caseKey": "4dbba1a8b8f8",
+      "originalId": "K07-P"
+    },
+    {
+      "caseKey": "9051747000c9",
+      "originalId": "K07-N"
+    },
+    {
+      "caseKey": "c804ea1bf32c",
+      "originalId": "K08-P"
+    },
+    {
+      "caseKey": "ec2a35df7374",
+      "originalId": "K08-N"
+    },
+    {
+      "caseKey": "344ffa569f37",
+      "originalId": "K09-P"
+    },
+    {
+      "caseKey": "6c011b3663d1",
+      "originalId": "K09-N"
+    },
+    {
+      "caseKey": "03d1ae658009",
+      "originalId": "K10-P"
+    },
+    {
+      "caseKey": "98f2aa8929db",
+      "originalId": "K10-N"
+    },
+    {
+      "caseKey": "2d3815f18761",
+      "originalId": "K11-P"
+    },
+    {
+      "caseKey": "4ca1b7fa71a2",
+      "originalId": "K11-N"
+    },
+    {
+      "caseKey": "fad4ad1a1aba",
+      "originalId": "K12-P"
+    },
+    {
+      "caseKey": "90d978f64405",
+      "originalId": "K12-N"
+    },
+    {
+      "caseKey": "c5228b62bca5",
+      "originalId": "K13-P"
+    },
+    {
+      "caseKey": "5747381132ad",
+      "originalId": "K13-N"
+    },
+    {
+      "caseKey": "eb63c797917d",
+      "originalId": "K14-P"
+    },
+    {
+      "caseKey": "559897940e16",
+      "originalId": "K14-N"
+    },
+    {
+      "caseKey": "1a1784fa101e",
+      "originalId": "K15-P"
+    },
+    {
+      "caseKey": "9b8aa037a497",
+      "originalId": "K15-N"
+    },
+    {
+      "caseKey": "17b7876ed4b5",
+      "originalId": "K16-P"
+    },
+    {
+      "caseKey": "68bc5303b9a9",
+      "originalId": "K16-N"
+    },
+    {
+      "caseKey": "c219d255ef16",
+      "originalId": "X01"
+    },
+    {
+      "caseKey": "0bc8f284836f",
+      "originalId": "X02"
+    },
+    {
+      "caseKey": "1963a1ee7f6e",
+      "originalId": "X03"
+    },
+    {
+      "caseKey": "cc8829557212",
+      "originalId": "X04"
+    },
+    {
+      "caseKey": "a55531abe791",
+      "originalId": "X05"
+    },
+    {
+      "caseKey": "0867c0bd5c4e",
+      "originalId": "X06"
+    },
+    {
+      "caseKey": "b6b9661482a7",
+      "originalId": "X07"
+    },
+    {
+      "caseKey": "387dc3beb2e1",
+      "originalId": "X08"
+    },
+    {
+      "caseKey": "2e7267288ccf",
+      "originalId": "X09"
+    },
+    {
+      "caseKey": "8d75c6e28f1e",
+      "originalId": "X10"
+    },
+    {
+      "caseKey": "81114e3ca54e",
+      "originalId": "X11"
+    },
+    {
+      "caseKey": "9385dfe52890",
+      "originalId": "X12"
+    }
+  ],
+  "evaluationScope": "Blind decisions and actual selected MCP retrieval, not daily agent E2E"
+}

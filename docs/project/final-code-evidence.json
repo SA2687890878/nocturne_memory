@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-10-22T16:23:54.682Z",
+  "files": [
+    {
+      "path": "backend/scripts/audit_memory.py",
+      "sha256": "207225db01344a42e65038ae2fbcadbcee70a062540db9ecef4a9b95facb50cc",
+      "unchanged_since_34_tests": true
+    },
+    {
+      "path": "backend/tests/scripts/test_audit_memory.py",
+      "sha256": "45ba91c75b541d4c41acd307a5e0220d0a64b334b6ab930bd31b0d06b5b21cd8",
+      "unchanged_since_34_tests": true
+    }
+  ],
+  "unit_tests": "34 passed at frozen-code stage; no code changes in round4, not rerun merely for freshness",
+  "fresh_verification": [
+    "real database audit exit0",
+    "project-trust invariant driver exit0",
+    "MCP metadata read/search examples"
+  ],
+  "not_covered": [
+    "browser UI",
+    "all semantic facts current",
+    "arbitrary malformed graph states",
+    "full IR benchmark"
+  ]
+}

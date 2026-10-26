@@ -1,0 +1,34 @@
+{
+  "status": "OBSERVED",
+  "firstFinalCheck": "FAILED: Non-statistical table drift",
+  "changedTables": [
+    {
+      "table": "memory_access_logs",
+      "beforeRows": 279,
+      "afterRows": 315,
+      "changedColumns": [],
+      "columns": [
+        "id",
+        "node_uuid",
+        "namespace",
+        "accessed_at",
+        "context"
+      ],
+      "oldRowsPreservedAsPrefix": true
+    },
+    {
+      "table": "nodes",
+      "beforeRows": 34,
+      "afterRows": 34,
+      "changedColumns": [
+        "last_accessed_at"
+      ],
+      "columns": [
+        "uuid",
+        "created_at",
+        "last_accessed_at"
+      ],
+      "oldRowsPreservedAsPrefix": false
+    }
+  ]
+}

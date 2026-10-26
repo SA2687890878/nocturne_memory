@@ -1,0 +1,36 @@
+{
+  "cases": [
+    {
+      "caseKey": "027c613497b0",
+      "readUris": []
+    },
+    {
+      "caseKey": "16cd304f5510",
+      "readUris": [
+        "core://agent/source-catalog"
+      ]
+    },
+    {
+      "caseKey": "26c06906a7a4",
+      "readUris": [
+        "core://agent/dsh/profile"
+      ]
+    },
+    {
+      "caseKey": "33cb8b4ff5c0",
+      "readUris": [
+        "core://agent/source-catalog"
+      ]
+    },
+    {
+      "caseKey": "db28dd434d65",
+      "readUris": []
+    },
+    {
+      "caseKey": "e536eee4a558",
+      "readUris": [
+        "core://agent/source-catalog"
+      ]
+    }
+  ]
+}

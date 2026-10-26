@@ -1,0 +1,29 @@
+{
+  "mapping": [
+    {
+      "caseKey": "027c613497b0",
+      "originalId": "K12-P"
+    },
+    {
+      "caseKey": "16cd304f5510",
+      "originalId": "K14-N"
+    },
+    {
+      "caseKey": "26c06906a7a4",
+      "originalId": "K12-N"
+    },
+    {
+      "caseKey": "33cb8b4ff5c0",
+      "originalId": "K14-P"
+    },
+    {
+      "caseKey": "db28dd434d65",
+      "originalId": "F36-P"
+    },
+    {
+      "caseKey": "e536eee4a558",
+      "originalId": "F36-N"
+    }
+  ],
+  "source": "原G1用例未改"
+}

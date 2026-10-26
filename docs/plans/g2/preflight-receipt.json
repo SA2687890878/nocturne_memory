@@ -1,0 +1,95 @@
+{
+  "phase": "G2-preflight",
+  "targetExists": false,
+  "oldContentReadIntoContext": false,
+  "targetParentLinks": "none observed in directory and two parents",
+  "configPresent": true,
+  "dependencies": "existing D:/Python/python.exe, no installs",
+  "newArtifactAclPlan": "tighten only new DB/WAL/SHM/new dirs; old directory unchanged",
+  "codeHashes": [
+    {
+      "path": "backend/mcp_server.py",
+      "sha256": "018dd7e9838a31a11e45046a394d291bc1d60d46837e365fd06d000fadb1dde1",
+      "bytes": 43462
+    },
+    {
+      "path": "backend/db/__init__.py",
+      "sha256": "06013aa6418e4563b774260707b0bc397daf95b6e3db7da57428913c4dfa863d",
+      "bytes": 4709
+    },
+    {
+      "path": "backend/db/database.py",
+      "sha256": "0dc7b023e04b07d3fc88eecd2e66fe8a2f6d88c99dd1945bf08f1fadaa81aaef",
+      "bytes": 6756
+    },
+    {
+      "path": "backend/db/presets.py",
+      "sha256": "f54e7facd02c0d0b970a38f1174fff0518b60c80848d50efaa019f4f82cf2c7c",
+      "bytes": 9238
+    },
+    {
+      "path": "backend/db/snapshot.py",
+      "sha256": "cdbb4fa775463a57b1a9b578293f3ae5e4a7745128aa4d1d1cf16cd17ed56fd4",
+      "bytes": 14926
+    },
+    {
+      "path": "backend/config.py",
+      "sha256": "ca285a5c5421c9336d53ad4ededc3e27141936386d00c8b99f28babb334e14f8",
+      "bytes": 12012
+    },
+    {
+      "path": "backend/frontend_builder.py",
+      "sha256": "17442d50058f745bc54bd4bd4cc07fb36230cbc231046c9c5231a472f2370598",
+      "bytes": 33088
+    },
+    {
+      "path": "backend/scripts/audit_memory.py",
+      "sha256": "207225db01344a42e65038ae2fbcadbcee70a062540db9ecef4a9b95facb50cc",
+      "bytes": 15019
+    },
+    {
+      "path": "config.json",
+      "sha256": "2847745286b26e985be5900ac863f858e106eaa079fd3727a232eed569877366",
+      "bytes": 524
+    },
+    {
+      "path": "docs/plans/g2/run_trial.py",
+      "sha256": "4e4976cb553e0b5d79285e72078b1910143791ae4672b32436c98841b09a2b64",
+      "bytes": 18973
+    },
+    {
+      "path": "docs/plans/g2/protect-new-artifacts.ps1",
+      "sha256": "e682f5e3ded9e8f0bf38a636b1aef1cacc87037c2b3e10386cecb78d0014eff2",
+      "bytes": 2620
+    },
+    {
+      "path": "docs/plans/g2/execution-input.json",
+      "sha256": "c31d857139a0fb9bf432125ae737947ba884a21580553fc5d86983abe1c7cc4e",
+      "bytes": 92532
+    }
+  ],
+  "checkedAt": "2026-10-23T04:45:06.210Z",
+  "notYetRun": [
+    "--run",
+    "real MCP import",
+    "real DB backup/restore"
+  ],
+  "powerShell51": {
+    "encoding": "UTF-8 BOM",
+    "parser": "PASS",
+    "ruleConstructor": "PASS",
+    "effectivePolicy": "existing RemoteSigned; not changed"
+  },
+  "parentAclSha256": "65808ac9bcc0fde685aa11f8e3569dc984653876aef1cad744119b63b880a315",
+  "independentReview": {
+    "task": "task-8",
+    "blockersResolved": [
+      "authorization.json hash/scope bound",
+      "old DB backup removed",
+      "dry comparison counts and ACL actually measured",
+      "post-reopen ACL checked; logs private"
+    ],
+    "notAdopted": "Multi-user/complete174 behavior evaluation is outside this tool-level import run"
+  }
+}
+

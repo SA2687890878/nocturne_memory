@@ -1,0 +1,1270 @@
+{
+  "schemaVersion": 1,
+  "batchId": "g1-20261023-v1",
+  "phase": "G1-preview-only",
+  "planVersion": "r4",
+  "approvalStatus": "pending",
+  "notExecutable": true,
+  "memoryTopics": [
+    {
+      "id": "R01",
+      "kind": "memory_topic",
+      "label": "delivery/process",
+      "targetUri": "core://agent/delivery/process",
+      "event": "准备实施文件、配置或核心环境改动前",
+      "routingKeywords": [
+        "备份",
+        "清理临时文件",
+        "范围偏差"
+      ],
+      "negativeGate": "单纯解释一个概念，不展开备份流程",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R02",
+      "kind": "memory_topic",
+      "label": "delivery/requirements",
+      "targetUri": "core://agent/delivery/requirements",
+      "event": "用户要求澄清需求、讨论取舍或定义验收时",
+      "routingKeywords": [
+        "需求澄清",
+        "需求讨论",
+        "验收条件"
+      ],
+      "negativeGate": "只问术语定义，不问一整套需求清单",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R03",
+      "kind": "memory_topic",
+      "label": "delivery/design",
+      "targetUri": "core://agent/delivery/design",
+      "event": "准备给出架构或功能实现方案前",
+      "routingKeywords": [
+        "架构设计",
+        "功能设计",
+        "影响半径"
+      ],
+      "negativeGate": "视觉风格不自动当架构设计",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R04",
+      "kind": "memory_topic",
+      "label": "delivery/development",
+      "targetUri": "core://agent/delivery/development",
+      "event": "准备编写实现或决定本次共享抽象前",
+      "routingKeywords": [
+        "复用实现",
+        "模块化",
+        "第二处使用"
+      ],
+      "negativeGate": "不借复用检索扫描无关仓库",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R05",
+      "kind": "memory_topic",
+      "label": "delivery/testing",
+      "targetUri": "core://agent/delivery/testing",
+      "event": "准备设计测试范围或执行本次用例前",
+      "routingKeywords": [
+        "测试设计",
+        "回归测试",
+        "覆盖缺口"
+      ],
+      "negativeGate": "“测试库”一词不代表执行测试",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R06",
+      "kind": "memory_topic",
+      "label": "delivery/debugging",
+      "targetUri": "core://agent/delivery/debugging",
+      "event": "用户报告错误、行为不符或验证失败时",
+      "routingKeywords": [
+        "复现",
+        "根因",
+        "调用失败"
+      ],
+      "negativeGate": "未复现不把历史问题当根因",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R07",
+      "kind": "memory_topic",
+      "label": "delivery/review",
+      "targetUri": "core://agent/delivery/review",
+      "event": "准备派发子代理或达到交付 review 阈值时",
+      "routingKeywords": [
+        "只读审查",
+        "公共接口",
+        "步数上限"
+      ],
+      "negativeGate": "简单单点问答不派发审计",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R08",
+      "kind": "memory_topic",
+      "label": "delivery/tool-selection",
+      "targetUri": "core://agent/delivery/tool-selection",
+      "event": "准备比较工具、引入依赖或评价收益时",
+      "routingKeywords": [
+        "工具选型",
+        "维护成本",
+        "替代方案"
+      ],
+      "negativeGate": "不把未安装说成收益低",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R09",
+      "kind": "memory_topic",
+      "label": "delivery/task-contract",
+      "targetUri": "core://agent/delivery/task-contract",
+      "event": "准备创建、推进、恢复工程任务或存产物时",
+      "routingKeywords": [
+        "任务真源",
+        "product_path",
+        "恢复任务"
+      ],
+      "negativeGate": "单纯回答问题不创建任务日志",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R10",
+      "kind": "memory_topic",
+      "label": "verification",
+      "targetUri": "core://agent/verification",
+      "event": "准备选择验证强度、处理失败或宣称完成前",
+      "routingKeywords": [
+        "验证范围",
+        "失败分类",
+        "完成收据"
+      ],
+      "negativeGate": "文案任务不机械要求 build/test",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R11",
+      "kind": "memory_topic",
+      "label": "verification/test-design",
+      "targetUri": "core://agent/verification/test-design",
+      "event": "准备编写桩、回退用例或验证配置变更时",
+      "routingKeywords": [
+        "fail loudly",
+        "回退变红",
+        "同源解析"
+      ],
+      "negativeGate": "不要对所有测试无条件应用所有清单",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R12",
+      "kind": "memory_topic",
+      "label": "environment/workspaces",
+      "targetUri": "core://agent/environment/workspaces",
+      "event": "需要定位仓库、区分同名项目或进入新工作区时",
+      "routingKeywords": [
+        "工作区定位",
+        "仓库路径",
+        "同名仓库"
+      ],
+      "negativeGate": "不加载旧项目结论",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R13",
+      "kind": "memory_topic",
+      "label": "environment/network",
+      "targetUri": "core://agent/environment/network",
+      "event": "遇到联网、代理或认证问题时",
+      "routingKeywords": [
+        "代理",
+        "TLS",
+        "认证失败"
+      ],
+      "negativeGate": "不依据端口旧值直接改系统配置",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R14",
+      "kind": "memory_topic",
+      "label": "environment/toolchain",
+      "targetUri": "core://agent/environment/toolchain",
+      "event": "当前工具执行失败或需要确认本机测试能力时",
+      "routingKeywords": [
+        "testhost",
+        "工具不可用",
+        "运行时"
+      ],
+      "negativeGate": "dotnet 任务不一律认定不能测试",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R15",
+      "kind": "memory_topic",
+      "label": "dsh/profile",
+      "targetUri": "core://agent/dsh/profile",
+      "event": "需要确认活动 profile、宿主配置归属时",
+      "routingKeywords": [
+        "活动profile",
+        "profile-selection"
+      ],
+      "negativeGate": "普通功能开发不查宿主配置",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R16",
+      "kind": "memory_topic",
+      "label": "dsh/skills-config",
+      "targetUri": "core://agent/dsh/skills-config",
+      "event": "用户明确要求管理技能真源、安装或启停时",
+      "routingKeywords": [
+        "技能真源",
+        "disable-model-invocation",
+        "junction"
+      ],
+      "negativeGate": "调用一个现有 skill 不读此节点",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R17",
+      "kind": "memory_topic",
+      "label": "dsh/context-output",
+      "targetUri": "core://agent/dsh/context-output",
+      "event": "预计输出超过5KB或分析超过两个文件前",
+      "routingKeywords": [
+        "大输出",
+        "日志扫描",
+        "ctx_execute"
+      ],
+      "negativeGate": "短命令、单文件小片段不套压缩壳",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R18",
+      "kind": "memory_topic",
+      "label": "dsh/compaction",
+      "targetUri": "core://agent/dsh/compaction",
+      "event": "即将压缩、交接或恢复本次任务上下文时",
+      "routingKeywords": [
+        "压缩前",
+        "交接",
+        "未解决问题"
+      ],
+      "negativeGate": "普通答复结束不写交接日志",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R19",
+      "kind": "memory_topic",
+      "label": "memory-governance",
+      "targetUri": "core://agent/memory-governance",
+      "event": "准备写、改、合并、审计长期记忆前",
+      "routingKeywords": [
+        "记忆写入",
+        "语义对照",
+        "记忆审计"
+      ],
+      "negativeGate": "检索不等于写入授权",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R20",
+      "kind": "memory_topic",
+      "label": "source-catalog",
+      "targetUri": "core://agent/source-catalog",
+      "event": "阶段已明确但需要选择领域资料或判断副本权威时",
+      "routingKeywords": [
+        "规则真源",
+        "技术域",
+        "知识入口"
+      ],
+      "negativeGate": "已知精确入口直接读，不先重读总索引",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R21",
+      "kind": "memory_topic",
+      "label": "source-catalog/research",
+      "targetUri": "core://agent/source-catalog/research",
+      "event": "准备采用时效性、争议性或外部变化结论前",
+      "routingKeywords": [
+        "最新资料",
+        "版本变更",
+        "官方来源"
+      ],
+      "negativeGate": "是否需要查或范围不明时，只问一句",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R22",
+      "kind": "memory_topic",
+      "label": "source-catalog/code-access",
+      "targetUri": "core://agent/source-catalog/code-access",
+      "event": "准备定位符号、追调用链或选择源码读取方式前",
+      "routingKeywords": [
+        "CodeGraph",
+        "调用链",
+        "密文"
+      ],
+      "negativeGate": "普通文档不套源码加密流程",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R23",
+      "kind": "memory_topic",
+      "label": "source-catalog/frontend",
+      "targetUri": "core://agent/source-catalog/frontend",
+      "event": "准备实现应用UI或核对其交互前",
+      "routingKeywords": [
+        "应用UI",
+        "Dialog",
+        ".vue"
+      ],
+      "negativeGate": "解释方案HTML不命中业务UI规则",
+      "approval": "pending",
+      "disposition": "candidate"
+    },
+    {
+      "id": "R24",
+      "kind": "memory_topic",
+      "label": "source-catalog/database",
+      "targetUri": "core://agent/source-catalog/database",
+      "event": "准备设计或执行数据库操作前",
+      "routingKeywords": [
+        "目标库",
+        "SQL Server",
+        "PostgreSQL"
+      ],
+      "negativeGate": "先分引擎；SQLite不自动加载两套专项",
+      "approval": "pending",
+      "disposition": "candidate"
+    }
+  ],
+  "ruleFiles": [
+    {
+      "id": "F01",
+      "kind": "rule_file",
+      "label": "tools/code-access.md",
+      "sourcePath": "C:/Users/admin/.dsh/rules/tools/code-access.md",
+      "event": "即将定位代码符号、调用链或修改源码前",
+      "routingKeywords": [
+        "代码定位",
+        "调用链"
+      ],
+      "negativeGate": "普通文档阅读不走加密流程",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F02",
+      "kind": "rule_file",
+      "label": "quality/gates.md",
+      "sourcePath": "C:/Users/admin/.dsh/rules/quality/gates.md",
+      "event": "推进工程阶段或检查跨阶段门禁时",
+      "routingKeywords": [
+        "阶段门禁",
+        "范围漂移"
+      ],
+      "negativeGate": "不同时展开五道门正文",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F03",
+      "kind": "rule_file",
+      "label": "quality/verification.md",
+      "sourcePath": "C:/Users/admin/.dsh/rules/quality/verification.md",
+      "event": "准备验证、处理失败或宣称完成时",
+      "routingKeywords": [
+        "完成证据",
+        "UI验收"
+      ],
+      "negativeGate": "不代替任务风险判断",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F04",
+      "kind": "rule_file",
+      "label": "tools/token-optimization.md",
+      "sourcePath": "C:/Users/admin/.dsh/rules/tools/token-optimization.md",
+      "event": "需要选择大输出或代码读取工具时",
+      "routingKeywords": [
+        "输出压缩",
+        "按需读取"
+      ],
+      "negativeGate": "短输出不多套一层",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F05",
+      "kind": "rule_file",
+      "label": "interaction/rigor-standards.md",
+      "sourcePath": "C:/Users/admin/.dsh/rules/interaction/rigor-standards.md",
+      "event": "复杂推理、争议判断或多方案论证时",
+      "routingKeywords": [
+        "证据链",
+        "不确定性"
+      ],
+      "negativeGate": "不足只问一句优先，不借多源扩范围",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F06",
+      "kind": "rule_file",
+      "label": "interaction/confidence-reporting.md",
+      "sourcePath": "C:/Users/admin/.dsh/rules/interaction/confidence-reporting.md",
+      "event": "需要事实来源分级或标注推断时",
+      "routingKeywords": [
+        "来源等级",
+        "未确认"
+      ],
+      "negativeGate": "简单已知命令不展开格式教程",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F07",
+      "kind": "rule_file",
+      "label": "frontend/ui-redlines.md",
+      "sourcePath": "C:/Users/admin/.dsh/rules/frontend/ui-redlines.md",
+      "event": "应用前端页面或交互实现前",
+      "routingKeywords": [
+        "按钮",
+        "嵌套弹窗",
+        "共享视觉"
+      ],
+      "negativeGate": "生成解释方案HTML不算修改应用UI",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F08",
+      "kind": "rule_file",
+      "label": "requirements/requirements-analysis.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/requirements/requirements-analysis.md",
+      "event": "需求澄清、讨论、评审、取舍时",
+      "routingKeywords": [
+        "需求讨论",
+        "影响分析",
+        "验收条件"
+      ],
+      "negativeGate": "不因单个“需求”字样触发全流程",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F09",
+      "kind": "rule_file",
+      "label": "gates/requirement.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/gates/requirement.md",
+      "event": "准备结束需求阶段并移交设计时",
+      "routingKeywords": [
+        "需求门",
+        "范围确认"
+      ],
+      "negativeGate": "需求刚开始不必读发布门",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F10",
+      "kind": "rule_file",
+      "label": "gates/design.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/gates/design.md",
+      "event": "准备批准设计并进入开发时",
+      "routingKeywords": [
+        "设计门",
+        "数据风险"
+      ],
+      "negativeGate": "视觉审美单独走UI规则",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F11",
+      "kind": "rule_file",
+      "label": "gates/code.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/gates/code.md",
+      "event": "完成实现、进入代码审查时",
+      "routingKeywords": [
+        "代码门",
+        "编译",
+        "审查"
+      ],
+      "negativeGate": "不扩成无边界整仓审计",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F12",
+      "kind": "rule_file",
+      "label": "gates/test.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/gates/test.md",
+      "event": "准备结束测试阶段时",
+      "routingKeywords": [
+        "测试门",
+        "回归",
+        "覆盖"
+      ],
+      "negativeGate": "先核对必要用例而非只看退出码",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F13",
+      "kind": "rule_file",
+      "label": "gates/release.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/gates/release.md",
+      "event": "明确准备发布、部署或上线时",
+      "routingKeywords": [
+        "发布门",
+        "回滚",
+        "上线"
+      ],
+      "negativeGate": "普通commit不自动当发布",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F14",
+      "kind": "rule_file",
+      "label": "gates/task-contract.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/gates/task-contract.md",
+      "event": "冻结范围、检测需求偏差或返工归因时",
+      "routingKeywords": [
+        "Task Contract",
+        "范围偏差",
+        "R1-R6"
+      ],
+      "negativeGate": "不因格式问题自动补规则",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F15",
+      "kind": "rule_file",
+      "label": "quality/question-bank.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/quality/question-bank.md",
+      "event": "确有阻塞决策的信息缺口时",
+      "routingKeywords": [
+        "澄清问题",
+        "缺失信息"
+      ],
+      "negativeGate": "B2优先，只选当前一个关键问题",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F16",
+      "kind": "rule_file",
+      "label": "quality/review-checklist.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/quality/review-checklist.md",
+      "event": "执行已确认范围的代码审查时",
+      "routingKeywords": [
+        "正确性",
+        "外部边界",
+        "多租户"
+      ],
+      "negativeGate": "不把未涉及领域强加到本次审查",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F17",
+      "kind": "rule_file",
+      "label": "quality/checklist.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/quality/checklist.md",
+      "event": "做轻量需求自检时",
+      "routingKeywords": [
+        "需求微清单",
+        "十行自检"
+      ],
+      "negativeGate": "足够时不叠加完整问卷",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F18",
+      "kind": "rule_file",
+      "label": "quality/constitution.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/quality/constitution.md",
+      "event": "对照规范体系或质量门覆盖时",
+      "routingKeywords": [
+        "Harness宪法",
+        "三Gates"
+      ],
+      "negativeGate": "重叠硬闸只核对，不复制第二套",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F19",
+      "kind": "rule_file",
+      "label": "quality/logging-observability.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/quality/logging-observability.md",
+      "event": "设计或修改日志、外部调用可观测性时",
+      "routingKeywords": [
+        "traceId",
+        "结构化日志",
+        "重试"
+      ],
+      "negativeGate": "只读日志排错不自动重设计日志",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F20",
+      "kind": "rule_file",
+      "label": "quality/hooks-standards.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/quality/hooks-standards.md",
+      "event": "明确开发或审查hook脚本时",
+      "routingKeywords": [
+        "PreToolUse",
+        "PostToolUse",
+        "readStdin"
+      ],
+      "negativeGate": "不假定DSH已挂载Claude hooks",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F21",
+      "kind": "rule_file",
+      "label": "languages/csharp.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/languages/csharp.md",
+      "event": "当前实现涉及C#或.NET时",
+      "routingKeywords": [
+        "C#",
+        "async/await",
+        "EF Core"
+      ],
+      "negativeGate": "不从画像推断当前框架版本",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": [
+        "SEM-CSHARP-01"
+      ]
+    },
+    {
+      "id": "F22",
+      "kind": "rule_file",
+      "label": "languages/wpf.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/languages/wpf.md",
+      "event": "当前工件或明确任务是WPF时",
+      "routingKeywords": [
+        "WPF",
+        "Dispatcher",
+        "MVVM"
+      ],
+      "negativeGate": "普通.NET Web不加载WPF细则",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F23",
+      "kind": "rule_file",
+      "label": "languages/vue.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/languages/vue.md",
+      "event": "当前工件是Vue时",
+      "routingKeywords": [
+        "Vue2",
+        "Vue3",
+        ".vue"
+      ],
+      "negativeGate": "按当前版本核对，不把Vue2规范全套给Vue3",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F24",
+      "kind": "rule_file",
+      "label": "languages/javascript.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/languages/javascript.md",
+      "event": "当前修改JS/TS运行代码时",
+      "routingKeywords": [
+        "JavaScript",
+        "TypeScript",
+        "Promise"
+      ],
+      "negativeGate": "hook章节仅hook任务加载",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F25",
+      "kind": "rule_file",
+      "label": "languages/sqlserver.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/languages/sqlserver.md",
+      "event": "已确认目标引擎是SQL Server时",
+      "routingKeywords": [
+        "SQL Server",
+        "T-SQL",
+        "tempdb"
+      ],
+      "negativeGate": "不能因为“数据库迁移”就加载",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": [
+        "SEM-SQL-01"
+      ]
+    },
+    {
+      "id": "F26",
+      "kind": "rule_file",
+      "label": "languages/postgresql.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/languages/postgresql.md",
+      "event": "已确认目标引擎是PostgreSQL时",
+      "routingKeywords": [
+        "PostgreSQL",
+        "psql",
+        "JSONB"
+      ],
+      "negativeGate": "SQLite任务不加载PG规范",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F27",
+      "kind": "rule_file",
+      "label": "frontend/ui-rules.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/frontend/ui-rules.md",
+      "event": "实现或验收应用UI交互时",
+      "routingKeywords": [
+        "表格",
+        "表单",
+        "Dialog",
+        "空态"
+      ],
+      "negativeGate": "方案解释页不是应用UI工件",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F28",
+      "kind": "rule_file",
+      "label": "frontend/design-taste.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/frontend/design-taste.md",
+      "event": "明确讨论界面视觉风格时",
+      "routingKeywords": [
+        "视觉风格",
+        "效果图",
+        "Design Taste"
+      ],
+      "negativeGate": "架构设计不命中",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F29",
+      "kind": "rule_file",
+      "label": "workflows/workflows.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/workflows/workflows.md",
+      "event": "需要核对旧流程映射或迁移路由时",
+      "routingKeywords": [
+        "工作流映射",
+        "阶段转交"
+      ],
+      "negativeGate": "旧skill-router自动hook段不在DSH启用",
+      "approval": "pending",
+      "disposition": "explicit_reference_only",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F30",
+      "kind": "rule_file",
+      "label": "workflows/task-management.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/workflows/task-management.md",
+      "event": "创建、推进或恢复工程任务时",
+      "routingKeywords": [
+        "active.json",
+        "task_id",
+        "阶段"
+      ],
+      "negativeGate": "不复制任务快照到长期记忆",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F31",
+      "kind": "rule_file",
+      "label": "workflows/artifact-management.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/workflows/artifact-management.md",
+      "event": "需要决定需求设计报告的产物位置时",
+      "routingKeywords": [
+        "product_path",
+        "artifact",
+        "交付物"
+      ],
+      "negativeGate": "临时问答不落整套产物",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F32",
+      "kind": "rule_file",
+      "label": "workflows/git.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/workflows/git.md",
+      "event": "准备branch、commit、merge或push时",
+      "routingKeywords": [
+        "分支",
+        "提交信息",
+        "merge"
+      ],
+      "negativeGate": "未获push授权不推送",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F33",
+      "kind": "rule_file",
+      "label": "workflows/knowledge-sync.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/workflows/knowledge-sync.md",
+      "event": "用户要求把已确认结论沉淀为知识时",
+      "routingKeywords": [
+        "知识沉淀",
+        "知识同步"
+      ],
+      "negativeGate": "旧自动日志与旧存储机制先裁决",
+      "approval": "pending",
+      "disposition": "explicit_reference_only",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F34",
+      "kind": "rule_file",
+      "label": "workflows/memory-lifecycle.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/workflows/memory-lifecycle.md",
+      "event": "写改合并或审计Nocturne记忆前",
+      "routingKeywords": [
+        "内容归属",
+        "状态",
+        "disclosure"
+      ],
+      "negativeGate": "采用DSH现用版本，不用旧五轨版本",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F35",
+      "kind": "rule_file",
+      "label": "tools/security.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/tools/security.md",
+      "event": "安全专项审查或边界实现时",
+      "routingKeywords": [
+        "密钥防护",
+        "文件写入",
+        "输入安全"
+      ],
+      "negativeGate": "安全底线始终常驻，不能等读取此文",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F36",
+      "kind": "rule_file",
+      "label": "tools/model-strategy.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/tools/model-strategy.md",
+      "event": "用户明确比较或调整模型策略时",
+      "routingKeywords": [
+        "模型选择",
+        "模型成本"
+      ],
+      "negativeGate": "具体旧模型名先核对时效",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F37",
+      "kind": "rule_file",
+      "label": "tools/rtk.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/tools/rtk.md",
+      "event": "明确使用RTK压缩命令输出时",
+      "routingKeywords": [
+        "rtk",
+        "gain",
+        "proxy"
+      ],
+      "negativeGate": "不假定DSH自动改写命令",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F38",
+      "kind": "rule_file",
+      "label": "token-optimization/overview.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/token-optimization/overview.md",
+      "event": "系统性分析上下文或输出成本时",
+      "routingKeywords": [
+        "token成本",
+        "定位漏斗"
+      ],
+      "negativeGate": "不因每个工程任务都加载全文",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F39",
+      "kind": "rule_file",
+      "label": "code-access/indexing.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/code-access/indexing.md",
+      "event": "需要在CodeGraph、SQLite索引间选择时",
+      "routingKeywords": [
+        "索引分工",
+        "符号索引"
+      ],
+      "negativeGate": "项目无索引不擅自初始化",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F40",
+      "kind": "rule_file",
+      "label": "code-access/write-rules.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/code-access/write-rules.md",
+      "event": "项目已声明加密且准备写源码时",
+      "routingKeywords": [
+        "加密文件写入",
+        "DGClient"
+      ],
+      "negativeGate": "未加密文件不强制套加密写法",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    },
+    {
+      "id": "F41",
+      "kind": "rule_file",
+      "label": "code-access/decision-tree.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/rules/code-access/decision-tree.md",
+      "event": "代码读取方式确有分歧或失败时",
+      "routingKeywords": [
+        "读取决策树",
+        "密文",
+        "索引定位"
+      ],
+      "negativeGate": "已知正确读取方式不重走总流程",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiredDecisionIds": []
+    }
+  ],
+  "knowledgeFiles": [
+    {
+      "id": "K01",
+      "kind": "knowledge_file",
+      "label": "dotnet-async-constraints.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/dotnet-async-constraints.md",
+      "event": "EF Core读取发生空值映射异常时",
+      "routingKeywords": [
+        "SqlNullValueException",
+        "可空属性"
+      ],
+      "negativeGate": "已核对主题；不是所有async问题的通用解法",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K02",
+      "kind": "knowledge_file",
+      "label": "dotnet8-options-pattern.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/dotnet8-options-pattern.md",
+      "event": "排查.NET Options绑定或Startup注入时",
+      "routingKeywords": [
+        "IOptions",
+        "UseStartup",
+        "ActivatorUtilities"
+      ],
+      "negativeGate": "当前源码与框架版本优先",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K03",
+      "kind": "knowledge_file",
+      "label": "dgclient-encryption-mechanism.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/engineering/dgclient-encryption-mechanism.md",
+      "event": "项目明确加密或文件呈现密文时",
+      "routingKeywords": [
+        "DGClient",
+        "加密白名单"
+      ],
+      "negativeGate": "DSH副本存在，使用已核对宿主副本",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K04",
+      "kind": "knowledge_file",
+      "label": "workflow-agent-usage-principles.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/workflow-agent-usage-principles.md",
+      "event": "准备分工或评估子代理是否值得时",
+      "routingKeywords": [
+        "子代理分工",
+        "并行",
+        "独立任务"
+      ],
+      "negativeGate": "不导入固定成本倍率",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K05",
+      "kind": "knowledge_file",
+      "label": "index-design.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/index-design.md",
+      "event": "编写知识入口或压缩索引时",
+      "routingKeywords": [
+        "索引设计",
+        "渐进披露"
+      ],
+      "negativeGate": "文件索引可薄；记忆父节点不能空心",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K06",
+      "kind": "knowledge_file",
+      "label": "ai-coding-articles.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/ai-coding-articles.md",
+      "event": "明确审查研发流程或Harness体系时",
+      "routingKeywords": [
+        "Harness Engineering",
+        "流程工程"
+      ],
+      "negativeGate": "文章自报数据不当本机收益",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K07",
+      "kind": "knowledge_file",
+      "label": "mattpocock-integration.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/mattpocock-integration.md",
+      "event": "明确改进技能编写或反馈循环时",
+      "routingKeywords": [
+        "反馈循环",
+        "结构化假设"
+      ],
+      "negativeGate": "已在skill落地的内容不再复制",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K08",
+      "kind": "knowledge_file",
+      "label": "pdftotext-path.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/pdftotext-path.md",
+      "event": "需要从PDF提取文本且选择工具时",
+      "routingKeywords": [
+        "pdftotext",
+        "PDF提取"
+      ],
+      "negativeGate": "路径先查当前可用性",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": true
+    },
+    {
+      "id": "K09",
+      "kind": "knowledge_file",
+      "label": "opencli-integration.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/opencli-integration.md",
+      "event": "用户明确需要OpenCLI适配器时",
+      "routingKeywords": [
+        "OpenCLI",
+        "adapter"
+      ],
+      "negativeGate": "已安装列表可能漂移；不由本次改技能",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": true
+    },
+    {
+      "id": "K10",
+      "kind": "knowledge_file",
+      "label": "hooks-architecture.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/hooks-architecture.md",
+      "event": "明确设计Prompt/Command Hook时",
+      "routingKeywords": [
+        "Prompt Hook",
+        "Command Hook"
+      ],
+      "negativeGate": "仅原则参考；不声称DSH已启用hooks",
+      "approval": "pending",
+      "disposition": "explicit_reference_only",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K11",
+      "kind": "knowledge_file",
+      "label": "rules-architecture.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/rules-architecture.md",
+      "event": "明确比较宿主规则加载机制时",
+      "routingKeywords": [
+        "CLAUDE.md",
+        "rules扫描"
+      ],
+      "negativeGate": "Claude机制历史参考，不作为DSH规则",
+      "approval": "pending",
+      "disposition": "explicit_reference_only",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K12",
+      "kind": "knowledge_file",
+      "label": "settings-json-paths.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/settings-json-paths.md",
+      "event": "明确维护Claude Code hook路径时",
+      "routingKeywords": [
+        "settings.json",
+        "hook路径"
+      ],
+      "negativeGate": "不因DSH设置问题自动命中",
+      "approval": "pending",
+      "disposition": "explicit_reference_only",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K13",
+      "kind": "knowledge_file",
+      "label": "claude-code-router.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/claude-code-router.md",
+      "event": "明确讨论Claude Code Router时",
+      "routingKeywords": [
+        "Claude Code Router"
+      ],
+      "negativeGate": "先验证产品与版本，不与DSH原生路由混同",
+      "approval": "pending",
+      "disposition": "explicit_reference_only",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K14",
+      "kind": "knowledge_file",
+      "label": "token-optimization-strategies.md",
+      "sourcePath": "C:/Users/admin/.claude/knowledge/engineering/token-optimization-strategies.md",
+      "event": "只作为旧入口重定向",
+      "routingKeywords": [
+        "旧token策略入口"
+      ],
+      "negativeGate": "正文合并到现行overview，不迁第二份",
+      "approval": "pending",
+      "disposition": "redirect_only",
+      "requiresFreshVerification": false
+    },
+    {
+      "id": "K15",
+      "kind": "knowledge_file",
+      "label": "host-facts.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/engineering/host-facts.md",
+      "event": "需要本机代理、工具或版本事实时",
+      "routingKeywords": [
+        "本机台账",
+        "verified_at"
+      ],
+      "negativeGate": "用DSH副本，但冲突项待复核；不复制成永久事实",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": true
+    },
+    {
+      "id": "K16",
+      "kind": "knowledge_file",
+      "label": "dsh-internals.md",
+      "sourcePath": "C:/Users/admin/.dsh/knowledge/engineering/dsh-internals.md",
+      "event": "排查DSH压缩、hooks或内部机制时",
+      "routingKeywords": [
+        "DSH压缩",
+        "spill-policy"
+      ],
+      "negativeGate": "用DSH副本，运行状态需当前证据",
+      "approval": "pending",
+      "disposition": "candidate",
+      "requiresFreshVerification": true
+    }
+  ],
+  "explicitDecisionIds": [
+    "SEM-C2-01",
+    "SEM-C5-01",
+    "SEM-E3-01",
+    "SEM-D7-01",
+    "SEM-CSHARP-01",
+    "SEM-SQL-01"
+  ],
+  "rules": [
+    "routingKeywords是台账/设计字段，不是Nocturne原生字段。",
+    "所有用例为设计，不填passed；正反输入应具体且可复现。",
+    "reference_only不表示启用旧宿主机制；redirect_only不得创建第二份正文。"
+  ]
+}

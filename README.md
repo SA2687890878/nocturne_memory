@@ -790,3 +790,21 @@ docker compose down -v
 Do whatever you want. Just don't let your AI forget you.
 
 > **"A memory without emotional weight is just data. Give it weight."**
+
+---
+
+## 项目文档
+
+完整文档请访问：[项目文档中心](./docs/project/README.md)
+
+| 文档 | 说明 |
+|---|---|
+| [项目概述](./docs/project/README.md) | 项目简介、快速开始与导航 |
+| [架构设计](./docs/project/architecture.md) | 组件、数据流与依赖 |
+| [API 参考](./docs/project/api.md) | REST 路由与 OpenAPI 入口 |
+| [数据库设计](./docs/project/database.md) | 表、关系、索引与迁移 |
+| [部署与运行](./docs/project/deployment.md) | 本地、MCP 与 Docker |
+| [技术栈](./docs/project/tech-stack.md) | 运行时、依赖与工具 |
+| [开发约定](./docs/project/conventions.md) | 代码目录、测试与文档规则 |
+| [记忆系统建设指南](./docs/project/memory-system-guide.md) | 协议边界、社区实践与建设检查表 |
+| [Agent 接入指南](./docs/project/agent-integration.md) | 通用 MCP 与 DSH 接入、验证 |

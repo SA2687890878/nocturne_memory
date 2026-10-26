@@ -1,0 +1,81 @@
+{
+  "generated_at": "2026-10-22T23:02:26+08:00",
+  "old_source_read_only": true,
+  "old_allowed_table": "user_settings only (authorizer enforced)",
+  "old_allowed_keys": {
+    "persona": {
+      "chars": 139,
+      "sha256": "d8019c68ca5de862fc36f815a1afcbe989c53858363a9b8cd09288a5cfb73c85"
+    },
+    "profile": {
+      "chars": 237,
+      "sha256": "13d3dcfd3fcbd641dc5e493c8fa512f0fc79a2c302606668e2d380d0a12cf4f2"
+    },
+    "rules": {
+      "chars": 271,
+      "sha256": "79b9e40c05724ccaa4bb939c48d4ab305204f39cb430b743a048f6dd39250e76"
+    }
+  },
+  "old_rules_count": 6,
+  "source_updated_at": "not provided by old settings",
+  "new_paths": [
+    "agent/source-catalog",
+    "my_user/collaboration-preferences",
+    "my_user/rewrite-consent",
+    "my_user/technical-context",
+    "my_user/visual-output-routing"
+  ],
+  "changed_existing_contents": [
+    "agent/delivery/writing/memory-entry-criteria",
+    "my_user"
+  ],
+  "unchanged_existing_contents": 281,
+  "all_existing_node_uuids_preserved": true,
+  "all_existing_path_edge_rows_unchanged": true,
+  "fts_rows": 288,
+  "document_rows": 288,
+  "path_rows": 288,
+  "fts_drift": 0,
+  "fts_duplicate_paths": 0,
+  "repair_document_coverage_guard_passed": true,
+  "backup_matches_pre_repair_memory_hash": true,
+  "keywords": 354,
+  "bindings": 404,
+  "additional_bindings_removed": 36,
+  "priority_distribution": [
+    [
+      0,
+      2
+    ],
+    [
+      1,
+      105
+    ],
+    [
+      2,
+      181
+    ]
+  ],
+  "health_counts": {
+    "total_paths": 288,
+    "crowded": 0,
+    "orphan_nodes": 0,
+    "edges_without_disclosure": 0,
+    "entries_without_status": 0,
+    "bloat_over_2400": 0,
+    "untriggered_leaves": 40,
+    "stale_over_90_days": 0,
+    "glossary_zero_hit": 0,
+    "glossary_high_frequency": 0,
+    "glossary_overbound": 0,
+    "glossary_generic": 0
+  },
+  "uncovered": [
+    "priority=1 budget overrun (105 > 15)",
+    "project legacy entries semantic/freshness review",
+    "knowledge source bodies beyond routed indexes and 3 analyzed rules",
+    "Claude-Code-specific automatic-loading behavior is not imported",
+    "skill installation not performed"
+  ],
+  "integrity": "ok"
+}

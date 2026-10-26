@@ -1,0 +1,480 @@
+{
+  "generated_at": "2026-10-22T23:39:42+08:00",
+  "invariants": {
+    "memories": {
+      "rows": 293,
+      "unchanged": true,
+      "sha256": "9de7f625ce991b8acea8a20d22260c1262421677fd1771c01e40f9468d59bbab"
+    },
+    "paths": {
+      "rows": 288,
+      "unchanged": true,
+      "sha256": "804b6097fd6756dab905121023b4fd96a558dc3a2da031048a247de44dddefb7"
+    }
+  },
+  "node_uuids_unchanged": true,
+  "edge_nonpriority_fields_unchanged": true,
+  "expected_priority_changes": 100,
+  "actual_priority_changes": 100,
+  "priority_counts": {
+    "0": 2,
+    "1": 5,
+    "2": 281
+  },
+  "retained": [
+    "core://agent/delivery/pipeline/subagent-write-tool-denylist",
+    "core://agent/delivery/process/parallel-subagent-commit-discipline",
+    "core://agent/delivery/process/review-snapshot-mtime",
+    "core://agent/delivery/process/backup-multiproxy-parallel",
+    "core://agent/verification/evidence/source-of-truth-code"
+  ],
+  "keywords": 353,
+  "bindings": 403,
+  "only_removed_binding": "write",
+  "regression_guard": {
+    "same_snapshot_old_audit_issues": 0,
+    "same_snapshot_new_audit_issues": 1,
+    "before_priority1": 105,
+    "production_code_not_mutated": true
+  },
+  "graph_boundary_counts": {
+    "paths_without_edge": 0,
+    "duplicate_path_keys": 0,
+    "nodes_with_multiple_live_revisions": 0,
+    "paths_without_live_memory": 0
+  },
+  "path_primary_key": [
+    "namespace",
+    "domain",
+    "path"
+  ],
+  "operation_postconditions": [
+    {
+      "uri": "core://agent/delivery",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/pipeline/jenkins-console-charset",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/pipeline/jenkins-dir-ant-context",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/pipeline/pptx-rebuild-from-template",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/pipeline/subagent-dispatch-mapping",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/process/acceptance-change-propagation-scan",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/process/backup-before-write",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/process/bailian-server-side-only",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/process/big-change-needs-architecture-review",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/process/memory-hygiene-only-behavioral",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/process/user-intent-todos-not-auto-close",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/writing/daily-report-collection",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/writing/memory-entry-criteria",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/writing/perf-goal-doc-path",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/delivery/writing/perf-goal-writing-style",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/config/agents-md-injection",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/config/compaction-threshold",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/config/dsh-ops-assessment",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/config/model-switch-plugin",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/config/patchreload-live",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/config/profile-and-install-layout",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/config/security-rules-in-agents-md",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/plugins/cli-plugin-no-toggle",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/plugins/harness-reuse-first",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/plugins/node-module-patch-discipline",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/plugins/plugin-eval-criteria",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/plugins/plugin-needs-profile-bundles",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/plugins/skill-install-by-copy",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/plugins/skill-root-priority",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/session/bot-team-config",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/session/dsh-version-gui",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/session/mcp-dual-path",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/session/session-transcript-parsing",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/dsh/session/team-task-path-limit",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/host/repos-and-perf-evidence",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/host/workspaces-overview",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/network/claude-plaintext-credentials",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/network/copilot-billing",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/network/git-github-tls-proxy",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/network/masking-inner-json-secrets",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/network/openrouter-embedding-rejected",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/network/proxy-and-network-truth",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/network/retrieval-priority-cost",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/sandbox/eventlog-denied-in-sandbox",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/sandbox/git-commit-hooks-env",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/sandbox/ops-bash-silent-success",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/sandbox/powershell-encoding",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/sandbox/sandbox-escalation-discipline",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/sandbox/sandbox-pipe-stdio",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/sandbox/sqlserver-encrypt-false",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/sandbox/subagent-cost-dispatch",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/toolchain/chrome-unpacked-extension",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/toolchain/dotnet-test-broken",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/toolchain/model-selection-principles",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/toolchain/net472-build-commands",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/toolchain/opencli-limits",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/toolchain/opencli-not-in-path",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/toolchain/opencli-toolchain",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/toolchain/rejected-tools-list",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/environment/toolchain/toolchain-three-tools",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/evidence/anti-false-green",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/evidence/cross-repo-contract-source",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/evidence/doc-evidence-line-by-line",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/evidence/offline-api-verification",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/evidence/runtime-truth-evidence",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/evidence/service-reachability-probe",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/config-key-not-runtime-evidence",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/false-green-and-startup-config",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/no-self-proving-fixture",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/placeholder-design-four-criteria",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/read-docs-not-readme",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/serilog-capture-test-isolation",
+      "priority": 2
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/source-shape-assertion-weak",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/migration/char-n-trailing-space",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/migration/cross-db-join-key-ilookup",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/migration/ef6-uniquekey-wrap",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/migration/psql-vars-and-pwsh-encoding",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/migration/schema-migration-silent-failures",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/migration/varchar-char-vs-byte",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/pg/cross-env-sync-workflow",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/pg/pg-datacollect-spec",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/pg/pg-sequence-owned-by",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/pg/pg17-migration-replay-order",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/pg/prod-ddl-redline-sh37",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/database/pg/yearly-partition-rebuild",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/frontend",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/frontend/i18n-fallback-bom",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/frontend/vue2-i18n-usage",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/frontend/vue3-elementplus-pitfalls",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/legacy",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/legacy/appconfig-bindingredirect",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/legacy/encrypted-cs-cherry-pick",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/legacy/encrypted-cs-git-blob-3steps",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/legacy/encrypted-repo-git-status",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/legacy/flw-srv-out-asmx",
+      "priority": 2
+    },
+    {
+      "uri": "core://knowledge/legacy/flw-srv-out-defects",
+      "priority": 2
+    }
+  ],
+  "fts_rows": 288,
+  "document_rows": 288,
+  "paths": 288,
+  "audit_counts": {
+    "total_paths": 288,
+    "crowded": 0,
+    "orphan_nodes": 0,
+    "edges_without_disclosure": 0,
+    "entries_without_status": 0,
+    "bloat_over_2400": 0,
+    "untriggered_leaves": 40,
+    "stale_over_90_days": 0,
+    "glossary_zero_hit": 0,
+    "glossary_high_frequency": 0,
+    "glossary_overbound": 0,
+    "glossary_generic": 0,
+    "priority_over_budget": 0,
+    "search_documents_missing": 0,
+    "search_documents_extra": 0,
+    "search_documents_duplicate": 0,
+    "search_documents_drift": 0,
+    "search_fts_missing": 0,
+    "search_fts_extra": 0,
+    "search_fts_duplicate": 0,
+    "search_fts_drift": 0
+  },
+  "integrity": "ok"
+}

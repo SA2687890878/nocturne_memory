@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "requestSha256": "fd7d63a6d16fb4982e558f4a7a5e06d385f4162ee070605933608ae97b721af8",
+  "calls": [
+    {
+      "tool": "read_memory",
+      "arguments": {
+        "uri": "core://agent/source-catalog"
+      },
+      "resultSha256": "f25e3eac8a8e24542f9e36dc38fbfd90af393d788f3f2a67878f9340a040ae8e",
+      "utf8Bytes": 2460
+    },
+    {
+      "tool": "read_memory",
+      "arguments": {
+        "uri": "core://agent/dsh/profile"
+      },
+      "resultSha256": "1a103c1dd4a3e76ecdd74ffe4922226aacad2e8bd5652621d8857a6c474130f0",
+      "utf8Bytes": 934
+    }
+  ],
+  "cases": [
+    {
+      "caseKey": "027c613497b0",
+      "reads": []
+    },
+    {
+      "caseKey": "16cd304f5510",
+      "reads": [
+        {
+          "uri": "core://agent/source-catalog",
+          "text": "============================================================\n\nMEMORY: core://agent/source-catalog\nMemory ID: 34\nOther Aliases: 0\nPriority: 2\nLast Modified: 2026-10-23 14:49:36\nDisclosure: 准备选择或排除规则/知识入口、核对当前模型或宿主配置归属、处理旧入口重定向前\nKeywords: (none)\n\n============================================================\n\n状态: 在用\n\n我按当前工件、阶段和宿主选择权威资料，已知文件直接读必要段；文件选择不明才读规则索引。DSH的rules文件不是自动注入，Claude副本仅作来源比较，不自动同步。C#、WPF、JavaScript分别按实际工件加载；技术画像不决定当前项目。DSH工程INDEX缺失，工程知识使用已核对直接文件或原始工程索引。\n\n按条件选读，不是全部必读：\n- [languages/csharp.md](<C:/Users/admin/.dsh/knowledge/rules/languages/csharp.md>)\n- [languages/wpf.md](<C:/Users/admin/.dsh/knowledge/rules/languages/wpf.md>)\n- [languages/javascript.md](<C:/Users/admin/.dsh/knowledge/rules/languages/javascript.md>)\n- [index-design.md](<C:/Users/admin/.claude/knowledge/engineering/index-design.md>)\n\n检索词: 规则真源；技术域；知识入口\n来源: AGENTS 场景路由；r4权威关系；冻结血缘见G1清单。\n\n资料选择边界（现行B3/B4的具体化）：\n- 只问当前模型名时，核对当前会话元数据或活动配置；未涉及模型策略比较或调整，不读模型策略说明。\n- DSH设置问题不读取仅适用于Claude Code设置或hook的旧资料；仅明确讨论该宿主机制时作只读参考。\n- 旧入口已给出唯一现行目标时，直接读现行目标，不再回读旧入口作佐证；不复制第二份正文。\n\n============================================================\n\nCHILD MEMORIES (Use 'read_memory' with URI to access)\n\n============================================================\n\n- URI: core://agent/source-catalog/code-access  \n  Priority: 2  \n  When to recall: 准备定位符号、追调用链或选择源码读取方式前  \n\n- URI: core://agent/source-catalog/database  \n  Priority: 2  \n  When to recall: 准备设计或执行数据库操作前  \n\n- URI: core://agent/source-catalog/frontend  \n  Priority: 2  \n  When to recall: 准备实现应用UI或核对其交互前  \n\n- URI: core://agent/source-catalog/research  \n  Priority: 2  \n  When to recall: 准备采用时效性、争议性或外部变化结论前  \n"
+        }
+      ]
+    },
+    {
+      "caseKey": "26c06906a7a4",
+      "reads": [
+        {
+          "uri": "core://agent/dsh/profile",
+          "text": "============================================================\n\nMEMORY: core://agent/dsh/profile\nMemory ID: 24\nOther Aliases: 0\nPriority: 2\nLast Modified: 2026-10-23 12:53:18\nDisclosure: 需要确认活动 profile、宿主配置归属时\nKeywords: (none)\n\n============================================================\n\n状态: 在用\n\n确认活动profile时，按原规则给出的profile-selection/state.json真源核对选中值，不把desktop-next.json旧入口当准据。当前profile路径属于需核验事实，不从画像或旧会话推断。只读相关非敏感字段，不转储完整设置、凭据或所有环境变量。\n\n按条件选读，不是全部必读：\n- [claude-code-router.md](<C:/Users/admin/.claude/knowledge/engineering/claude-code-router.md>)（仅明确宿主/历史机制场景参考，不自动采用）\n\n检索词: 活动profile；profile-selection\n来源: AGENTS E1；A4；冻结血缘见G1清单。\n"
+        }
+      ]
+    },
+    {
+      "caseKey": "33cb8b4ff5c0",
+      "reads": [
+        {
+          "uri": "core://agent/source-catalog",
+          "text": "============================================================\n\nMEMORY: core://agent/source-catalog\nMemory ID: 34\nOther Aliases: 0\nPriority: 2\nLast Modified: 2026-10-23 14:49:36\nDisclosure: 准备选择或排除规则/知识入口、核对当前模型或宿主配置归属、处理旧入口重定向前\nKeywords: (none)\n\n============================================================\n\n状态: 在用\n\n我按当前工件、阶段和宿主选择权威资料，已知文件直接读必要段；文件选择不明才读规则索引。DSH的rules文件不是自动注入，Claude副本仅作来源比较，不自动同步。C#、WPF、JavaScript分别按实际工件加载；技术画像不决定当前项目。DSH工程INDEX缺失，工程知识使用已核对直接文件或原始工程索引。\n\n按条件选读，不是全部必读：\n- [languages/csharp.md](<C:/Users/admin/.dsh/knowledge/rules/languages/csharp.md>)\n- [languages/wpf.md](<C:/Users/admin/.dsh/knowledge/rules/languages/wpf.md>)\n- [languages/javascript.md](<C:/Users/admin/.dsh/knowledge/rules/languages/javascript.md>)\n- [index-design.md](<C:/Users/admin/.claude/knowledge/engineering/index-design.md>)\n\n检索词: 规则真源；技术域；知识入口\n来源: AGENTS 场景路由；r4权威关系；冻结血缘见G1清单。\n\n资料选择边界（现行B3/B4的具体化）：\n- 只问当前模型名时，核对当前会话元数据或活动配置；未涉及模型策略比较或调整，不读模型策略说明。\n- DSH设置问题不读取仅适用于Claude Code设置或hook的旧资料；仅明确讨论该宿主机制时作只读参考。\n- 旧入口已给出唯一现行目标时，直接读现行目标，不再回读旧入口作佐证；不复制第二份正文。\n\n============================================================\n\nCHILD MEMORIES (Use 'read_memory' with URI to access)\n\n============================================================\n\n- URI: core://agent/source-catalog/code-access  \n  Priority: 2  \n  When to recall: 准备定位符号、追调用链或选择源码读取方式前  \n\n- URI: core://agent/source-catalog/database  \n  Priority: 2  \n  When to recall: 准备设计或执行数据库操作前  \n\n- URI: core://agent/source-catalog/frontend  \n  Priority: 2  \n  When to recall: 准备实现应用UI或核对其交互前  \n\n- URI: core://agent/source-catalog/research  \n  Priority: 2  \n  When to recall: 准备采用时效性、争议性或外部变化结论前  \n"
+        }
+      ]
+    },
+    {
+      "caseKey": "db28dd434d65",
+      "reads": []
+    },
+    {
+      "caseKey": "e536eee4a558",
+      "reads": [
+        {
+          "uri": "core://agent/source-catalog",
+          "text": "============================================================\n\nMEMORY: core://agent/source-catalog\nMemory ID: 34\nOther Aliases: 0\nPriority: 2\nLast Modified: 2026-10-23 14:49:36\nDisclosure: 准备选择或排除规则/知识入口、核对当前模型或宿主配置归属、处理旧入口重定向前\nKeywords: (none)\n\n============================================================\n\n状态: 在用\n\n我按当前工件、阶段和宿主选择权威资料，已知文件直接读必要段；文件选择不明才读规则索引。DSH的rules文件不是自动注入，Claude副本仅作来源比较，不自动同步。C#、WPF、JavaScript分别按实际工件加载；技术画像不决定当前项目。DSH工程INDEX缺失，工程知识使用已核对直接文件或原始工程索引。\n\n按条件选读，不是全部必读：\n- [languages/csharp.md](<C:/Users/admin/.dsh/knowledge/rules/languages/csharp.md>)\n- [languages/wpf.md](<C:/Users/admin/.dsh/knowledge/rules/languages/wpf.md>)\n- [languages/javascript.md](<C:/Users/admin/.dsh/knowledge/rules/languages/javascript.md>)\n- [index-design.md](<C:/Users/admin/.claude/knowledge/engineering/index-design.md>)\n\n检索词: 规则真源；技术域；知识入口\n来源: AGENTS 场景路由；r4权威关系；冻结血缘见G1清单。\n\n资料选择边界（现行B3/B4的具体化）：\n- 只问当前模型名时，核对当前会话元数据或活动配置；未涉及模型策略比较或调整，不读模型策略说明。\n- DSH设置问题不读取仅适用于Claude Code设置或hook的旧资料；仅明确讨论该宿主机制时作只读参考。\n- 旧入口已给出唯一现行目标时，直接读现行目标，不再回读旧入口作佐证；不复制第二份正文。\n\n============================================================\n\nCHILD MEMORIES (Use 'read_memory' with URI to access)\n\n============================================================\n\n- URI: core://agent/source-catalog/code-access  \n  Priority: 2  \n  When to recall: 准备定位符号、追调用链或选择源码读取方式前  \n\n- URI: core://agent/source-catalog/database  \n  Priority: 2  \n  When to recall: 准备设计或执行数据库操作前  \n\n- URI: core://agent/source-catalog/frontend  \n  Priority: 2  \n  When to recall: 准备实现应用UI或核对其交互前  \n\n- URI: core://agent/source-catalog/research  \n  Priority: 2  \n  When to recall: 准备采用时效性、争议性或外部变化结论前  \n"
+        }
+      ]
+    }
+  ],
+  "scope": "actual isolated MCP reads chosen by a fresh blind agent; cached within six-case batch"
+}

@@ -1,0 +1,29 @@
+{
+  "phase": "green",
+  "executedAt": "2026-10-23T06:14:11.624313+00:00",
+  "runner": "stdlib direct execution of unchanged pytest-style test functions; no conftest loaded",
+  "pytestInstalled": false,
+  "codeSha256": "ce1850ababda92b5415111e737e64f94be04ece18b40c4473693fefa1fcca888",
+  "testsSha256": "0c4aff7f8ef31ea1e812358303ce12b057484122985e434443e4130ec2c8f8e2",
+  "results": [
+    {
+      "name": "test_expand_query_terms_normalizes_paths_and_cjk_content",
+      "status": "PASS"
+    },
+    {
+      "name": "test_build_document_search_terms_includes_path_uri_glossary_and_disclosure",
+      "status": "PASS"
+    },
+    {
+      "name": "test_glossary_indexing_does_not_change_query_segmentation",
+      "status": "PASS"
+    },
+    {
+      "name": "test_glossary_index_is_searchable_from_a_fresh_process",
+      "status": "PASS"
+    }
+  ],
+  "passed": 4,
+  "failed": 0,
+  "scope": "pure tokenizer tests and an in-memory SQLite FTS table; fresh subprocess for cold query; no production or trial DB fixture"
+}

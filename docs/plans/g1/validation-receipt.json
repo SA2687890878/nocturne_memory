@@ -1,0 +1,92 @@
+{
+  "batchId": "g1-20261023-v1",
+  "phase": "G1-preview-only",
+  "validatedAt": "2026-10-23T03:25:29.993Z",
+  "action": "断言manifest/用例/候选正文与70份源文件原始hash；反测坏父路径、正文hash失配、误批准与伪passed均被拒绝。",
+  "result": "PASS",
+  "scope": {
+    "candidateNodes": 33,
+    "memoryTopics": 24,
+    "ruleFiles": 41,
+    "knowledgeFiles": 16,
+    "plannedCases": 174,
+    "sourceFilesUnchanged": 70,
+    "maxDirectChildren": 9,
+    "maxNodeBytes": 1169,
+    "residentCandidateCharacters": 1568
+  },
+  "uncovered": [
+    "真实MCP召回与用例执行",
+    "新库创建与初始化",
+    "ACL/链接/中文路径实际创建",
+    "备份/回退/重启切换",
+    "连接器实际有效配置与旧活动库路径"
+  ],
+  "residual": [
+    "六项SEM及所有内容仍待用户确认",
+    "G2与G3尚未授权",
+    "既有工作记忆.db及伴随文件未读取内容"
+  ],
+  "confidence": "静态结构与来源一致性高；运行效果未验证",
+  "falseClaimsPrevented": [
+    "设计用例全部not_run",
+    "没有实际数据库ID",
+    "导入执行开关为false",
+    "文件hash不是语义核验时间"
+  ],
+  "artifactHashes": [
+    {
+      "path": "docs/plans/g1/source-snapshot.json",
+      "sha256": "c1cfd87bd1c45a9230b4e8188c9027b3d39de1d7289ef3ca34cdee9e892e6e8e",
+      "bytes": 30566
+    },
+    {
+      "path": "docs/plans/g1/route-catalog.json",
+      "sha256": "7f2404cc685f4774f2ca03a2b885d3405ce02c13a69f601771a250f52696348c",
+      "bytes": 39945
+    },
+    {
+      "path": "docs/plans/g1/migration-manifest.json",
+      "sha256": "646dd1f8308549d9861d854f7b5ab521e4f7383de1bd1d3615ad633e630f2484",
+      "bytes": 90064
+    },
+    {
+      "path": "docs/plans/g1/content-preview.md",
+      "sha256": "b951f9dd7b4c39063bd0bde06b0314be4e5b25a651c4781106af800d67fb5eb0",
+      "bytes": 34731
+    },
+    {
+      "path": "docs/plans/g1/semantic-diff.md",
+      "sha256": "6af33225d07bfc314547117cb177073df9ae08d0c8c878c4e92fbf40ecdc3991",
+      "bytes": 70224
+    },
+    {
+      "path": "docs/plans/g1/target-binding.md",
+      "sha256": "eb18e45ce43e8378ad2b95027578dadcf3a93c2aea40b4ff0225c129b7f76790",
+      "bytes": 2724
+    },
+    {
+      "path": "docs/plans/g1/routing-cases.json",
+      "sha256": "9f1d42750973aef7f9803b78e7a2e29dbc299908b95e8e5bac8d85bd7fd58644",
+      "bytes": 142937
+    },
+    {
+      "path": "docs/plans/g1/routing-cases.md",
+      "sha256": "d2566b97466d3d6f3d5f414d2091c32ca4cc15d27ab6326d177020d9ab98380d",
+      "bytes": 57881
+    },
+    {
+      "path": "docs/plans/g1/g1-preview.md",
+      "sha256": "08f313f9cab69454c7004c89308b1c49d5b0de158bd6429d03060ba4e6d03ed3",
+      "bytes": 12818
+    }
+  ],
+  "html": {
+    "path": "E:/myPrivateSpace/answer-me/pages/G1迁移预览-内容-语义-路径与用例-20261023-112526.html",
+    "renderExitCode": 0,
+    "styleWarnings": 0,
+    "browserVisualInspection": "not_run",
+    "sourceQuote": "semantic-diff.md lines110-149，40行G1常驻候选"
+  }
+}
+

@@ -1,0 +1,107 @@
+{
+  "scope": "fresh-agent assisted six-case scenario recheck; not daily E2E",
+  "fileEvidence": [
+    {
+      "path": "C:/Users/admin/.claude/knowledge/engineering/settings-json-paths.md",
+      "readMethod": "read",
+      "note": "第1-32行（全文）；第8行适用边界：本文属Claude Code机制，DSH不读这些槽位、当前零hook挂载；第20-26行给出hook路径统一正斜杠写法（反斜杠被吞导致MODULE_NOT_FOUND）"
+    },
+    {
+      "path": "C:/Users/admin/.dsh/knowledge/rules/token-optimization/overview.md",
+      "readMethod": "read",
+      "note": "第1-45行（全文45行）；第3行声明合并自tools.md+thinking.md+token-optimization-strategies.md，为单一真源；第26-30行为输出压缩条目（DSH侧RTK不自动，需手写rtk）；全文无“压缩比例”数值；第39-45行仅模型选择参考，无具体成本数据"
+    },
+    {
+      "path": "C:/Users/admin/.dsh/knowledge/rules/tools/model-strategy.md",
+      "readMethod": "read",
+      "note": "读取第1-21行（全文21行）；第2-8行frontmatter+适用边界明示属Claude Code机制、DSH不读这些槽位且当前零hook；第13-21行为subagent/prompt hook的model字段参考，使用opus/sonnet旧模型名，不含成本数据，不能当DSH现行模型口径"
+    }
+  ],
+  "cases": [
+    {
+      "caseKey": "027c613497b0",
+      "readUris": [],
+      "readFiles": [
+        "C:/Users/admin/.claude/knowledge/engineering/settings-json-paths.md"
+      ],
+      "mode": "reference_only",
+      "actions": [
+        "read_rules",
+        "answer_only"
+      ],
+      "decision": "用户明确在问Claude Code hook的settings.json摆放与路径写法，属该宿主机制，可按explicit_reference_only只读参考：settings.json中hook命令的路径统一用正斜杠（如 node C:/Users/admin/.claude/hooks/secret-guard.js），反斜杠会被shell当转义吞掉导致MODULE_NOT_FOUND；同时显式声明适用边界——DSH不读这些槽位、当前零hook挂载，此结论不能当DSH配置规则用。只解释不写文件。本场景不读任何记忆节点，已知文件直接选。"
+    },
+    {
+      "caseKey": "16cd304f5510",
+      "readUris": [
+        "core://agent/source-catalog"
+      ],
+      "readFiles": [
+        "C:/Users/admin/.dsh/knowledge/rules/token-optimization/overview.md"
+      ],
+      "mode": "redirect",
+      "actions": [
+        "follow_redirect",
+        "block_write"
+      ],
+      "decision": "拒绝“整段迁移、保持两份一致”：旧token策略文档为redirect_only，唯一现行目标是 knowledge/rules/token-optimization/overview.md（第3行自述单一真源，已合并旧三份）。按source-catalog边界“旧入口已给出唯一现行目标时直接读现行目标，不回读旧入口作佐证；不复制第二份正文”，改为在现行overview内按需补充/修订，不新建第二份正文、不做旧文整段搬运；写入前另需用户明确写入意图。"
+    },
+    {
+      "caseKey": "26c06906a7a4",
+      "readUris": [
+        "core://agent/dsh/profile"
+      ],
+      "readFiles": [],
+      "mode": "route_to_node",
+      "actions": [
+        "read_rules",
+        "verify_identity",
+        "answer_only"
+      ],
+      "decision": "不套用Claude Code的settings.json路径结论（source-catalog边界：DSH设置问题不读仅适用于Claude Code设置或hook的旧资料）。按 core://agent/dsh/profile 的方向，本场景会先请求核对活动profile真源 %APPDATA%\\DSH Desktop\\profile-selection\\state.json 的非敏感选中值（只读，不转储完整设置或凭据），desktop-next.json旧入口不作准据，再判断是profile选错、配置槽位不对还是路径写错。以上均为待执行步骤，不代表已核对profile或已查看实际设置。"
+    },
+    {
+      "caseKey": "33cb8b4ff5c0",
+      "readUris": [
+        "core://agent/source-catalog"
+      ],
+      "readFiles": [
+        "C:/Users/admin/.dsh/knowledge/rules/token-optimization/overview.md"
+      ],
+      "mode": "redirect",
+      "actions": [
+        "follow_redirect",
+        "answer_only"
+      ],
+      "decision": "旧入口只重定向，不回读旧文档作佐证，直接按现行overview回答：现行版本没有“压缩比例”这一数值；输出压缩的现行说法是——构建/测试只看ERROR/FAIL，日志用ctx_execute+fs过滤，RTK压缩在Claude Code侧由hook自动、DSH侧不会自动需手写 rtk <cmd>（绕过用 rtk proxy）。不把旧文档的数字当现行结论，也不编造比例。"
+    },
+    {
+      "caseKey": "db28dd434d65",
+      "readUris": [],
+      "readFiles": [
+        "C:/Users/admin/.dsh/knowledge/rules/tools/model-strategy.md"
+      ],
+      "mode": "route_to_file",
+      "actions": [
+        "read_rules",
+        "ask_one_question",
+        "answer_only"
+      ],
+      "decision": "实读该文件后确认：它只是Claude Code机制的旧参考（第8行边界：DSH不读这些槽位、零hook；第13-21行仍是opus/sonnet旧名），不能作为DSH现行模型策略。因此本场景按小步处理：成本对比必须有可核验数据（官方价目或本次实测），不沿用旧模型名与旧倍率、不凭画像给数；先确认“两个模型”具体是哪两个及长上下文任务口径，列取舍后交用户决定是否调整策略，未获确认不擅自改配置。"
+    },
+    {
+      "caseKey": "e536eee4a558",
+      "readUris": [
+        "core://agent/source-catalog"
+      ],
+      "readFiles": [],
+      "mode": "route_to_node",
+      "actions": [
+        "read_rules",
+        "verify_identity",
+        "answer_only"
+      ],
+      "decision": "两个选项都不是现行答案，前提里的模型名已过时。按source-catalog边界第1条：只问当前模型名时，本场景会核对当前会话元数据或活动配置的非敏感选中值，不读模型策略说明、不凭旧文档或画像推断；在未实际读到该配置前不报具体默认模型名，只说明模型名随活动配置变化、需现场核对。以上为待执行动作，未声称已核对。"
+    }
+  ]
+}

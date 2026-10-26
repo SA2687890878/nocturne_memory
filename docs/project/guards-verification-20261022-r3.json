@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-10-22T15:44:31.712Z",
+  "frozen_files": [
+    {
+      "path": "backend/scripts/audit_memory.py",
+      "sha256": "207225db01344a42e65038ae2fbcadbcee70a062540db9ecef4a9b95facb50cc",
+      "lines": 373
+    },
+    {
+      "path": "backend/tests/scripts/test_audit_memory.py",
+      "sha256": "45ba91c75b541d4c41acd307a5e0220d0a64b334b6ab930bd31b0d06b5b21cd8",
+      "lines": 403
+    }
+  ],
+  "commands": [
+    {
+      "command": "D:/Python/python.exe -B -X utf8 backend/tests/scripts/test_audit_memory.py",
+      "exit_code": 0,
+      "tests": 34
+    },
+    {
+      "command": "D:/Python/python.exe -B -X utf8 backend/scripts/audit_memory.py",
+      "exit_code": 0,
+      "result": "health"
+    },
+    {
+      "command": "D:/Python/python.exe -B -X utf8 backups/verify-priority-20261022-r3.py",
+      "exit_code": 0,
+      "result": "all fixed invariants and old/new same-snapshot comparison passed"
+    }
+  ],
+  "unchanged_legacy_functions": [
+    "keyword_quality",
+    "issue_count",
+    "db_path",
+    "boot_paths",
+    "bloat_limit"
+  ],
+  "original_8_test_class_ast_unchanged": true,
+  "new_check_keys": [
+    "priority_over_budget",
+    "search_documents_missing",
+    "search_documents_extra",
+    "search_documents_duplicate",
+    "search_documents_drift",
+    "search_fts_missing",
+    "search_fts_extra",
+    "search_fts_duplicate",
+    "search_fts_drift"
+  ],
+  "privacy": "drift entries contain uri and field only, never cached field values",
+  "graph_boundary_counts": {
+    "paths_without_edge": 0,
+    "duplicate_path_keys": 0,
+    "nodes_with_multiple_live_revisions": 0,
+    "paths_without_live_memory": 0
+  },
+  "path_primary_key": [
+    "namespace",
+    "domain",
+    "path"
+  ],
+  "scope_note": "priority budget counts empty-namespace paths; derived/FTS checks cover stored namespaces, current library has only empty namespace; invalid graph repair and tokenizer regeneration are not covered"
+}

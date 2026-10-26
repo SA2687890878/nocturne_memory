@@ -1,0 +1,65 @@
+{
+  "blind": true,
+  "cases": [
+    {
+      "caseKey": "027c613497b0",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "claude-settings",
+        "engine": "none",
+        "intent": "维护 Claude hook 路径配置"
+      },
+      "input": "明确要维护 Claude Code 的 hook 路径配置，settings.json 该放哪、路径怎么写？"
+    },
+    {
+      "caseKey": "16cd304f5510",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "token-policy",
+        "engine": "none",
+        "intent": "要求整段迁移旧正文"
+      },
+      "input": "把旧 token 策略那份正文整段迁到新文档里，保持两份内容一致。"
+    },
+    {
+      "caseKey": "26c06906a7a4",
+      "preconditions": {
+        "stage": "debugging",
+        "artifactType": "dsh-profile-config",
+        "engine": "none",
+        "intent": "DSH 设置不生效"
+      },
+      "input": "DSH 的设置改了不生效，是不是 settings.json 路径写错了？"
+    },
+    {
+      "caseKey": "33cb8b4ff5c0",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "token-policy",
+        "engine": "none",
+        "intent": "旧 token 策略入口的压缩比例"
+      },
+      "input": "旧 token 策略文档里说的那个压缩比例到底是多少？直接给我现行版本的说法。"
+    },
+    {
+      "caseKey": "db28dd434d65",
+      "preconditions": {
+        "stage": "planning",
+        "artifactType": "model-policy",
+        "engine": "none",
+        "intent": "比较模型成本并调整策略"
+      },
+      "input": "对比一下两个模型在长上下文任务上的成本，帮我调一下模型策略。"
+    },
+    {
+      "caseKey": "e536eee4a558",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "问当前默认模型名"
+      },
+      "input": "现在默认用的是 claude-3.5 还是 claude-4？"
+    }
+  ]
+}

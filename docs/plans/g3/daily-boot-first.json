@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-23T08:05:48.958Z",
+  "status": "PASS",
+  "connector": "json-nocturne_memory",
+  "scope": "actual currently exposed daily MCP tool, not isolated child",
+  "loaded": "2/2",
+  "utf8Bytes": 4764,
+  "bodyContainsNewG1Roots": true
+}

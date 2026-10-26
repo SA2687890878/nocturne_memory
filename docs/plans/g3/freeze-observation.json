@@ -1,0 +1,8 @@
+{
+  "observedAt": "2026-10-23T08:02:08.287Z",
+  "connectorKey": "json-nocturne_memory",
+  "connectorEnabled": false,
+  "relatedProcessCount": 0,
+  "originalPid": 19492,
+  "scope": "observed local Nocturne python/uvicorn processes; no claim of whole-OS exclusive lock"
+}

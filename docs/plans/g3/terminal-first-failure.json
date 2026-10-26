@@ -1,0 +1,10 @@
+{
+  "status": "FAILED",
+  "command": "D:/Python/python.exe -X utf8 -B docs/plans/g3/verify_cutover_state.py --final",
+  "exitCode": 1,
+  "error": "Non-statistical table drift",
+  "classifiedAs": "verifier expectation defect: existing read_memory logs accesses in a separate table",
+  "readOnlyDiagnosis": "terminal-diff-diagnostic.json",
+  "notAnApplicationDataLossFinding": true,
+  "priorOutputPreservedInSession": true
+}

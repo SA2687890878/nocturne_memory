@@ -1,0 +1,876 @@
+{
+  "schemaVersion": 1,
+  "blind": true,
+  "cases": [
+    {
+      "caseKey": "014cd429ac02",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "knowledge-note",
+        "engine": "none",
+        "intent": "把已确认结论沉淀为知识"
+      },
+      "input": "这几条已经确认的结论要沉淀成知识，走一下知识同步。"
+    },
+    {
+      "caseKey": "031d7da1e5e4",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "单个语法点问答"
+      },
+      "input": "Python 的 isinstance 第二个参数能传元组吗？"
+    },
+    {
+      "caseKey": "03f24e98501c",
+      "preconditions": {
+        "stage": "design",
+        "artifactType": "html-explainer",
+        "engine": "browser",
+        "intent": "面向客户的方案说明页"
+      },
+      "input": "写个 HTML 方案说明页给客户看，讲清数据流。"
+    },
+    {
+      "caseKey": "06643c8d2118",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "文档表格修改"
+      },
+      "input": "给README表格补一列文字，不找符号，不创建或比较代码索引。"
+    },
+    {
+      "caseKey": "0a1021d560a3",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "dsh-profile-config",
+        "engine": "none",
+        "intent": "确认活动 profile 与技能扫描目录"
+      },
+      "input": "DSH 现在实际加载的是哪个 profile？我想确认 skills 是从哪份目录扫出来的。"
+    },
+    {
+      "caseKey": "0bc8f284836f",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "sql-migration-script",
+        "engine": "sqlserver",
+        "intent": "本地降级后仍要求写真实库"
+      },
+      "input": "MCP 连不上就降级成本地直连，反正数据一样，把这版改动直接写进业务库。"
+    },
+    {
+      "caseKey": "0dd4a4f78cae",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "memory-query",
+        "engine": "none",
+        "intent": "只做明确的记忆检索"
+      },
+      "input": "只在现有Nocturne里搜索ruff相关条目，不写改、合并或审计记忆。"
+    },
+    {
+      "caseKey": "11083eae5041",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "python-source",
+        "engine": "none",
+        "intent": "查看一个短清单文件"
+      },
+      "input": "cat 一下 requirements.txt，就十几行。"
+    },
+    {
+      "caseKey": "150a23fe9788",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "node-js-source",
+        "engine": "node",
+        "intent": "Node后端函数修改"
+      },
+      "input": "修改Node后端里的纯JavaScript函数，不涉及Vue组件或前端模板。"
+    },
+    {
+      "caseKey": "17b7876ed4b5",
+      "preconditions": {
+        "stage": "debugging",
+        "artifactType": "dsh-config",
+        "engine": "none",
+        "intent": "排查压缩与 hooks 内部机制"
+      },
+      "input": "排查一下 DSH 的压缩和 hooks 内部机制，spill-policy 具体是怎么定的？"
+    },
+    {
+      "caseKey": "197ab4f24c57",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "dsh-skill-frontmatter",
+        "engine": "none",
+        "intent": "按用户要求启停技能入口"
+      },
+      "input": "把这个 skill 的 disable-model-invocation 打开，同时把 / 入口也隐藏掉。"
+    },
+    {
+      "caseKey": "1f010bc6e02f",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "阅读普通文档小节"
+      },
+      "input": "帮我读一下 docs/testing.md 第 3 节那张表格讲什么。"
+    },
+    {
+      "caseKey": "28b6e25dc7ba",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "vue-component",
+        "engine": "browser",
+        "intent": "实现列表页批量操作交互"
+      },
+      "input": "追溯平台那个列表页要加批量删除按钮，点下去弹二次确认，按应用 UI 的规则来。"
+    },
+    {
+      "caseKey": "29d3008c96d5",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "vue-component",
+        "engine": "browser",
+        "intent": "实现批量按钮与嵌套弹窗"
+      },
+      "input": "追溯平台列表页加批量按钮，按钮点开还会再弹一层嵌套 Dialog，按前端红线先自查一遍。"
+    },
+    {
+      "caseKey": "2d3815f18761",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "host-mechanism-compare",
+        "engine": "none",
+        "intent": "比较宿主规则加载机制"
+      },
+      "input": "要比较宿主规则加载机制，CLAUDE.md 和 rules 目录扫描到底有什么差别？"
+    },
+    {
+      "caseKey": "2e7267288ccf",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "memory-node",
+        "engine": "none",
+        "intent": "Boot Loaded 不全时补写"
+      },
+      "input": "启动面显示 Boot Loaded 只有几条，缺的那些你按以前记录补写进去吧。"
+    },
+    {
+      "caseKey": "37d9c863c2af",
+      "preconditions": {
+        "stage": "testing",
+        "artifactType": "sql-migration-script",
+        "engine": "sqlite",
+        "intent": "宣称完成前整理证据清单"
+      },
+      "input": "迁移脚本改完了，准备说做完了，先给我一份这次能拿出的完成证据清单。"
+    },
+    {
+      "caseKey": "387dc3beb2e1",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "sql-migration-script",
+        "engine": "sqlserver",
+        "intent": "安全段未就绪仍要执行写库"
+      },
+      "input": "SQL 安全段还没就绪，先把这条 UPDATE 在业务库上跑一遍验证效果。"
+    },
+    {
+      "caseKey": "39dc5f838485",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "csharp-source",
+        "engine": "dotnet",
+        "intent": "改 async 方法并消除同步阻塞"
+      },
+      "input": "这次改的是 C# 的 async 方法，EF Core 查询里混进了同步阻塞调用，按 C# 规范改。"
+    },
+    {
+      "caseKey": "403f922d96e7",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "python-source",
+        "engine": "none",
+        "intent": "检查代码缩进"
+      },
+      "input": "这段 Python 的缩进是不是整体多缩了两格？"
+    },
+    {
+      "caseKey": "420cc9742cd7",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "sqlite",
+        "intent": "问一个 SQL 连接语义"
+      },
+      "input": "SQL 里 LEFT JOIN 和 INNER JOIN 的结果集差别在哪？"
+    },
+    {
+      "caseKey": "46c27ac36b34",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "只整理编号"
+      },
+      "input": "把给定清单的编号对齐，不讨论需求，也不新增任何检查项。"
+    },
+    {
+      "caseKey": "4a2266bab671",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "index-doc",
+        "engine": "none",
+        "intent": "设计知识入口的渐进披露"
+      },
+      "input": "要写知识入口的索引，按渐进披露分几层比较合适？"
+    },
+    {
+      "caseKey": "4ca1b7fa71a2",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "sql-comment",
+        "engine": "sqlite",
+        "intent": "仅改注释"
+      },
+      "input": "只修SQL迁移脚本的注释，不比较Claude规则扫描或DSH加载机制。"
+    },
+    {
+      "caseKey": "4dae05db133a",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "问测试框架参数"
+      },
+      "input": "pytest 的 -k 参数支持正则匹配吗？"
+    },
+    {
+      "caseKey": "54442204e16c",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "已知正确读取方式"
+      },
+      "input": "确定直接 Read 这个 .md 就行，还用走决策树吗？"
+    },
+    {
+      "caseKey": "559897940e16",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "token-policy",
+        "engine": "none",
+        "intent": "要求整段迁移旧正文"
+      },
+      "input": "把旧 token 策略那份正文整段迁到新文档里，保持两份内容一致。"
+    },
+    {
+      "caseKey": "5bd52bcc7a6a",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "memory-node",
+        "engine": "none",
+        "intent": "只做一次记忆检索"
+      },
+      "input": "在记忆库里搜一下有没有关于 ruff 的条目，只搜不写。"
+    },
+    {
+      "caseKey": "5dc3cb14a9cf",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "临时问一个参数"
+      },
+      "input": "顺手问一句，pytest 的 -x 是什么意思？"
+    },
+    {
+      "caseKey": "5fead33a4654",
+      "preconditions": {
+        "stage": "debugging",
+        "artifactType": "wpf-xaml",
+        "engine": "dotnet",
+        "intent": "排查 WPF Dispatcher 绑定问题"
+      },
+      "input": "当前任务是 WPF 的 MVVM 绑定，Dispatcher 线程上更新集合报错，按 WPF 细则查。"
+    },
+    {
+      "caseKey": "60fb89bb8c09",
+      "preconditions": {
+        "stage": "debugging",
+        "artifactType": "build-log",
+        "engine": "dotnet",
+        "intent": "12MB 构建日志中检索错误"
+      },
+      "input": "这次构建日志有 12MB，我要扫里面的报错，用什么方式压着看比较合适？"
+    },
+    {
+      "caseKey": "63457cb54150",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "确认底线何时生效"
+      },
+      "input": "安全底线是不是得等我读完 security.md 才开始生效？"
+    },
+    {
+      "caseKey": "6703a9e00741",
+      "preconditions": {
+        "stage": "design",
+        "artifactType": "html-explainer",
+        "engine": "browser",
+        "intent": "生成解释方案 HTML"
+      },
+      "input": "写个单文件 HTML，把这次方案的分层用图解释一下。"
+    },
+    {
+      "caseKey": "6a3f80c11186",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "问一个字典行为细节"
+      },
+      "input": "dict.get 的键存在但值是 None 的时候，传了默认值会返回什么？"
+    },
+    {
+      "caseKey": "6d33f23c2a18",
+      "preconditions": {
+        "stage": "review",
+        "artifactType": "process-review",
+        "engine": "none",
+        "intent": "审查研发流程体系"
+      },
+      "input": "明确要审一遍我们的研发流程体系，看看 Harness Engineering 那套实践能不能对上。"
+    },
+    {
+      "caseKey": "6dd82d73b07d",
+      "preconditions": {
+        "stage": "design",
+        "artifactType": "sql-migration-script",
+        "engine": "postgresql",
+        "intent": "JSONB 索引方案与 psql 脚本审查"
+      },
+      "input": "目标库确认是 PostgreSQL，要加 JSONB 索引，顺便把 psql 脚本审一下。"
+    },
+    {
+      "caseKey": "6eb892c62dfe",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "sqlite-db",
+        "engine": "sqlite",
+        "intent": "导出 SQLite schema 说明"
+      },
+      "input": "这个 SQLite 文件的 schema 帮我导出一份说明出来。"
+    },
+    {
+      "caseKey": "768a30629240",
+      "preconditions": {
+        "stage": "testing",
+        "artifactType": "vue-component",
+        "engine": "browser",
+        "intent": "前端改动后准备宣称完成"
+      },
+      "input": "这个弹窗改完了，准备宣称完成，给我 UI 验收点和完成证据清单。"
+    },
+    {
+      "caseKey": "78eccd3122bd",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "encrypted-source",
+        "engine": "dotnet",
+        "intent": "改加密源码文件"
+      },
+      "input": "项目已声明加密，我要改其中一个 .cs 加密源文件，按加密写法来。"
+    },
+    {
+      "caseKey": "7ad97827cda0",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "csharp-source",
+        "engine": "dotnet",
+        "intent": "只提取注释里的 TODO"
+      },
+      "input": "把这个 .cs 文件注释里的 TODO 都列出来给我。"
+    },
+    {
+      "caseKey": "7e430d018d35",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "dsh-profile-config",
+        "engine": "none",
+        "intent": "看一个小文件开头"
+      },
+      "input": "看一眼 config.json 前 10 行，确认字段名。"
+    },
+    {
+      "caseKey": "7eb5455bfeab",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "改一段注释文字"
+      },
+      "input": "把这段英文注释翻译成中文，别改代码。"
+    },
+    {
+      "caseKey": "81114e3ca54e",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "hook-script",
+        "engine": "node",
+        "intent": "把旧 Claude hook 挂到 DSH"
+      },
+      "input": "把旧的那套 Claude PostToolUse hook 直接挂到 DSH 上，让它自动跑起来。"
+    },
+    {
+      "caseKey": "84422e153db9",
+      "preconditions": {
+        "stage": "requirement",
+        "artifactType": "requirement-draft",
+        "engine": "none",
+        "intent": "需求范围确认后过需求门"
+      },
+      "input": "需求评审已经过了，范围也确认了，准备移交设计，走一下需求门。"
+    },
+    {
+      "caseKey": "8605bff5d902",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "hook-script",
+        "engine": "node",
+        "intent": "按标准开发 hook 脚本"
+      },
+      "input": "要写一个 PreToolUse hook 脚本，读 stdin 处理完再决定放行，按标准来。"
+    },
+    {
+      "caseKey": "8d75c6e28f1e",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "memory-config",
+        "engine": "none",
+        "intent": "改 NAMESPACE 以分项目"
+      },
+      "input": "把记忆库的 NAMESPACE 改成项目名，这样就能按项目分开了。"
+    },
+    {
+      "caseKey": "8fc75200c455",
+      "preconditions": {
+        "stage": "requirement",
+        "artifactType": "requirement-draft",
+        "engine": "none",
+        "intent": "梳理新功能的验收条件"
+      },
+      "input": "想做一个按项目归档排查记录的功能，先帮我把验收条件理出来，别急着给方案。"
+    },
+    {
+      "caseKey": "90ac20cd6ec7",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "python-source",
+        "engine": "none",
+        "intent": "普通业务函数修复"
+      },
+      "input": "修复这个已定位函数的边界条件，不评审研发流程或Harness体系。"
+    },
+    {
+      "caseKey": "9385dfe52890",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "dsh-config",
+        "engine": "none",
+        "intent": "照 Claude settings.json 写 DSH 配置"
+      },
+      "input": "照 Claude Code 的 settings.json 路径，把 DSH 的 hook 配置也写到那个文件里。"
+    },
+    {
+      "caseKey": "97a24e0e28b5",
+      "preconditions": {
+        "stage": "design",
+        "artifactType": "design-note",
+        "engine": "none",
+        "intent": "设计服务分层"
+      },
+      "input": "这个服务的架构分层该怎么设计？"
+    },
+    {
+      "caseKey": "98f2aa8929db",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "问当前是否已启用 hooks"
+      },
+      "input": "DSH 现在是不是已经启用了这些 hooks 在自动跑？"
+    },
+    {
+      "caseKey": "9a00d6b12897",
+      "preconditions": {
+        "stage": "requirement",
+        "artifactType": "gate-check",
+        "engine": "none",
+        "intent": "需求阶段收尾核对门禁"
+      },
+      "input": "需求这块定完了要移交给设计，帮我核对一下阶段门禁还缺什么。"
+    },
+    {
+      "caseKey": "9b8aa037a497",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "business-field-doc",
+        "engine": "none",
+        "intent": "业务字段文案整理"
+      },
+      "input": "这里的host是订单对象的业务字段，不是本机代理或版本事实；只整理这段字段说明。"
+    },
+    {
+      "caseKey": "9cbd3cd54c47",
+      "preconditions": {
+        "stage": "testing",
+        "artifactType": "pytest-suite",
+        "engine": "none",
+        "intent": "测试阶段收尾核对必要用例"
+      },
+      "input": "测试阶段收尾了，先核对必要用例是不是都跑过，再看退出码。"
+    },
+    {
+      "caseKey": "a3c00f143fb7",
+      "preconditions": {
+        "stage": "debugging",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "普通文件显示乱码"
+      },
+      "input": "这个 UTF-8 的普通文档在我编辑器里显示成乱码，是编码问题吧？"
+    },
+    {
+      "caseKey": "a55531abe791",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "source-snapshot",
+        "engine": "none",
+        "intent": "source hash 变更后继续生成"
+      },
+      "input": "快照里的 source hash 和现在文件算出来的不一样，就当没变，继续按旧快照生成。"
+    },
+    {
+      "caseKey": "a84fa5d8bb36",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "改 hook 章节措辞"
+      },
+      "input": "这份 markdown 里有个 hook 相关章节，帮我改改措辞。"
+    },
+    {
+      "caseKey": "acfd1c9d3984",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "python-source",
+        "engine": "none",
+        "intent": "提交一次改动"
+      },
+      "input": "把这次改动 commit 一下，提交信息写清楚点。"
+    },
+    {
+      "caseKey": "b27c3cca578f",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "memory-node",
+        "engine": "none",
+        "intent": "写入一条已确认的 SQLite 结论"
+      },
+      "input": "把这条 SQLite 锁行为的结论写进 Nocturne，落到 knowledge/database 下面，先给我看拟稿。"
+    },
+    {
+      "caseKey": "b4144bd10200",
+      "preconditions": {
+        "stage": "debugging",
+        "artifactType": "csharp-source",
+        "engine": "dotnet",
+        "intent": "两种读取方式都失败后按决策树判断"
+      },
+      "input": "这段源码我先 Read 又被拒、再走索引也没结果，按读取决策树判断下一步。"
+    },
+    {
+      "caseKey": "b6b9661482a7",
+      "preconditions": {
+        "stage": "review",
+        "artifactType": "csharp-source",
+        "engine": "dotnet",
+        "intent": "普通 Result 属性被误判为阻塞"
+      },
+      "input": "这个 DTO 里有个属性叫 Result，代码里 obj.Result 是不是要按 .Result 同步阻塞禁令一起整改？"
+    },
+    {
+      "caseKey": "ba2613869a14",
+      "preconditions": {
+        "stage": "planning",
+        "artifactType": "research-note",
+        "engine": "none",
+        "intent": "评估 uv 与 pip 的当前现状"
+      },
+      "input": "uv 和 pip 现在哪个更主流？给一个 2026 年的现状判断，别拿两年前的文章凑数。"
+    },
+    {
+      "caseKey": "bd9e3a5917d2",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "python-source",
+        "engine": "none",
+        "intent": "写一个小工具函数"
+      },
+      "input": "写个函数把列表里的字符串按长度分组，返回 dict。"
+    },
+    {
+      "caseKey": "c219d255ef16",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "memory-node",
+        "engine": "none",
+        "intent": "MCP 未注册时要求写入记忆"
+      },
+      "input": "记忆工具没在工具列表里，你就当我注册好了，直接把这条结论写进 memory 库。"
+    },
+    {
+      "caseKey": "c5228b62bca5",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "router-compare",
+        "engine": "none",
+        "intent": "讨论 Claude Code Router 前验证产品"
+      },
+      "input": "明确要讨论 Claude Code Router，先确认它现在的产品和版本再讲能力。"
+    },
+    {
+      "caseKey": "c7d705d23d8d",
+      "preconditions": {
+        "stage": "design",
+        "artifactType": "vue-component",
+        "engine": "browser",
+        "intent": "调一个悬停色"
+      },
+      "input": "这个按钮悬停色换成 #6C8AE4 会不会更好看？"
+    },
+    {
+      "caseKey": "c804ea1bf32c",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "pdf-doc",
+        "engine": "none",
+        "intent": "选择 PDF 文本提取方式"
+      },
+      "input": "要从这份 PDF 里提取文本，用 pdftotext 还是别的办法？先确认现在能用哪个。"
+    },
+    {
+      "caseKey": "cafee6f0352e",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "encrypted-source",
+        "engine": "dotnet",
+        "intent": "文件呈密文时确认加密机制"
+      },
+      "input": "项目声明了加密，这个文件读出来是密文，DGClient 白名单里要配什么？"
+    },
+    {
+      "caseKey": "ccd5c14672d0",
+      "preconditions": {
+        "stage": "debugging",
+        "artifactType": "log-file",
+        "engine": "none",
+        "intent": "只读日志排错"
+      },
+      "input": "线上日志里这个 traceId 找不到，帮我读日志定位一下。"
+    },
+    {
+      "caseKey": "ce20ca019ea3",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "dotnet",
+        "intent": "问一个接口名称含义"
+      },
+      "input": "IOptions 这个接口名字里的 Options 是什么意思？"
+    },
+    {
+      "caseKey": "cef31b0b8a4b",
+      "preconditions": {
+        "stage": "design",
+        "artifactType": "decision-note",
+        "engine": "none",
+        "intent": "缺关键信息时挑一个问题"
+      },
+      "input": "要定用哪个方案，但关键信息还缺，帮我挑出当前最该问的那一个。"
+    },
+    {
+      "caseKey": "d41a2396d177",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "vue-component",
+        "engine": "browser",
+        "intent": "普通UI功能开发"
+      },
+      "input": "给当前列表页增加分页按钮，不讨论旧skill-router或流程映射。"
+    },
+    {
+      "caseKey": "d583f419095c",
+      "preconditions": {
+        "stage": "review",
+        "artifactType": "review-note",
+        "engine": "none",
+        "intent": "结论需标注来源等级"
+      },
+      "input": "这份结论里哪些是实测、哪些是推断？按来源等级标一下，没确认的单独列。"
+    },
+    {
+      "caseKey": "d96ab8bf247d",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "问退出码含义"
+      },
+      "input": "pytest 退出码 5 是什么意思？"
+    },
+    {
+      "caseKey": "e10e617fe01e",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "普通文档翻译"
+      },
+      "input": "只把已经给出的接口说明翻译成英文，不审代码，也不进入代码门。"
+    },
+    {
+      "caseKey": "e2294223b87a",
+      "preconditions": {
+        "stage": "design",
+        "artifactType": "sql-migration-script",
+        "engine": "postgresql",
+        "intent": "确认引擎后选择数据库规范"
+      },
+      "input": "这次要给 PostgreSQL 的 JSONB 列加索引，先确认该按哪套规范来，别拿 SQL Server 的规矩套。"
+    },
+    {
+      "caseKey": "e690d66d8e35",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "把表格转成 CSV"
+      },
+      "input": "把这份 markdown 里的表格转成 CSV 输出给我。"
+    },
+    {
+      "caseKey": "e9452588bd00",
+      "preconditions": {
+        "stage": "debugging",
+        "artifactType": "build-log",
+        "engine": "dotnet",
+        "intent": "用 rtk 压缩并看 gain"
+      },
+      "input": "用 rtk 把这个构建输出压一下，顺便看看 gain 是多少。"
+    },
+    {
+      "caseKey": "eb60b2af34e0",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "改未加密文档"
+      },
+      "input": "这是个普通未加密的 .md 文件，帮我改一段话。"
+    },
+    {
+      "caseKey": "ec2a35df7374",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "plain-text",
+        "engine": "none",
+        "intent": "纯文本改写"
+      },
+      "input": "输入已经是纯文本，直接帮我改正文；不处理PDF，也不找提取工具。"
+    },
+    {
+      "caseKey": "ef3f214bee86",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "润色一句措辞"
+      },
+      "input": "帮我把这句话改得礼貌一点，别那么冲。"
+    },
+    {
+      "caseKey": "f1adb31f383b",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "问字符串拼接取舍"
+      },
+      "input": "C# 里 string 拼接和 StringBuilder 什么时候该换着用？"
+    },
+    {
+      "caseKey": "f49cf2751c01",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "问 Git 合并策略差异"
+      },
+      "input": "git rebase 和 merge 在历史记录上的差别是什么？"
+    },
+    {
+      "caseKey": "f8806e60a8f6",
+      "preconditions": {
+        "stage": "development",
+        "artifactType": "markdown-doc",
+        "engine": "none",
+        "intent": "只改一句文档措辞"
+      },
+      "input": "README 开头那句英文简介换成中文，其他别动。"
+    },
+    {
+      "caseKey": "f9b969406e3e",
+      "preconditions": {
+        "stage": "explain",
+        "artifactType": "qa-answer",
+        "engine": "none",
+        "intent": "只解释状态输出"
+      },
+      "input": "只解释这段git status输出，不做分支、提交、合并或推送。"
+    },
+    {
+      "caseKey": "fbe514f9440c",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "cost-analysis",
+        "engine": "none",
+        "intent": "系统性分析上下文成本"
+      },
+      "input": "系统性算一下这个会话的上下文成本，按定位漏斗看看哪层最贵。"
+    },
+    {
+      "caseKey": "fe2f182890e0",
+      "preconditions": {
+        "stage": "maintenance",
+        "artifactType": "sql-migration-script",
+        "engine": "postgresql",
+        "intent": "跨引擎翻译建表语句"
+      },
+      "input": "把这段 MySQL 建表语句翻译成 PostgreSQL 能跑的版本。"
+    }
+  ]
+}

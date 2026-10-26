@@ -1,0 +1,15 @@
+{
+  "receipt_generated_at": "2026-10-22T16:22:09.717Z",
+  "command": "$PSVersionTable.PSVersion.ToString(); $PSVersionTable.PSEdition; (Get-Host).Name",
+  "tool": "native pwsh host",
+  "exit_code": 0,
+  "observed_version": "5.1.26100.9711",
+  "observed_edition": "Desktop",
+  "observed_host": "ConsoleHost",
+  "source": "本会话第4轮原生pwsh调用的实际输出；生成收据不等于重新执行时间",
+  "not_verified": [
+    "all text pipelines corrupt Chinese",
+    "all PowerShell versions share the same default encoding",
+    "UI rollback of memory versions"
+  ]
+}

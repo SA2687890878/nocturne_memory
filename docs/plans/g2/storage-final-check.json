@@ -1,0 +1,13 @@
+{
+  "checkpoint": {
+    "busy": 0,
+    "walFrames": 0,
+    "checkpointedFrames": 0
+  },
+  "mainFileImmutableCheck": {
+    "nodes": 33,
+    "contentAndMetadata": "PASS",
+    "boot": "2/2",
+    "integrity": "ok"
+  }
+}

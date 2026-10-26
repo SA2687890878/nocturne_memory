@@ -1,0 +1,672 @@
+{
+  "generated_at": "2026-10-22T15:26:32.604Z",
+  "scope": "empty namespace; priority-only, no body/path/disclosure/identity changes",
+  "policy": "最多15不需填满；高位给正文有跨场景行为增量的条目；目录、与常驻重复、特定项目/版本或旧API假设保留为priority2按需检索，不删除",
+  "before_priority1": 105,
+  "retained": [
+    "core://agent/delivery/pipeline/subagent-write-tool-denylist",
+    "core://agent/delivery/process/parallel-subagent-commit-discipline",
+    "core://agent/delivery/process/review-snapshot-mtime",
+    "core://agent/delivery/process/backup-multiproxy-parallel",
+    "core://agent/verification/evidence/source-of-truth-code"
+  ],
+  "retention_evidence": [
+    {
+      "uri": "core://agent/delivery/pipeline/subagent-write-tool-denylist",
+      "reason": "委派只读任务显式列实际写工具，预防不可逆越权；历史事故提供锚点",
+      "quote": "只读派单的禁令逐项列出实际工具名",
+      "source_body_chars": 226,
+      "source_body_sha256": "f33c9139d394b2179ca1cbd28032de9fab6d6579c47f6a048b6d8533980bd4b0",
+      "caveat": "历史事故叙述只作出处；保留的是当前可行动元教训，不宣称旧环境状态仍在用"
+    },
+    {
+      "uri": "core://agent/delivery/process/parallel-subagent-commit-discipline",
+      "reason": "并行改仓文件归属/分支验真，超出常驻D2的协作风险细则",
+      "quote": "提交前必须先查 git status 过滤其他代理的文件",
+      "source_body_chars": 275,
+      "source_body_sha256": "9512b3347367541a22c3193fd51fa88c70e88b01df2e3af6eedb9a01c0fcab8c",
+      "caveat": "历史事故叙述只作出处；保留的是当前可行动元教训，不宣称旧环境状态仍在用"
+    },
+    {
+      "uri": "core://agent/delivery/process/review-snapshot-mtime",
+      "reason": "审查快照需hash/mtime一致性，避免审旧版本的具体已发生反例",
+      "quote": "快照必须附每个文件的 mtime 或 hash",
+      "source_body_chars": 218,
+      "source_body_sha256": "16fb36c2802d383d701e6cec434eec6db773c98c50069c8d3fcbbad4b8b05e39",
+      "caveat": "历史事故叙述只作出处；保留的是当前可行动元教训，不宣称旧环境状态仍在用"
+    },
+    {
+      "uri": "core://agent/delivery/process/backup-multiproxy-parallel",
+      "reason": "同名bak覆盖反例与多代理diff作用域，保留稳定回退教训",
+      "quote": "备份只在首次创建时写或带时间戳",
+      "source_body_chars": 161,
+      "source_body_sha256": "d79408f4ff6c7622e7a2e5babfabd52db49f6465a05c60f2539f9041da615a30",
+      "caveat": "历史事故叙述只作出处；保留的是当前可行动元教训，不宣称旧环境状态仍在用"
+    },
+    {
+      "uri": "core://agent/verification/evidence/source-of-truth-code",
+      "reason": "跨仓契约/表结构/字段语义/运行时真源层级，通用可行动",
+      "quote": "跨仓集成契约必须回源对方源码逐条核验",
+      "source_body_chars": 421,
+      "source_body_sha256": "d7ce585f13c1f4b9af1884ffa37a9f092acd459f15bead830f2ba43b610ea0bb",
+      "caveat": "历史事故叙述只作出处；保留的是当前可行动元教训，不宣称旧环境状态仍在用"
+    }
+  ],
+  "candidate_rejections": [
+    "backup-before-write依赖旧memory_update/content_history机制，不能自动断言Nocturne也无历史",
+    "bailian-server-side-only为特定系统架构约束，正常按需检索",
+    "powershell-encoding混有本机PowerShell5.1及编码一概结论，未核验不能占全局高位",
+    "big-change阈值与当前流程边界需另行确认，不优先化旧强制等待规则",
+    "目录父节点没有独立行为增量，不因层级占位",
+    "其余专门技术结论保持可检索，不把重要度等同排他性排序"
+  ],
+  "operations": [
+    {
+      "uri": "core://agent/delivery",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留主题导航，正文目录不占高位"
+    },
+    {
+      "uri": "core://agent/delivery/pipeline/jenkins-console-charset",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/pipeline/jenkins-dir-ant-context",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/pipeline/pptx-rebuild-from-template",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/pipeline/subagent-dispatch-mapping",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/process/acceptance-change-propagation-scan",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/process/backup-before-write",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/process/bailian-server-side-only",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/process/big-change-needs-architecture-review",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/process/memory-hygiene-only-behavioral",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/process/user-intent-todos-not-auto-close",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/writing/daily-report-collection",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/writing/memory-entry-criteria",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/writing/perf-goal-doc-path",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/delivery/writing/perf-goal-writing-style",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留主题导航，正文目录不占高位"
+    },
+    {
+      "uri": "core://agent/dsh/config/agents-md-injection",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/config/compaction-threshold",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/config/dsh-ops-assessment",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/config/model-switch-plugin",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/config/patchreload-live",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/config/profile-and-install-layout",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/config/security-rules-in-agents-md",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/plugins/cli-plugin-no-toggle",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/plugins/harness-reuse-first",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/plugins/node-module-patch-discipline",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/plugins/plugin-eval-criteria",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/plugins/plugin-needs-profile-bundles",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/plugins/skill-install-by-copy",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/plugins/skill-root-priority",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/session/bot-team-config",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/session/dsh-version-gui",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/session/mcp-dual-path",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/session/session-transcript-parsing",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/dsh/session/team-task-path-limit",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留主题导航，正文目录不占高位"
+    },
+    {
+      "uri": "core://agent/environment/host/repos-and-perf-evidence",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/host/workspaces-overview",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/network/claude-plaintext-credentials",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/network/copilot-billing",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/network/git-github-tls-proxy",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/network/masking-inner-json-secrets",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/network/openrouter-embedding-rejected",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/network/proxy-and-network-truth",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/network/retrieval-priority-cost",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/sandbox/eventlog-denied-in-sandbox",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/sandbox/git-commit-hooks-env",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/sandbox/ops-bash-silent-success",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/sandbox/powershell-encoding",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/sandbox/sandbox-escalation-discipline",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/sandbox/sandbox-pipe-stdio",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/sandbox/sqlserver-encrypt-false",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/sandbox/subagent-cost-dispatch",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/toolchain/chrome-unpacked-extension",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/toolchain/dotnet-test-broken",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/toolchain/model-selection-principles",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/toolchain/net472-build-commands",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/toolchain/opencli-limits",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/toolchain/opencli-not-in-path",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/toolchain/opencli-toolchain",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/toolchain/rejected-tools-list",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/environment/toolchain/toolchain-three-tools",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留主题导航，正文目录不占高位"
+    },
+    {
+      "uri": "core://agent/verification/evidence/anti-false-green",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/evidence/cross-repo-contract-source",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/evidence/doc-evidence-line-by-line",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/evidence/offline-api-verification",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/evidence/runtime-truth-evidence",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/evidence/service-reachability-probe",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/config-key-not-runtime-evidence",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/false-green-and-startup-config",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/no-self-proving-fixture",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/placeholder-design-four-criteria",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/read-docs-not-readme",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/serilog-capture-test-isolation",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://agent/verification/test-discipline/source-shape-assertion-weak",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留主题导航，正文目录不占高位"
+    },
+    {
+      "uri": "core://knowledge/database/migration/char-n-trailing-space",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/migration/cross-db-join-key-ilookup",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/migration/ef6-uniquekey-wrap",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/migration/psql-vars-and-pwsh-encoding",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/migration/schema-migration-silent-failures",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/migration/varchar-char-vs-byte",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/pg/cross-env-sync-workflow",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/pg/pg-datacollect-spec",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/pg/pg-sequence-owned-by",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/pg/pg17-migration-replay-order",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/pg/prod-ddl-redline-sh37",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/database/pg/yearly-partition-rebuild",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/frontend",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留主题导航，正文目录不占高位"
+    },
+    {
+      "uri": "core://knowledge/frontend/i18n-fallback-bom",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/frontend/vue2-i18n-usage",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/frontend/vue3-elementplus-pitfalls",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/legacy",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留主题导航，正文目录不占高位"
+    },
+    {
+      "uri": "core://knowledge/legacy/appconfig-bindingredirect",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/legacy/encrypted-cs-cherry-pick",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/legacy/encrypted-cs-git-blob-3steps",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/legacy/encrypted-repo-git-status",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/legacy/flw-srv-out-asmx",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    },
+    {
+      "uri": "core://knowledge/legacy/flw-srv-out-defects",
+      "from": 1,
+      "priority": 2,
+      "reason": "保留正文和disclosure，按需检索；未据标题删除或改写"
+    }
+  ],
+  "explicit_rejected_candidates": [
+    "core://agent/delivery/process/backup-before-write",
+    "core://agent/delivery/process/bailian-server-side-only",
+    "core://agent/environment/sandbox/powershell-encoding",
+    "core://agent/delivery/process/big-change-needs-architecture-review"
+  ],
+  "assessment_boundary": "已通读候选；5条高位有正文锚点，其余默认正常检索位；未声称100条均已做有效性/时效终审或量化召回排序最优"
+}
