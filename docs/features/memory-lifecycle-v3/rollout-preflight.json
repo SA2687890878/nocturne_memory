@@ -1,0 +1,18 @@
+{
+  "snapshot_dir": "E:\\myPrivateSpace\\记忆系统数据库\\work\\snapshots",
+  "source_pool": "E:\\myPrivateSpace\\记忆系统数据库\\work\\snapshots\\ce02f04cd63c\\changeset.json",
+  "source_rows": 151,
+  "source_sha256": "bc429680822a9c7888583c3ca5c76c9b195a4deecbf9acb60341c8b847a505d8",
+  "health": {
+    "status": "ok",
+    "database": "connected"
+  },
+  "settings/database/status": {
+    "type": "sqlite",
+    "same_target": true
+  },
+  "review/groups": {
+    "count": 0,
+    "node_uuids": []
+  }
+}

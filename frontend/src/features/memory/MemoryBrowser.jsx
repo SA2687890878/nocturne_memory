@@ -28,6 +28,9 @@ import KeywordManager from './components/KeywordManager';
 import DomainNode from './components/MemorySidebar';
 import Breadcrumb from './components/Breadcrumb';
 import NodeGridCard from './components/NodeGridCard';
+import LifecycleBadge from './components/LifecycleBadge';
+import LifecycleSelect from './components/LifecycleSelect';
+import { DEFAULT_LIFECYCLE_STATUS } from '../../lib/lifecycle';
 
 const NAMESPACE_SWITCH_ROOT_REDIRECT_KEY = 'nocturne:namespace-switch-root-redirect';
 const NAMESPACE_SWITCH_REDIRECT_TTL_MS = 30_000;
@@ -66,6 +69,7 @@ export default function MemoryBrowser() {
   const [editContent, setEditContent] = useState('');
   const [editDisclosure, setEditDisclosure] = useState('');
   const [editPriority, setEditPriority] = useState(0);
+  const [editLifecycle, setEditLifecycle] = useState(DEFAULT_LIFECYCLE_STATUS);
   const [saving, setSaving] = useState(false);
   const [bootUris, setBootUris] = useState([]);
 
@@ -125,6 +129,7 @@ export default function MemoryBrowser() {
         setEditContent(res.data.node?.content || '');
         setEditDisclosure(res.data.node?.disclosure || '');
         setEditPriority(res.data.node?.priority ?? 0);
+        setEditLifecycle(res.data.node?.lifecycle_status || DEFAULT_LIFECYCLE_STATUS);
         setEditTitle(res.data.node?.name || '');
       } catch (err) {
         setError(err.response?.data?.detail || err.message);
@@ -159,6 +164,7 @@ export default function MemoryBrowser() {
     setEditContent(data.node?.content || '');
     setEditDisclosure(data.node?.disclosure || '');
     setEditPriority(data.node?.priority ?? 0);
+    setEditLifecycle(data.node?.lifecycle_status || DEFAULT_LIFECYCLE_STATUS);
     setEditing(true);
   };
 
@@ -168,6 +174,7 @@ export default function MemoryBrowser() {
     setEditContent(data.node?.content || '');
     setEditDisclosure(data.node?.disclosure || '');
     setEditPriority(data.node?.priority ?? 0);
+    setEditLifecycle(data.node?.lifecycle_status || DEFAULT_LIFECYCLE_STATUS);
   };
 
   const handleSave = async () => {
@@ -177,6 +184,7 @@ export default function MemoryBrowser() {
       const payload = {};
       if (editContent !== (data.node?.content || '')) payload.content = editContent;
       if (editPriority !== (data.node?.priority ?? 0)) payload.priority = editPriority;
+      if (editLifecycle !== (data.node?.lifecycle_status || DEFAULT_LIFECYCLE_STATUS)) payload.lifecycle_status = editLifecycle;
       if (editDisclosure !== (data.node?.disclosure || '')) payload.disclosure = editDisclosure;
 
       if (titleChanged) {
@@ -548,6 +556,7 @@ export default function MemoryBrowser() {
                                           </h1>
                                         )}
                                         <PriorityBadge priority={node.priority} size="lg" />
+                                        <LifecycleBadge status={node.lifecycle_status} size="lg" />
                                     </div>
                                     
                                     {node.disclosure && !editing && (
@@ -557,7 +566,14 @@ export default function MemoryBrowser() {
                                             <span className="italic truncate">{node.disclosure}</span>
                                         </div>
                                     )}
-                                    
+
+                                    {!editing && node.lifecycle_status === 'obsolete' && (
+                                        <div role="status" className="inline-flex items-start gap-2 px-3 py-1.5 bg-amber-950/20 border border-amber-900/30 rounded-lg text-amber-400/80 text-xs max-w-full">
+                                            <AlertTriangle size={14} className="flex-shrink-0 mt-0.5" />
+                                            <span>{t('memory.lifecycle.obsolete_warning')}</span>
+                                        </div>
+                                    )}
+
                                     {!editing && !node.is_virtual && (
                                         <>
                                           <AliasManager
@@ -641,6 +657,18 @@ export default function MemoryBrowser() {
                                         />
                                     </div>
                                     <div className="space-y-1.5">
+                                        <label htmlFor="edit-lifecycle-status" className="flex items-center gap-1.5 text-xs font-medium text-slate-400">
+                                            {t('memory.lifecycle.label')}
+                                            <span className="text-slate-600 font-normal">{t('memory.lifecycle.hint')}</span>
+                                        </label>
+                                        <LifecycleSelect
+                                            id="edit-lifecycle-status"
+                                            value={editLifecycle}
+                                            onChange={setEditLifecycle}
+                                            disabled={saving}
+                                        />
+                                    </div>
+                                    <div className="space-y-1.5 md:col-span-2">
                                         <label className="flex items-center gap-1.5 text-xs font-medium text-slate-400">
                                             <AlertTriangle size={12} />
                                             {t('memory.edit.disclosure')}

@@ -1,0 +1,106 @@
+{
+  "kind": "unexpected_live_migration_read_only_evidence",
+  "live": {
+    "path": "E:\\myPrivateSpace\\记忆系统数据库\\work\\work-memory.db",
+    "bytes": 622592,
+    "integrity": [
+      "ok"
+    ],
+    "node_columns": [
+      "uuid",
+      "created_at",
+      "last_accessed_at",
+      "lifecycle_status"
+    ],
+    "migration_015": [
+      {
+        "version": "015_add_node_lifecycle_status.py",
+        "applied_at": "2026-10-28 08:31:29"
+      }
+    ],
+    "migration_timestamp_basis": "SQLite CURRENT_TIMESTAMP is UTC",
+    "business_tables": {
+      "nodes": {
+        "rows": 36,
+        "sha256": "327c786d751d4389ea37b4ea3ffefb438fd14b10208fcdee112ef5703b6ea1a0"
+      },
+      "memories": {
+        "rows": 38,
+        "sha256": "2d13359c28f7dfb57e381d288f627588226ce6a71d52c80b84ace4c4d1feac1d"
+      },
+      "edges": {
+        "rows": 35,
+        "sha256": "d26dbf936a55ea81092768885e6203f4a33a496c947c83bf2fc80bbe298ff58e"
+      },
+      "paths": {
+        "rows": 35,
+        "sha256": "64be5d6a3ef5976de3c6ea8742a7625bb76366fe59b639ba618148df72327223"
+      },
+      "glossary_keywords": {
+        "rows": 8,
+        "sha256": "86c92203551ee07c59d796d5f2ec8e80074270767eb90bbae6dea3dda31d739a"
+      },
+      "memory_access_logs": {
+        "rows": 683,
+        "sha256": "11f1d021525903d25f54b3fac64397c6af72a7b2891d8c73b28be80dd970f72f"
+      }
+    },
+    "state_counts": {
+      "unspecified": 36
+    }
+  },
+  "backup": {
+    "path": "E:\\myPrivateSpace\\记忆系统数据库\\work\\work-memory.db.20261028_163129.bak",
+    "bytes": 622592,
+    "integrity": [
+      "ok"
+    ],
+    "node_columns": [
+      "uuid",
+      "created_at",
+      "last_accessed_at"
+    ],
+    "migration_015": [],
+    "migration_timestamp_basis": "SQLite CURRENT_TIMESTAMP is UTC",
+    "business_tables": {
+      "nodes": {
+        "rows": 36,
+        "sha256": "327c786d751d4389ea37b4ea3ffefb438fd14b10208fcdee112ef5703b6ea1a0"
+      },
+      "memories": {
+        "rows": 36,
+        "sha256": "6fa259941c97cb271135de4ffa723c8849cbee6a636b525af845f529f431e57f"
+      },
+      "edges": {
+        "rows": 35,
+        "sha256": "d26dbf936a55ea81092768885e6203f4a33a496c947c83bf2fc80bbe298ff58e"
+      },
+      "paths": {
+        "rows": 35,
+        "sha256": "64be5d6a3ef5976de3c6ea8742a7625bb76366fe59b639ba618148df72327223"
+      },
+      "glossary_keywords": {
+        "rows": 8,
+        "sha256": "86c92203551ee07c59d796d5f2ec8e80074270767eb90bbae6dea3dda31d739a"
+      },
+      "memory_access_logs": {
+        "rows": 547,
+        "sha256": "6f6e6711edbce59c72fdc3d7c7e3a63e3161d7bc37587d12c6c29a35889814b9"
+      }
+    }
+  },
+  "business_table_match": {
+    "nodes": true,
+    "memories": false,
+    "edges": true,
+    "paths": true,
+    "glossary_keywords": true,
+    "memory_access_logs": false
+  },
+  "decision_required": "No automatic rollback. User must choose whether to retain observed additive migration or authorize a separately planned restore after validating backup and source changeset.",
+  "limitations": [
+    "No pre-development database schema snapshot exists, so automatic invocation lineage is not independently proven.",
+    "The .bak name matches the legacy main-file copy convention, not the new WAL-safe backup identity. Integrity and logical equality do not replace paired source changeset verification.",
+    "Only readonly connections and SELECT/PRAGMA checks were run by this inspection script."
+  ]
+}

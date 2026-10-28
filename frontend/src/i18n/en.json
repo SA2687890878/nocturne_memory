@@ -247,6 +247,15 @@
       "add": "Add to Boot",
       "label": "Boot"
     },
+    "lifecycle": {
+      "label": "Status",
+      "active": "Active",
+      "completed": "Completed",
+      "obsolete": "Obsolete",
+      "unspecified": "Unspecified",
+      "hint": "Obsolete memories are skipped by default recall",
+      "obsolete_warning": "This memory is marked obsolete, so default recall skips it. You can still open and edit it."
+    },
     "edit": {
       "edit": "Edit",
       "save": "Save Changes",

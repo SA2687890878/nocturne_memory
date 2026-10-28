@@ -1,8 +1,11 @@
+import asyncio
 import os
 import importlib.util
 import logging
 import json
 import sys
+import uuid
+from pathlib import Path
 from datetime import date, datetime, time
 from decimal import Decimal
 from uuid import UUID
@@ -22,6 +25,71 @@ def _announce_backup(message: str):
     """Emit backup status without polluting MCP stdio transport."""
     logger.info(message)
     print(message, file=sys.stderr, flush=True)
+
+
+_SQLITE_BACKUP_SUFFIX = ".bak"
+
+
+def _sqlite_copy_file(source_path: str, target_path: str) -> None:
+    """Copy a live SQLite database with the stdlib online backup API."""
+    import sqlite3
+
+    expected_source = Path(source_path).resolve()
+    source = sqlite3.connect(expected_source.as_uri() + "?mode=ro", uri=True)
+    try:
+        actual_source = next(row[2] for row in source.execute("PRAGMA database_list") if row[1] == "main")
+        if Path(actual_source).resolve() != expected_source:
+            raise RuntimeError("SQLite backup source does not match the expected database")
+        source.execute("PRAGMA query_only=ON")
+        target = sqlite3.connect(target_path)
+        try:
+            source.backup(target)
+        finally:
+            target.close()
+    finally:
+        source.close()
+
+
+def _sqlite_integrity_verdict(path: str) -> str:
+    """Return the integrity_check verdict of a SQLite file."""
+    import sqlite3
+
+    conn = sqlite3.connect(path)
+    try:
+        return str(conn.execute("PRAGMA integrity_check").fetchone()[0])
+    finally:
+        conn.close()
+
+
+async def _backup_sqlite_online(db_path: str, timestamp: str) -> str:
+    """Back up a live SQLite database without stalling the event loop.
+
+    WAL: a plain file copy is not a valid snapshot, so the copy goes through the
+    stdlib online backup API in a worker thread. The result is written to a
+    unique pending file, verified, then published with an atomic rename. A failed
+    artifact is kept on disk on purpose so the original file can be inspected,
+    and the migration aborts.
+    """
+    unique = f"{os.getpid()}-{uuid.uuid4().hex[:8]}"
+    pending_path = f"{db_path}.{timestamp}.{unique}{_SQLITE_BACKUP_SUFFIX}.pending"
+    final_path = f"{db_path}.{timestamp}.{unique}{_SQLITE_BACKUP_SUFFIX}"
+
+    _announce_backup(
+        f"Pending migrations detected. Backing up SQLite database to {final_path}"
+    )
+    try:
+        await asyncio.to_thread(_sqlite_copy_file, db_path, pending_path)
+        verdict = await asyncio.to_thread(_sqlite_integrity_verdict, pending_path)
+        if verdict.strip().lower() != "ok":
+            raise RuntimeError(f"SQLite backup integrity_check failed: {verdict}")
+        os.replace(pending_path, final_path)
+    except Exception as e:
+        logger.error(f"Failed to backup database: {e}. Aborting migration.")
+        raise RuntimeError(
+            f"Database backup failed: {e} (artifacts left at {pending_path})"
+        ) from e
+
+    return final_path
 
 
 def _json_safe(value):
@@ -129,16 +197,8 @@ async def run_migrations(engine: AsyncEngine):
     if str(engine.url).startswith("sqlite"):
         db_path = engine.url.database
         if db_path and db_path != ":memory:" and os.path.exists(db_path):
-            import shutil
-            backup_path = f"{db_path}.{timestamp}.bak"
-            _announce_backup(
-                f"Pending migrations detected. Backing up SQLite database to {backup_path}"
-            )
-            try:
-                shutil.copy2(db_path, backup_path)
-            except Exception as e:
-                logger.error(f"Failed to backup database: {e}. Aborting migration.")
-                raise RuntimeError(f"Database backup failed: {e}") from e
+            backup_path = await _backup_sqlite_online(db_path, timestamp)
+            _announce_backup(f"SQLite backup saved to {backup_path}")
                 
     elif str(engine.url).startswith("postgresql"):
         import subprocess

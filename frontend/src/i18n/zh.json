@@ -242,6 +242,15 @@
       "add": "添加到启动项",
       "label": "启动"
     },
+    "lifecycle": {
+      "label": "状态",
+      "active": "在用",
+      "completed": "已完成",
+      "obsolete": "已过时",
+      "unspecified": "未标注",
+      "hint": "已过时默认不参与召回",
+      "obsolete_warning": "该记忆已标记为已过时，默认召回会跳过它；仍可直接打开和编辑。"
+    },
     "edit": {
       "edit": "编辑",
       "save": "保存更改",

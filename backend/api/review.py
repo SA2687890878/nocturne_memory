@@ -430,7 +430,7 @@ async def _extract_content_and_meta_for_node(rows: List[Dict[str, Any]], slot: s
         node_uuid: The parent node_uuid.
     """
     memory_id = None
-    meta = {"priority": None, "disclosure": None}
+    meta = {"priority": None, "disclosure": None, "lifecycle_status": None}
     
     # 1. Look for memory and edge metadata inside the provided rows
     for row in rows:
@@ -440,6 +440,8 @@ async def _extract_content_and_meta_for_node(rows: List[Dict[str, Any]], slot: s
         # Find the active (non-deprecated) memory ID
         if row["table"] == "memories" and not data.get("deprecated", False):
             memory_id = data.get("id")
+        elif row["table"] == "nodes" and data.get("uuid") == node_uuid:
+            meta["lifecycle_status"] = data.get("lifecycle_status")
         # Find edge metadata
         elif row["table"] == "edges":
             meta["priority"] = data.get("priority")
@@ -502,6 +504,14 @@ async def _extract_content_and_meta_for_node(rows: List[Dict[str, Any]], slot: s
                 if edge:
                     meta["priority"] = edge.priority
                     meta["disclosure"] = edge.disclosure
+
+    # Unchanged Node status is live metadata; legacy node snapshots remain unknown.
+    if not any(r["table"] == "nodes" and (r.get(slot) or {}).get("uuid") == node_uuid for r in rows) and not (node_created or node_deleted):
+        from db.models import Node
+        async with db.session() as session:
+            node = await session.get(Node, node_uuid)
+            if node is not None:
+                meta["lifecycle_status"] = node.lifecycle_status
 
     return content, meta
 
@@ -650,6 +660,29 @@ async def rollback_group(node_uuid: str):
                 await graph.cascade_delete_node(session, node_uuid)
                 messages.append("Deleted created node and its dependencies.")
             else:
+                # Compare only lifecycle_status so reads cannot invalidate rollback.
+                for r in rows:
+                    before, after = r["before"], r["after"]
+                    if r["table"] != "nodes" or not before or not after:
+                        continue
+                    if "lifecycle_status" not in before or "lifecycle_status" not in after:
+                        continue
+                    old_status, new_status = before["lifecycle_status"], after["lifecycle_status"]
+                    if old_status == new_status:
+                        continue
+                    current = await session.scalar(select(Node.lifecycle_status).where(Node.uuid == before["uuid"]))
+                    if current == old_status:
+                        continue
+                    if current != new_status:
+                        raise ValueError("Lifecycle status conflict; pending group retained.")
+                    changed = await session.execute(
+                        update(Node).where(Node.uuid == before["uuid"], Node.lifecycle_status == new_status)
+                        .values(lifecycle_status=old_status)
+                    )
+                    if changed.rowcount != 1:
+                        raise ValueError("Lifecycle status changed concurrently; pending group retained.")
+                    messages.append("Restored lifecycle status.")
+
                 # Revert Path Changes by sorting lengths
                 path_rows = [r for r in rows if r["table"] == "paths"]
                 path_creations = [r for r in path_rows if r["before"] is None and r["after"] is not None]

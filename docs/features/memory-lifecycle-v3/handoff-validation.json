@@ -1,0 +1,15 @@
+{
+  "mode": "offline_handoff_validation_no_database_connection",
+  "backend": {
+    "tests": 198,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "frontend_passed": 17,
+  "preview_nodes": 35,
+  "unknown_pool_is_not_reported_empty": true,
+  "unsafe_restore_is_not_authorized": true,
+  "document_links_checked": 7,
+  "waiting_for": "User disposition decision and runtime source-pool identity confirmation"
+}

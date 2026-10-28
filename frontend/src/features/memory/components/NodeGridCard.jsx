@@ -2,6 +2,7 @@ import React from 'react';
 import { ChevronRight, Folder, FileText, AlertTriangle, Link2, Zap } from 'lucide-react';
 import clsx from 'clsx';
 import PriorityBadge from './PriorityBadge';
+import LifecycleBadge from './LifecycleBadge';
 import { useLocale } from '../../../i18n/useLocale';
 
 const NodeGridCard = ({ node, currentDomain, isInBoot, onBootToggle, onClick }) => {
@@ -45,6 +46,9 @@ const NodeGridCard = ({ node, currentDomain, isInBoot, onBootToggle, onClick }) 
       
       <div className="flex items-center gap-1.5 flex-shrink-0">
         <PriorityBadge priority={node.priority} />
+        {node.lifecycle_status && node.lifecycle_status !== 'unspecified' && (
+          <LifecycleBadge status={node.lifecycle_status} />
+        )}
         {/* Boot toggle inline */}
         <div
           onClick={handleBootClick}

@@ -4,7 +4,8 @@ import clsx from 'clsx';
 import { api } from '../../../lib/api';
 import { useLocale } from '../../../i18n/useLocale';
 
-const TreeNode = ({ domain, path, name, childrenCount, activeDomain, activePath, onNavigate, level }) => {
+const TreeNode = ({ domain, path, name, childrenCount, status, activeDomain, activePath, onNavigate, level }) => {
+  const { t } = useLocale();
   const isAncestor = activeDomain === domain && activePath.startsWith(path + '/');
   const isActive = activeDomain === domain && activePath === path;
   
@@ -83,6 +84,17 @@ const TreeNode = ({ domain, path, name, childrenCount, activeDomain, activePath,
         </div>
         <FileText size={14} className={clsx("flex-shrink-0", isActive ? "text-indigo-400" : "text-slate-600 group-hover:text-slate-400")} />
         <span className="truncate flex-1 text-[13px]">{name}</span>
+        {status && status !== 'unspecified' && (
+          <span
+            role="img"
+            aria-label={t(`memory.lifecycle.${status}`)}
+            title={t(`memory.lifecycle.${status}`)}
+            className={clsx(
+              "w-1.5 h-1.5 rounded-full flex-shrink-0",
+              status === 'obsolete' ? "bg-amber-400" : status === 'completed' ? "bg-sky-400" : "bg-emerald-400"
+            )}
+          />
+        )}
       </div>
       
       {expanded && children.length > 0 && (
@@ -94,6 +106,7 @@ const TreeNode = ({ domain, path, name, childrenCount, activeDomain, activePath,
               path={child.path}
               name={child.name}
               childrenCount={child.approx_children_count}
+              status={child.lifecycle_status}
               activeDomain={activeDomain}
               activePath={activePath}
               onNavigate={onNavigate}
@@ -201,6 +214,7 @@ const DomainNode = ({ domain, rootCount, activeDomain, activePath, onNavigate })
               path={child.path}
               name={child.name}
               childrenCount={child.approx_children_count}
+              status={child.lifecycle_status}
               activeDomain={activeDomain}
               activePath={activePath}
               onNavigate={onNavigate}

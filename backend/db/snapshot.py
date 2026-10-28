@@ -56,6 +56,10 @@ def _rows_equal(table: str, a: Optional[dict], b: Optional[dict]) -> bool:
     if a is None or b is None:
         return False
         
+    if table == "nodes":
+        return ({k: v for k, v in a.items() if k != "last_accessed_at"}
+                == {k: v for k, v in b.items() if k != "last_accessed_at"})
+
     if table == "glossary_keywords":
         a_copy = {k: v for k, v in a.items() if k not in ("id", "created_at")}
         b_copy = {k: v for k, v in b.items() if k not in ("id", "created_at")}

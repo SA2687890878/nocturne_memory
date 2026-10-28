@@ -2,11 +2,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Plus, Loader2 } from 'lucide-react';
 import { createMemory } from '../../../lib/api';
 import { useLocale } from '../../../i18n/useLocale';
+import { DEFAULT_LIFECYCLE_STATUS } from '../../../lib/lifecycle';
+import LifecycleSelect from './LifecycleSelect';
 
 export default function CreateMemoryModal({ onClose, onCreated, parentPath, currentDomain }) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [priority, setPriority] = useState(0);
+  const [lifecycle, setLifecycle] = useState(DEFAULT_LIFECYCLE_STATUS);
   const [disclosure, setDisclosure] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -29,6 +32,7 @@ export default function CreateMemoryModal({ onClose, onCreated, parentPath, curr
         parent_path: parentPath,
         content: content.trim(),
         priority,
+        lifecycle_status: lifecycle,
         disclosure: disclosure.trim(),
         title: title.trim() || undefined,
         domain: currentDomain,
@@ -38,6 +42,7 @@ export default function CreateMemoryModal({ onClose, onCreated, parentPath, curr
       setTitle('');
       setContent('');
       setPriority(0);
+      setLifecycle(DEFAULT_LIFECYCLE_STATUS);
       setDisclosure('');
     } catch (err) {
       setError(err.response?.data?.detail || err.message);
@@ -51,6 +56,7 @@ export default function CreateMemoryModal({ onClose, onCreated, parentPath, curr
     setTitle('');
     setContent('');
     setPriority(0);
+    setLifecycle(DEFAULT_LIFECYCLE_STATUS);
     setDisclosure('');
     setError('');
     onClose();
@@ -92,7 +98,7 @@ export default function CreateMemoryModal({ onClose, onCreated, parentPath, curr
             </div>
 
             {/* Title */}
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 md:col-span-2">
               <label className="flex items-baseline justify-between">
                 <span className="text-xs font-medium text-slate-400">
                   {t('memory.create.title_label')} <span className="text-slate-600 font-normal">{t('memory.create.optional')}</span>
@@ -120,6 +126,20 @@ export default function CreateMemoryModal({ onClose, onCreated, parentPath, curr
                 value={priority}
                 onChange={e => setPriority(parseInt(e.target.value) || 0)}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 font-mono focus:outline-none focus:border-indigo-500/50 transition-colors"
+              />
+            </div>
+
+            {/* Lifecycle status */}
+            <div className="space-y-1.5">
+              <label htmlFor="create-lifecycle-status" className="flex items-baseline justify-between">
+                <span className="text-xs font-medium text-slate-400">{t('memory.lifecycle.label')}</span>
+                <span className="text-[10px] text-slate-600">{t('memory.lifecycle.hint')}</span>
+              </label>
+              <LifecycleSelect
+                id="create-lifecycle-status"
+                value={lifecycle}
+                onChange={setLifecycle}
+                disabled={saving}
               />
             </div>
           </div>

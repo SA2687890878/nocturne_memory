@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import clsx from 'clsx';
 import { useLocale } from '../../i18n/useLocale';
+import { lifecycleLabel } from '../../lib/lifecycle';
 
 function ReviewPage() {
   const { t } = useLocale();
@@ -135,9 +136,14 @@ function ReviewPage() {
     });
   };
 
+  const formatMetaValue = (key, value) => {
+    if (value == null) return '∅';
+    return key === 'lifecycle_status' ? lifecycleLabel(t, value) : String(value);
+  };
+
   const renderMetadataChanges = () => {
     if (!diffData?.before_meta || !diffData?.current_meta) return null;
-    const metaKeys = ['priority', 'disclosure'];
+    const metaKeys = ['priority', 'disclosure', 'lifecycle_status'];
     
     const hasPathChanges = diffData.path_changes && diffData.path_changes.length > 0;
     
@@ -171,15 +177,17 @@ function ReviewPage() {
             
             return (
               <div key={key} className="grid grid-cols-[100px_1fr_20px_1fr] gap-4 text-sm items-start">
-                <span className="text-slate-400 font-medium capitalize text-xs pt-0.5">{key}</span>
+                <span className="text-slate-400 font-medium capitalize text-xs pt-0.5">
+                  {key === 'lifecycle_status' ? t('memory.lifecycle.label') : key}
+                </span>
                 <div className={clsx("text-xs font-mono text-right break-words", isChanged && !isCreation ? "text-rose-400/70 line-through" : "text-slate-500")}>
-                  {oldVal != null ? String(oldVal) : '∅'}
+                  {formatMetaValue(key, oldVal)}
                 </div>
                 <div className="text-center text-slate-700 pt-0.5">
                   {isChanged ? '→' : '≡'}
                 </div>
                 <div className={clsx("text-xs font-mono font-bold break-words", isChanged ? "text-emerald-400" : "text-slate-400")}>
-                  {newVal != null ? String(newVal) : '∅'}
+                  {formatMetaValue(key, newVal)}
                 </div>
               </div>
             );

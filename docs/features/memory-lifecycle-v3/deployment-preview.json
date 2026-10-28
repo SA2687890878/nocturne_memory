@@ -1,0 +1,2295 @@
+{
+  "mode": "read_only_preview_no_approval_no_writes",
+  "target": "E:\\myPrivateSpace\\记忆系统数据库\\work\\work-memory.db",
+  "namespace": "",
+  "lifecycle_column_present": true,
+  "migration_015_recorded": true,
+  "migration_versions": [
+    "001_v1.0.0_add_migrated_to.py",
+    "002_v1.1.0_add_graph_schema_columns.py",
+    "003_v1.1.0_backfill_graph_data.py",
+    "004_v1.1.0_drop_legacy_path_columns.py",
+    "005_v1.1.0_backfill_cascade_paths.py",
+    "006_v1.1.0_deprecate_orphan_memories.py",
+    "007_v1.1.0_enforce_single_active_memory.py",
+    "008_v1.2.0_add_glossary_keywords.py",
+    "009_v1.3.0_add_search_fts.py",
+    "010_v2.0.0_add_namespace.py",
+    "011_v2.0.0_add_namespace_to_glossary.py",
+    "012_v2.1.0_add_access_logs.py",
+    "013_v2.2.0_add_path_node_uuid.py",
+    "014_v2.5.3_add_presets.py",
+    "015_add_node_lifecycle_status.py"
+  ],
+  "source_changeset": "E:\\myPrivateSpace\\记忆系统数据库\\work\\snapshots\\ce02f04cd63c\\changeset.json",
+  "source_pool_present": true,
+  "source_pool_sha256": "bc429680822a9c7888583c3ca5c76c9b195a4deecbf9acb60341c8b847a505d8",
+  "identity_limit": "Source config URL matched explicit DB target. Runtime URL/SNAPSHOT_DIR overrides and other initializers still require deployment verification.",
+  "counts": {
+    "nodes": 35,
+    "source_review_groups": 35,
+    "overlapping_nodes": 35,
+    "recognized_status_nodes": 35,
+    "keyword_template_nodes": 35
+  },
+  "hard_gate": "STOP live DDL/governance until separate approval, single migrator, verified DB+source pool backup and overlap resolution",
+  "keyword_limit": "Preview substring frequency is evidence only; final approval must use native normalization and existing auditor frequency/binding budget on the final prose. No proposed bindings applied.",
+  "groups": [
+    {
+      "group": "041b2f19-dca5-462d-ba22-d6d250c4bc8c",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "041b2f19-dca5-462d-ba22-d6d250c4bc8c"
+      ],
+      "keys": [
+        "edges:26",
+        "memories:26",
+        "paths:|core|agent/environment/network",
+        "nodes:041b2f19-dca5-462d-ba22-d6d250c4bc8c"
+      ]
+    },
+    {
+      "group": "149bd0a2-a29f-4cd0-808f-665df35562fc",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "149bd0a2-a29f-4cd0-808f-665df35562fc"
+      ],
+      "keys": [
+        "edges:11",
+        "memories:11",
+        "paths:|core|my_user/technical-context",
+        "nodes:149bd0a2-a29f-4cd0-808f-665df35562fc"
+      ]
+    },
+    {
+      "group": "14b15963-db2a-48bc-ab53-37cfe7d9b46f",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "14b15963-db2a-48bc-ab53-37cfe7d9b46f"
+      ],
+      "keys": [
+        "edges:23",
+        "memories:23",
+        "paths:|core|agent/dsh/context-output",
+        "nodes:14b15963-db2a-48bc-ab53-37cfe7d9b46f"
+      ]
+    },
+    {
+      "group": "177a4b77-7c22-423a-bf0c-bcb2191e9420",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "177a4b77-7c22-423a-bf0c-bcb2191e9420"
+      ],
+      "keys": [
+        "edges:2",
+        "memories:2",
+        "paths:|core|my_user",
+        "nodes:177a4b77-7c22-423a-bf0c-bcb2191e9420"
+      ]
+    },
+    {
+      "group": "2c351d57-cec6-4625-aeb7-0cd73ab30445",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "2c351d57-cec6-4625-aeb7-0cd73ab30445"
+      ],
+      "keys": [
+        "edges:24",
+        "memories:24",
+        "paths:|core|agent/dsh/profile",
+        "nodes:2c351d57-cec6-4625-aeb7-0cd73ab30445"
+      ]
+    },
+    {
+      "group": "2f7d61ad-98e2-46c1-ae08-0e1a1f6d89cd",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "2f7d61ad-98e2-46c1-ae08-0e1a1f6d89cd"
+      ],
+      "keys": [
+        "edges:18",
+        "memories:18",
+        "paths:|core|agent/delivery/review",
+        "nodes:2f7d61ad-98e2-46c1-ae08-0e1a1f6d89cd"
+      ]
+    },
+    {
+      "group": "35a077ee-4c0f-4a1a-abdf-d96ea7e60fd8",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "35a077ee-4c0f-4a1a-abdf-d96ea7e60fd8"
+      ],
+      "keys": [
+        "edges:13",
+        "memories:13",
+        "paths:|core|agent/delivery/debugging",
+        "nodes:35a077ee-4c0f-4a1a-abdf-d96ea7e60fd8"
+      ]
+    },
+    {
+      "group": "3dc20d55-27b9-4b4f-b02d-2382301f93b9",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "3dc20d55-27b9-4b4f-b02d-2382301f93b9"
+      ],
+      "keys": [
+        "edges:35",
+        "paths:|core|my_user/sql_chinese_comments",
+        "memories:36",
+        "nodes:3dc20d55-27b9-4b4f-b02d-2382301f93b9"
+      ]
+    },
+    {
+      "group": "42345690-1066-4d9e-ab94-c5ffc54eb33a",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "42345690-1066-4d9e-ab94-c5ffc54eb33a"
+      ],
+      "keys": [
+        "edges:19",
+        "memories:19",
+        "paths:|core|agent/delivery/task-contract",
+        "nodes:42345690-1066-4d9e-ab94-c5ffc54eb33a",
+        "glossary_keywords:当前任务进度|42345690-1066-4d9e-ab94-c5ffc54eb33a|",
+        "glossary_keywords:当前任务快照|42345690-1066-4d9e-ab94-c5ffc54eb33a|"
+      ]
+    },
+    {
+      "group": "4a6d3e02-d036-4bd5-9ce0-f7e0455bf135",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "4a6d3e02-d036-4bd5-9ce0-f7e0455bf135"
+      ],
+      "keys": [
+        "edges:9",
+        "memories:9",
+        "paths:|core|my_user/collaboration-preferences",
+        "nodes:4a6d3e02-d036-4bd5-9ce0-f7e0455bf135"
+      ]
+    },
+    {
+      "group": "4f0fd8e5-c022-464e-b879-f112338ba323",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "4f0fd8e5-c022-464e-b879-f112338ba323"
+      ],
+      "keys": [
+        "edges:15",
+        "memories:15",
+        "paths:|core|agent/delivery/development",
+        "nodes:4f0fd8e5-c022-464e-b879-f112338ba323",
+        "memories:38"
+      ]
+    },
+    {
+      "group": "5ae38923-6803-498a-870a-7510135db1f8",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "5ae38923-6803-498a-870a-7510135db1f8"
+      ],
+      "keys": [
+        "edges:12",
+        "memories:12",
+        "paths:|core|my_user/visual-output-routing",
+        "nodes:5ae38923-6803-498a-870a-7510135db1f8",
+        "glossary_keywords:解释方案HTML|5ae38923-6803-498a-870a-7510135db1f8|"
+      ]
+    },
+    {
+      "group": "5fb9d305-3284-417a-ae37-9aabb4036d0c",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "5fb9d305-3284-417a-ae37-9aabb4036d0c"
+      ],
+      "keys": [
+        "edges:3",
+        "memories:3",
+        "paths:|core|agent/delivery",
+        "nodes:5fb9d305-3284-417a-ae37-9aabb4036d0c",
+        "memories:37"
+      ]
+    },
+    {
+      "group": "704db8ad-0544-4a52-af70-de2dddee39ab",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "704db8ad-0544-4a52-af70-de2dddee39ab"
+      ],
+      "keys": [
+        "edges:17",
+        "memories:17",
+        "paths:|core|agent/delivery/requirements",
+        "nodes:704db8ad-0544-4a52-af70-de2dddee39ab"
+      ]
+    },
+    {
+      "group": "7cf00b8c-02c5-4710-a73b-7a0ea17cb9e8",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "7cf00b8c-02c5-4710-a73b-7a0ea17cb9e8"
+      ],
+      "keys": [
+        "edges:4",
+        "memories:4",
+        "paths:|core|agent/dsh",
+        "nodes:7cf00b8c-02c5-4710-a73b-7a0ea17cb9e8"
+      ]
+    },
+    {
+      "group": "7d9e073c-3aa9-421d-847b-77f8ed1cc7fc",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "7d9e073c-3aa9-421d-847b-77f8ed1cc7fc"
+      ],
+      "keys": [
+        "edges:16",
+        "memories:16",
+        "paths:|core|agent/delivery/process",
+        "nodes:7d9e073c-3aa9-421d-847b-77f8ed1cc7fc"
+      ]
+    },
+    {
+      "group": "80f0d319-e913-4522-867c-42b39b03c326",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "80f0d319-e913-4522-867c-42b39b03c326"
+      ],
+      "keys": [
+        "edges:22",
+        "memories:22",
+        "paths:|core|agent/dsh/compaction",
+        "nodes:80f0d319-e913-4522-867c-42b39b03c326"
+      ]
+    },
+    {
+      "group": "90d53757-291a-4fec-b74a-3a055e6ed557",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "90d53757-291a-4fec-b74a-3a055e6ed557"
+      ],
+      "keys": [
+        "edges:10",
+        "memories:10",
+        "paths:|core|my_user/rewrite-consent",
+        "nodes:90d53757-291a-4fec-b74a-3a055e6ed557",
+        "glossary_keywords:rewrite-consent|90d53757-291a-4fec-b74a-3a055e6ed557|"
+      ]
+    },
+    {
+      "group": "927a93f2-1412-460f-bbcb-454f91e8f49f",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "927a93f2-1412-460f-bbcb-454f91e8f49f"
+      ],
+      "keys": [
+        "edges:29",
+        "memories:29",
+        "paths:|core|agent/source-catalog/code-access",
+        "nodes:927a93f2-1412-460f-bbcb-454f91e8f49f"
+      ]
+    },
+    {
+      "group": "9a4ca46a-ed15-4079-ba62-0e0da33e3025",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "9a4ca46a-ed15-4079-ba62-0e0da33e3025"
+      ],
+      "keys": [
+        "edges:14",
+        "memories:14",
+        "paths:|core|agent/delivery/design",
+        "nodes:9a4ca46a-ed15-4079-ba62-0e0da33e3025"
+      ]
+    },
+    {
+      "group": "9aaa7273-848f-4fe7-8f2d-79d41627a371",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "9aaa7273-848f-4fe7-8f2d-79d41627a371"
+      ],
+      "keys": [
+        "edges:28",
+        "memories:28",
+        "paths:|core|agent/environment/workspaces",
+        "nodes:9aaa7273-848f-4fe7-8f2d-79d41627a371",
+        "glossary_keywords:多项目工作区|9aaa7273-848f-4fe7-8f2d-79d41627a371|"
+      ]
+    },
+    {
+      "group": "a4c4c2a4-3567-4bf6-9566-dcbe4954f61c",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "a4c4c2a4-3567-4bf6-9566-dcbe4954f61c"
+      ],
+      "keys": [
+        "edges:8",
+        "memories:8",
+        "paths:|core|agent/verification",
+        "nodes:a4c4c2a4-3567-4bf6-9566-dcbe4954f61c",
+        "glossary_keywords:UI验收|a4c4c2a4-3567-4bf6-9566-dcbe4954f61c|"
+      ]
+    },
+    {
+      "group": "a53b0135-2f37-4b9c-af97-ff57604350be",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "a53b0135-2f37-4b9c-af97-ff57604350be"
+      ],
+      "keys": [
+        "edges:30",
+        "memories:30",
+        "paths:|core|agent/source-catalog/database",
+        "nodes:a53b0135-2f37-4b9c-af97-ff57604350be"
+      ]
+    },
+    {
+      "group": "a69ff42c-b454-4561-bf16-4c89792949ef",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "a69ff42c-b454-4561-bf16-4c89792949ef"
+      ],
+      "keys": [
+        "edges:7",
+        "memories:7",
+        "paths:|core|agent/source-catalog",
+        "nodes:a69ff42c-b454-4561-bf16-4c89792949ef",
+        "memories:34"
+      ]
+    },
+    {
+      "group": "a7733f27-635e-453c-bb0d-cae9691b51fa",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "a7733f27-635e-453c-bb0d-cae9691b51fa"
+      ],
+      "keys": [
+        "edges:25",
+        "memories:25",
+        "paths:|core|agent/dsh/skills-config",
+        "nodes:a7733f27-635e-453c-bb0d-cae9691b51fa"
+      ]
+    },
+    {
+      "group": "ad842956-1d6a-4a5d-8e50-a1edc3a4f9a1",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "ad842956-1d6a-4a5d-8e50-a1edc3a4f9a1"
+      ],
+      "keys": [
+        "edges:6",
+        "memories:6",
+        "paths:|core|agent/memory-governance",
+        "nodes:ad842956-1d6a-4a5d-8e50-a1edc3a4f9a1"
+      ]
+    },
+    {
+      "group": "b034d90b-686c-4d6b-87d8-0c0b3c46a1f1",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "b034d90b-686c-4d6b-87d8-0c0b3c46a1f1"
+      ],
+      "keys": [
+        "edges:1",
+        "memories:1",
+        "paths:|core|agent",
+        "nodes:b034d90b-686c-4d6b-87d8-0c0b3c46a1f1"
+      ]
+    },
+    {
+      "group": "b83048de-cead-4fc3-8847-0cd4852142ca",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "b83048de-cead-4fc3-8847-0cd4852142ca"
+      ],
+      "keys": [
+        "edges:33",
+        "memories:33",
+        "paths:|core|agent/verification/test-design",
+        "nodes:b83048de-cead-4fc3-8847-0cd4852142ca",
+        "glossary_keywords:测试设计|b83048de-cead-4fc3-8847-0cd4852142ca|"
+      ]
+    },
+    {
+      "group": "bf20f3ef-a7bd-4e0f-a19c-3539acc3a492",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "bf20f3ef-a7bd-4e0f-a19c-3539acc3a492"
+      ],
+      "keys": [
+        "edges:5",
+        "memories:5",
+        "paths:|core|agent/environment",
+        "nodes:bf20f3ef-a7bd-4e0f-a19c-3539acc3a492"
+      ]
+    },
+    {
+      "group": "c04e4684-d8a3-4bc6-b334-2b82892d16eb",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "c04e4684-d8a3-4bc6-b334-2b82892d16eb"
+      ],
+      "keys": [
+        "edges:20",
+        "memories:20",
+        "paths:|core|agent/delivery/testing",
+        "nodes:c04e4684-d8a3-4bc6-b334-2b82892d16eb"
+      ]
+    },
+    {
+      "group": "c911c7e8-5c9f-4568-8f13-097b69801e72",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "c911c7e8-5c9f-4568-8f13-097b69801e72"
+      ],
+      "keys": [
+        "edges:32",
+        "memories:32",
+        "paths:|core|agent/source-catalog/research",
+        "nodes:c911c7e8-5c9f-4568-8f13-097b69801e72"
+      ]
+    },
+    {
+      "group": "e2045dd7-8ca8-4ea0-b55b-66d6c6756a2c",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "e2045dd7-8ca8-4ea0-b55b-66d6c6756a2c"
+      ],
+      "keys": [
+        "edges:21",
+        "memories:21",
+        "paths:|core|agent/delivery/tool-selection",
+        "nodes:e2045dd7-8ca8-4ea0-b55b-66d6c6756a2c",
+        "glossary_keywords:工具比较|e2045dd7-8ca8-4ea0-b55b-66d6c6756a2c|"
+      ]
+    },
+    {
+      "group": "f177d2bf-62cf-459b-ad32-45c3aa6919e6",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "f177d2bf-62cf-459b-ad32-45c3aa6919e6"
+      ],
+      "keys": [
+        "edges:31",
+        "memories:31",
+        "paths:|core|agent/source-catalog/frontend",
+        "nodes:f177d2bf-62cf-459b-ad32-45c3aa6919e6"
+      ]
+    },
+    {
+      "group": "fb049d0c-292e-42b7-b36c-0a5533f16e1b",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "fb049d0c-292e-42b7-b36c-0a5533f16e1b"
+      ],
+      "keys": [
+        "paths:|core|agent/memory-governance/single-source-memory-retirement",
+        "nodes:fb049d0c-292e-42b7-b36c-0a5533f16e1b",
+        "edges:34",
+        "memories:35"
+      ]
+    },
+    {
+      "group": "fd7855d7-4801-4b5d-883c-23ee2b14ee04",
+      "table": "nodes",
+      "action": "created",
+      "members": [
+        "fd7855d7-4801-4b5d-883c-23ee2b14ee04"
+      ],
+      "keys": [
+        "edges:27",
+        "memories:27",
+        "paths:|core|agent/environment/toolchain",
+        "nodes:fd7855d7-4801-4b5d-883c-23ee2b14ee04"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "node_uuid": "041b2f19-dca5-462d-ba22-d6d250c4bc8c",
+      "memory_id": 26,
+      "uris": [
+        "core://agent/environment/network"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "041b2f19-dca5-462d-ba22-d6d250c4bc8c"
+      ],
+      "content_sha256": "3ae2692fda5817cf727566b26455bca4acb63d35db01674ec4838f49b60b90d8",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "TLS"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "TLS",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "代理",
+          "preview_frequency": 0.05714285714285714,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "2f7d61ad-98e2-46c1-ae08-0e1a1f6d89cd"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "认证失败",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "149bd0a2-a29f-4cd0-808f-665df35562fc",
+      "memory_id": 11,
+      "uris": [
+        "core://my_user/technical-context"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "149bd0a2-a29f-4cd0-808f-665df35562fc"
+      ],
+      "content_sha256": "abfc245b581f758717a2bbe0b6bf377ac6af9c51f3b36de818808c2d99eb8c82",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "技术背景"
+      ],
+      "keyword_candidates": [
+        {
+          "term": ".NET",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "SQL Server",
+          "preview_frequency": 0.08571428571428572,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "3dc20d55-27b9-4b4f-b02d-2382301f93b9",
+            "a53b0135-2f37-4b9c-af97-ff57604350be"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "Vue",
+          "preview_frequency": 0.05714285714285714,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "f177d2bf-62cf-459b-ad32-45c3aa6919e6"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "技术背景",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "14b15963-db2a-48bc-ab53-37cfe7d9b46f",
+      "memory_id": 23,
+      "uris": [
+        "core://agent/dsh/context-output"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "14b15963-db2a-48bc-ab53-37cfe7d9b46f"
+      ],
+      "content_sha256": "59d6377a2dfe91661297cd31ca08198871b3436abf2f633214e18c266f30c38d",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "ctx_execute",
+        "日志扫描"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "ctx_execute",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "大输出",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "日志扫描",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "177a4b77-7c22-423a-bf0c-bcb2191e9420",
+      "memory_id": 2,
+      "uris": [
+        "core://my_user"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": true,
+      "is_boot": true,
+      "overlap_groups": [
+        "177a4b77-7c22-423a-bf0c-bcb2191e9420"
+      ],
+      "content_sha256": "160412a333843b8ebb939741220352864c1c1ac29545ca776884b25579709ccd",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "用户画像"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "中文简洁",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "工业软件",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "用户画像",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "2c351d57-cec6-4625-aeb7-0cd73ab30445",
+      "memory_id": 24,
+      "uris": [
+        "core://agent/dsh/profile"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "2c351d57-cec6-4625-aeb7-0cd73ab30445"
+      ],
+      "content_sha256": "48432905a1c0760f6a442e3232c9fb5dc428af60caafc99afd7e93a85c86b693",
+      "body_diff_candidate": [
+        "--- current",
+        "+++ candidate",
+        "@@ -1,9 +1,6 @@",
+        "-状态: 在用",
+        "-",
+        " 确认活动profile时，按原规则给出的profile-selection/state.json真源核对选中值，不把desktop-next.json旧入口当准据。当前profile路径属于需核验事实，不从画像或旧会话推断。只读相关非敏感字段，不转储完整设置、凭据或所有环境变量。",
+        " ",
+        " 按条件选读，不是全部必读：",
+        " - [claude-code-router.md](<C:/Users/admin/.claude/knowledge/engineering/claude-code-router.md>)（仅明确宿主/历史机制场景参考，不自动采用）",
+        " ",
+        "-检索词: 活动profile；profile-selection",
+        " 来源: AGENTS E1；A4；冻结血缘见G1清单。"
+      ],
+      "terms_needing_prose_review_before_template_removal": [],
+      "keyword_candidates": [
+        {
+          "term": "profile-selection",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "活动profile",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "2f7d61ad-98e2-46c1-ae08-0e1a1f6d89cd",
+      "memory_id": 18,
+      "uris": [
+        "core://agent/delivery/review"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "2f7d61ad-98e2-46c1-ae08-0e1a1f6d89cd"
+      ],
+      "content_sha256": "9ca49b9b40d0c62960de6a2a5ff682234cd5029ab4792dd1fecbfbc637aa6dd4",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "公共接口"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "公共接口",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "只读审查",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "步数上限",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "35a077ee-4c0f-4a1a-abdf-d96ea7e60fd8",
+      "memory_id": 13,
+      "uris": [
+        "core://agent/delivery/debugging"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "35a077ee-4c0f-4a1a-abdf-d96ea7e60fd8"
+      ],
+      "content_sha256": "187b4bd14a578eac7ce4f241c1b1a783bb2b0c3fd9a9afe98bb19d6c0bfca006",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "调用失败"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "复现",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "根因",
+          "preview_frequency": 0.05714285714285714,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "4f0fd8e5-c022-464e-b879-f112338ba323"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "调用失败",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "3dc20d55-27b9-4b4f-b02d-2382301f93b9",
+      "memory_id": 36,
+      "uris": [
+        "core://my_user/sql_chinese_comments"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "3dc20d55-27b9-4b4f-b02d-2382301f93b9"
+      ],
+      "content_sha256": "ca404cc4d7d53d2b7d6b2ff9521fdaba66b802550b35462f57f969e540201e5b",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "COMMENT ON COLUMN。"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "COMMENT ON COLUMN。",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "MS_Description",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "SQL",
+          "preview_frequency": 0.08571428571428572,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "149bd0a2-a29f-4cd0-808f-665df35562fc",
+            "a53b0135-2f37-4b9c-af97-ff57604350be"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "中文注释",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "列注释",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "42345690-1066-4d9e-ab94-c5ffc54eb33a",
+      "memory_id": 19,
+      "uris": [
+        "core://agent/delivery/task-contract"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "42345690-1066-4d9e-ab94-c5ffc54eb33a"
+      ],
+      "content_sha256": "8a0919656fb85f5bf05f0935326177757a4a130a11bae1699eaaaf2c24256605",
+      "body_diff_candidate": [
+        "--- current",
+        "+++ candidate",
+        "@@ -1,5 +1,3 @@",
+        "-状态: 在用",
+        "-",
+        " 现行任务真源是在办active.json与历史.index.json；不另建一份任务DB或把任务快照搬进长期记忆。推进或恢复任务时先核对task_id、阶段和product_path，再按适用规则存产物。写入失败必须明说，不把宿主权限旧记录当当前结论。这里只提供定位与归属，不创建任务或自动收尾日志。",
+        " ",
+        " 按条件选读，不是全部必读：",
+        "@@ -9,5 +7,4 @@",
+        " - [workflows/task-management.md](<C:/Users/admin/.dsh/knowledge/rules/workflows/task-management.md>)",
+        " - [workflows/artifact-management.md](<C:/Users/admin/.dsh/knowledge/rules/workflows/artifact-management.md>)",
+        " ",
+        "-检索词: 任务真源；product_path；恢复任务",
+        " 来源: AGENTS 任务真源/F；r4不另建进度库；冻结血缘见G1清单。"
+      ],
+      "terms_needing_prose_review_before_template_removal": [],
+      "keyword_candidates": [
+        {
+          "term": "product_path",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "任务真源",
+          "preview_frequency": 0.08571428571428572,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "5fb9d305-3284-417a-ae37-9aabb4036d0c",
+            "80f0d319-e913-4522-867c-42b39b03c326"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "恢复任务",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "4a6d3e02-d036-4bd5-9ce0-f7e0455bf135",
+      "memory_id": 9,
+      "uris": [
+        "core://my_user/collaboration-preferences"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "4a6d3e02-d036-4bd5-9ce0-f7e0455bf135"
+      ],
+      "content_sha256": "7b496dfd49aa8f058339f719ee470aeda0d5b8541fcceaa85a9a333bd0124619",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "协作偏好"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "三轮无改善",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "协作偏好",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "简单问答",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "4f0fd8e5-c022-464e-b879-f112338ba323",
+      "memory_id": 38,
+      "uris": [
+        "core://agent/delivery/development"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "4f0fd8e5-c022-464e-b879-f112338ba323"
+      ],
+      "content_sha256": "2fdf18f67516a4975c65f70f7c410e04bed3ad0ac036b5e06cd65e0cebf3c2fc",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "复用实现",
+        "模块化"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "复用实现",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "模块化",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "第二处使用",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "5ae38923-6803-498a-870a-7510135db1f8",
+      "memory_id": 12,
+      "uris": [
+        "core://my_user/visual-output-routing"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "5ae38923-6803-498a-870a-7510135db1f8"
+      ],
+      "content_sha256": "dd142a39162db96722310d3624106b978c71148fd6609aeb0a712cf1cf11f5ef",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "可视化偏好"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "answer-me-with-html",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "archify",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "可视化偏好",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "5fb9d305-3284-417a-ae37-9aabb4036d0c",
+      "memory_id": 37,
+      "uris": [
+        "core://agent/delivery"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": true,
+      "is_boot": false,
+      "overlap_groups": [
+        "5fb9d305-3284-417a-ae37-9aabb4036d0c"
+      ],
+      "content_sha256": "6ff27f292573b914da13189dee693f858880018377b6075a9c1564e54bb31ced",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "交付原则",
+        "范围漂移",
+        "阶段门禁"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "交付原则",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "范围漂移",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "阶段门禁",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "704db8ad-0544-4a52-af70-de2dddee39ab",
+      "memory_id": 17,
+      "uris": [
+        "core://agent/delivery/requirements"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "704db8ad-0544-4a52-af70-de2dddee39ab"
+      ],
+      "content_sha256": "5aaa92fa3dbac6c9142a1a4a2da98bfc7fb61e7451e8ac64079c75d170240268",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "需求澄清",
+        "需求讨论",
+        "验收条件"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "需求澄清",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "需求讨论",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "验收条件",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "c04e4684-d8a3-4bc6-b334-2b82892d16eb"
+          ],
+          "decision": "manual_review_only"
+        }
+      ]
+    },
+    {
+      "node_uuid": "7cf00b8c-02c5-4710-a73b-7a0ea17cb9e8",
+      "memory_id": 4,
+      "uris": [
+        "core://agent/dsh"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": true,
+      "is_boot": false,
+      "overlap_groups": [
+        "7cf00b8c-02c5-4710-a73b-7a0ea17cb9e8"
+      ],
+      "content_sha256": "10c1d822132b9f1d8bd7a96da4847c0a06110bf40b4c663157893e9647a5d5bf",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "机制边界"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "Claude Code",
+          "preview_frequency": 0.05714285714285714,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "a69ff42c-b454-4561-bf16-4c89792949ef"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "DSH宿主",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "机制边界",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "7d9e073c-3aa9-421d-847b-77f8ed1cc7fc",
+      "memory_id": 16,
+      "uris": [
+        "core://agent/delivery/process"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "7d9e073c-3aa9-421d-847b-77f8ed1cc7fc"
+      ],
+      "content_sha256": "7eb57c9499275445d03596bf820bfacf3cdf175d3aa97dda4ff33b07126e57da",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "清理临时文件",
+        "范围偏差"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "备份",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "清理临时文件",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "范围偏差",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "80f0d319-e913-4522-867c-42b39b03c326",
+      "memory_id": 22,
+      "uris": [
+        "core://agent/dsh/compaction"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "80f0d319-e913-4522-867c-42b39b03c326"
+      ],
+      "content_sha256": "36bda37e523ec26847a5b5053262f0834ccbf52db471950f6991a03ef8d35c9b",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "压缩前"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "交接",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "压缩前",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "未解决问题",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "90d53757-291a-4fec-b74a-3a055e6ed557",
+      "memory_id": 10,
+      "uris": [
+        "core://my_user/rewrite-consent"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "90d53757-291a-4fec-b74a-3a055e6ed557"
+      ],
+      "content_sha256": "0a68f6448f76adf7d379c8759e42e40facecf7108d425f42dcdb936fb9fe4078",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "改写确认",
+        "迁移预览"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "改写确认",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "4a6d3e02-d036-4bd5-9ce0-f7e0455bf135"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "迁移预览",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "逐句语义对照",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "927a93f2-1412-460f-bbcb-454f91e8f49f",
+      "memory_id": 29,
+      "uris": [
+        "core://agent/source-catalog/code-access"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "927a93f2-1412-460f-bbcb-454f91e8f49f"
+      ],
+      "content_sha256": "4d58642a71f54eea7a10cf1d4efd13bc5d1c5fa1176abe4df068e9ef736a58cb",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "CodeGraph"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "CodeGraph",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "密文",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "调用链",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "9a4ca46a-ed15-4079-ba62-0e0da33e3025",
+      "memory_id": 14,
+      "uris": [
+        "core://agent/delivery/design"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "9a4ca46a-ed15-4079-ba62-0e0da33e3025"
+      ],
+      "content_sha256": "930e20ccac3b5aa503d4b82f4ac64a9d8c4373f9f5bf4f0a8f8e87643ce092b4",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "影响半径",
+        "架构设计"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "功能设计",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "影响半径",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "架构设计",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "9aaa7273-848f-4fe7-8f2d-79d41627a371",
+      "memory_id": 28,
+      "uris": [
+        "core://agent/environment/workspaces"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "9aaa7273-848f-4fe7-8f2d-79d41627a371"
+      ],
+      "content_sha256": "4ff6150bbc533f476310317857e12a6951f37edf0146eac4fa8be4e2460dd787",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "仓库路径",
+        "同名仓库"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "仓库路径",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "同名仓库",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "工作区定位",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "a4c4c2a4-3567-4bf6-9566-dcbe4954f61c",
+      "memory_id": 8,
+      "uris": [
+        "core://agent/verification"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": true,
+      "is_boot": false,
+      "overlap_groups": [
+        "a4c4c2a4-3567-4bf6-9566-dcbe4954f61c"
+      ],
+      "content_sha256": "0760b0e1141d400c5275af3c13bd1e7c11f9493f4a0a6dcb3a6e2420b14e00b3",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "失败分类",
+        "完成收据",
+        "验证范围"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "失败分类",
+          "preview_frequency": 0.05714285714285714,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "b83048de-cead-4fc3-8847-0cd4852142ca",
+            "c04e4684-d8a3-4bc6-b334-2b82892d16eb"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "完成收据",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "验证范围",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "a53b0135-2f37-4b9c-af97-ff57604350be",
+      "memory_id": 30,
+      "uris": [
+        "core://agent/source-catalog/database"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "a53b0135-2f37-4b9c-af97-ff57604350be"
+      ],
+      "content_sha256": "3be0613b78e52887f4c09e0214df25cf039e4e9662ce5048f1fd2d413c612804",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "目标库"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "PostgreSQL",
+          "preview_frequency": 0.08571428571428572,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "149bd0a2-a29f-4cd0-808f-665df35562fc",
+            "3dc20d55-27b9-4b4f-b02d-2382301f93b9"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "SQL Server",
+          "preview_frequency": 0.08571428571428572,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "149bd0a2-a29f-4cd0-808f-665df35562fc",
+            "3dc20d55-27b9-4b4f-b02d-2382301f93b9"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "目标库",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "a69ff42c-b454-4561-bf16-4c89792949ef",
+      "memory_id": 34,
+      "uris": [
+        "core://agent/source-catalog"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": true,
+      "is_boot": false,
+      "overlap_groups": [
+        "a69ff42c-b454-4561-bf16-4c89792949ef"
+      ],
+      "content_sha256": "e86ba30e2a3d7cca63b16d26ec1b9fa31c5a1f22d62851eb06fc8e6040c92902",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "技术域",
+        "知识入口",
+        "规则真源"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "技术域",
+          "preview_frequency": 0.05714285714285714,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "927a93f2-1412-460f-bbcb-454f91e8f49f",
+            "b034d90b-686c-4d6b-87d8-0c0b3c46a1f1"
+          ],
+          "decision": "manual_review_only"
+        },
+        {
+          "term": "知识入口",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "规则真源",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "a7733f27-635e-453c-bb0d-cae9691b51fa",
+      "memory_id": 25,
+      "uris": [
+        "core://agent/dsh/skills-config"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "a7733f27-635e-453c-bb0d-cae9691b51fa"
+      ],
+      "content_sha256": "1341d6f0925811a2d198aa0463b37eb2480d21e59063ce1add1158b1e24947b7",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "技能真源"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "disable-model-invocation",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "junction",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "技能真源",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "ad842956-1d6a-4a5d-8e50-a1edc3a4f9a1",
+      "memory_id": 6,
+      "uris": [
+        "core://agent/memory-governance"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": true,
+      "is_boot": false,
+      "overlap_groups": [
+        "ad842956-1d6a-4a5d-8e50-a1edc3a4f9a1"
+      ],
+      "content_sha256": "b43829971b162251fb5960727f8790a6f64996454b3a20624961173f3a52770d",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "记忆写入",
+        "记忆审计",
+        "语义对照"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "记忆写入",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "记忆审计",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "语义对照",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [
+            "90d53757-291a-4fec-b74a-3a055e6ed557"
+          ],
+          "decision": "manual_review_only"
+        }
+      ]
+    },
+    {
+      "node_uuid": "b034d90b-686c-4d6b-87d8-0c0b3c46a1f1",
+      "memory_id": 1,
+      "uris": [
+        "core://agent"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": true,
+      "is_boot": true,
+      "overlap_groups": [
+        "b034d90b-686c-4d6b-87d8-0c0b3c46a1f1"
+      ],
+      "content_sha256": "e3160678f650a550d2711ccc4421df7398610d9970d0ddb09b85ded2e1215e12",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "工作原则",
+        "按需规则",
+        "范围控制"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "工作原则",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "按需规则",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "范围控制",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "b83048de-cead-4fc3-8847-0cd4852142ca",
+      "memory_id": 33,
+      "uris": [
+        "core://agent/verification/test-design"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "b83048de-cead-4fc3-8847-0cd4852142ca"
+      ],
+      "content_sha256": "293a7e22888a0b340e97a2e2e955133468cbe32820ce90e283d546e28b3ffb7d",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "fail loudly",
+        "同源解析",
+        "回退变红"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "fail loudly",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "同源解析",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "回退变红",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "bf20f3ef-a7bd-4e0f-a19c-3539acc3a492",
+      "memory_id": 5,
+      "uris": [
+        "core://agent/environment"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": true,
+      "is_boot": false,
+      "overlap_groups": [
+        "bf20f3ef-a7bd-4e0f-a19c-3539acc3a492"
+      ],
+      "content_sha256": "94cbac87976bb241bc43a4e0fa5a073ab3f5727634f04532b72be9d9236fcf6a",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "verified_at",
+        "事实核验",
+        "本机环境"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "verified_at",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "事实核验",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "本机环境",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "c04e4684-d8a3-4bc6-b334-2b82892d16eb",
+      "memory_id": 20,
+      "uris": [
+        "core://agent/delivery/testing"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "c04e4684-d8a3-4bc6-b334-2b82892d16eb"
+      ],
+      "content_sha256": "47e1a906217413346c2c761559348fa74256371deddff0d812826c952a6fa557",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "回归测试",
+        "测试设计",
+        "覆盖缺口"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "回归测试",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "测试设计",
+          "preview_frequency": 0.0,
+          "current_bindings": 1,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "覆盖缺口",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "c911c7e8-5c9f-4568-8f13-097b69801e72",
+      "memory_id": 32,
+      "uris": [
+        "core://agent/source-catalog/research"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "c911c7e8-5c9f-4568-8f13-097b69801e72"
+      ],
+      "content_sha256": "e69d0e8ab0341ad2bad1f7458f819004a940015e314866344836c97ba45c9912",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "官方来源",
+        "最新资料",
+        "版本变更"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "官方来源",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "最新资料",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "版本变更",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "e2045dd7-8ca8-4ea0-b55b-66d6c6756a2c",
+      "memory_id": 21,
+      "uris": [
+        "core://agent/delivery/tool-selection"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "e2045dd7-8ca8-4ea0-b55b-66d6c6756a2c"
+      ],
+      "content_sha256": "d4c45ece5f6cf1808fd0c1a34ad08278e8da95e07761855ee76f7afd97cfd120",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "工具选型",
+        "替代方案",
+        "维护成本"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "工具选型",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "替代方案",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "维护成本",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "f177d2bf-62cf-459b-ad32-45c3aa6919e6",
+      "memory_id": 31,
+      "uris": [
+        "core://agent/source-catalog/frontend"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "f177d2bf-62cf-459b-ad32-45c3aa6919e6"
+      ],
+      "content_sha256": "e891dfcfa2ac843e422a51e6fa2f4cd25b1a3193a809ee1cb70d85c4feb77e16",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        ".vue",
+        "Dialog",
+        "应用UI"
+      ],
+      "keyword_candidates": [
+        {
+          "term": ".vue",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "Dialog",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "应用UI",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "fb049d0c-292e-42b7-b36c-0a5533f16e1b",
+      "memory_id": 35,
+      "uris": [
+        "core://agent/memory-governance/single-source-memory-retirement"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "fb049d0c-292e-42b7-b36c-0a5533f16e1b"
+      ],
+      "content_sha256": "f00972e3328ea54ace3d11338bd333635e63c9b56887194f399d23f6b3d93fc1",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "唯一真源校验",
+        "旧插件退役",
+        "记忆真源"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "唯一真源校验",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "旧插件退役",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "记忆真源",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    },
+    {
+      "node_uuid": "fd7855d7-4801-4b5d-883c-23ee2b14ee04",
+      "memory_id": 27,
+      "uris": [
+        "core://agent/environment/toolchain"
+      ],
+      "current_field": "unspecified",
+      "after_ddl_default": "unspecified",
+      "legacy_labels": [
+        "在用"
+      ],
+      "proposed_status": "active",
+      "status_ambiguous": false,
+      "is_container": false,
+      "is_boot": false,
+      "overlap_groups": [
+        "fd7855d7-4801-4b5d-883c-23ee2b14ee04"
+      ],
+      "content_sha256": "dc5bbf989f44fa57809f33c90d71d3f43a56d2c26dd629ff1853577f681596e9",
+      "body_diff_candidate": null,
+      "terms_needing_prose_review_before_template_removal": [
+        "工具不可用",
+        "运行时"
+      ],
+      "keyword_candidates": [
+        {
+          "term": "testhost",
+          "preview_frequency": 0.02857142857142857,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "工具不可用",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        },
+        {
+          "term": "运行时",
+          "preview_frequency": 0.0,
+          "current_bindings": 0,
+          "trigger_source_nodes": [],
+          "decision": "keep_natural_prose_if_useful_no_forced_binding"
+        }
+      ]
+    }
+  ],
+  "source_pool_gate": "Requires runtime override verification before approval",
+  "incident_evidence": "live-migration-evidence.json"
+}

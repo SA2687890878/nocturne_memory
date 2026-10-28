@@ -95,6 +95,8 @@ class KeywordQualityTests(unittest.TestCase):
 
 
 SCHEMA_SQL = """
+    CREATE TABLE nodes(uuid TEXT PRIMARY KEY,
+                       lifecycle_status TEXT NOT NULL DEFAULT 'unspecified');
     CREATE TABLE paths(namespace TEXT NOT NULL DEFAULT '', domain TEXT, path TEXT,
                        edge_id INTEGER, node_uuid TEXT);
     CREATE TABLE memories(id INTEGER PRIMARY KEY, node_uuid TEXT, content TEXT,
@@ -127,8 +129,12 @@ class GuardTestBase(unittest.TestCase):
         self.addCleanup(self.db.close)
 
     def add_live(self, path, body="body text", priority=2, disclosure="when needed",
-                 node=None, domain="core", namespace=""):
+                 node=None, domain="core", namespace="", lifecycle_status="unspecified"):
         node = node or "node-" + path
+        self.db.execute("insert or ignore into nodes(uuid) values (?)", (node,))
+        if lifecycle_status != "unspecified":
+            self.db.execute("update nodes set lifecycle_status=? where uuid=?",
+                            (lifecycle_status, node))
         edge = self.db.execute(
             "insert into edges(priority, disclosure) values (?,?)",
             (priority, disclosure)).lastrowid
@@ -350,6 +356,67 @@ class SearchFtsTests(GuardTestBase):
                          [{"uri": "core://a", "namespace": "private"}])
 
 
+class StatusAuditTests(GuardTestBase):
+    def statuses(self, boot=frozenset()):
+        return audit.status_issues(self.db, boot)
+
+    def test_field_not_body_controls_missing_status(self):
+        self.add_live("header", body="状态: 在用")
+        self.add_live("clear", body="plain body", lifecycle_status="active")
+        result = self.statuses()
+        self.assertEqual(result["entries_without_status"], ["header"])
+        self.assertEqual(result["template_status_residue"], [
+            {"path": "header", "body_status": "在用", "field_status": "unspecified"}])
+
+    def test_leaf_boot_and_namespace_exemptions_are_preserved(self):
+        self.add_live("leaf")
+        self.add_live("container")
+        self.db.execute("insert into edges(parent_uuid, child_uuid) values (?,?)",
+                        ("node-container", "child"))
+        self.add_live("booted")
+        self.add_live("private", namespace="private")
+        self.assertEqual(self.statuses(boot={"booted"})["entries_without_status"],
+                         ["leaf"])
+
+    def test_body_and_field_conflict_is_advisory(self):
+        self.add_live("a", body="状态: 在用", lifecycle_status="obsolete")
+        result = self.statuses()
+        self.assertEqual(result["status_field_conflicts"], [
+            {"path": "a", "body_status": "在用", "field_status": "obsolete"}])
+        self.assertEqual(len(result["template_status_residue"]), 1)
+
+    def test_consistent_legacy_header_is_residue_not_conflict(self):
+        self.add_live("a", body="状态: 已过时", lifecycle_status="obsolete")
+        result = self.statuses()
+        self.assertEqual(result["status_field_conflicts"], [])
+        self.assertEqual(result["template_status_residue"], [
+            {"path": "a", "body_status": "已过时", "field_status": "obsolete"}])
+
+    def test_fenced_or_ambiguous_status_lines_are_not_headers(self):
+        self.add_live("fenced", body="```\n状态: 在用\n```\n")
+        self.add_live("draft", body="状态: 草稿")
+        result = self.statuses()
+        self.assertEqual(result["template_status_residue"], [])
+        self.assertEqual(result["status_field_conflicts"], [])
+
+    def test_obsolete_boot_reference_requires_explicit_config(self):
+        self.add_live("booted", lifecycle_status="obsolete")
+        self.add_live("other", lifecycle_status="obsolete")
+        self.assertEqual(self.statuses({"booted"})["obsolete_boot_references"],
+                         [{"path": "booted"}])
+        self.assertEqual(self.statuses({"missing"})["obsolete_boot_references"], [])
+
+    def test_status_advisories_do_not_fail_the_audit(self):
+        report = {"db": "unused", "total_paths": 0,
+                  "entries_without_status": ["a"],
+                  "template_status_residue": [{"path": "a"}],
+                  "status_field_conflicts": [{"path": "a"}],
+                  "obsolete_boot_references": [{"path": "a"}]}
+        self.assertEqual(audit.issue_count(report), 0)
+        report["edges_without_disclosure"] = 1
+        self.assertEqual(audit.issue_count(report), 1)
+
+
 class SchemaGuardTests(unittest.TestCase):
     def test_missing_schema_raises(self):
         con = sqlite3.connect(":memory:")
@@ -366,6 +433,15 @@ class SchemaGuardTests(unittest.TestCase):
         with self.assertRaises(RuntimeError) as caught:
             audit.require_schema(con)
         self.assertIn("priority", str(caught.exception))
+
+    def test_missing_lifecycle_status_raises(self):
+        con = sqlite3.connect(":memory:")
+        self.addCleanup(con.close)
+        con.executescript(SCHEMA_SQL)
+        con.execute("alter table nodes drop column lifecycle_status")
+        with self.assertRaises(RuntimeError) as caught:
+            audit.require_schema(con)
+        self.assertIn("lifecycle_status", str(caught.exception))
 
     def test_full_schema_passes(self):
         con = sqlite3.connect(":memory:")

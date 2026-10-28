@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 import config
 from db import get_graph_service, get_glossary_service, get_db_manager, get_search_indexer, get_preset_service
-from db.models import Path as PathModel, Edge as EdgeModel, ROOT_NODE_UUID
+from db.models import Path as PathModel, Edge as EdgeModel, ROOT_NODE_UUID, LifecycleStatus
 from db.namespace import get_namespace
 from locales import t
 from sqlalchemy import select, distinct
@@ -20,6 +20,7 @@ router = APIRouter(prefix="/browse", tags=["browse"])
 
 
 class NodeUpdate(BaseModel):
+    lifecycle_status: Optional[LifecycleStatus] = None
     content: str | None = None
     priority: int | None = Field(default=None, ge=0)
     disclosure: str | None = None
@@ -36,6 +37,7 @@ class GlossaryRemove(BaseModel):
 
 
 class CreateMemoryRequest(BaseModel):
+    lifecycle_status: LifecycleStatus = "unspecified"
     parent_path: str
     content: str
     priority: int = Field(ge=0)
@@ -245,6 +247,7 @@ async def get_node(
             "uri": f"{c['domain']}://{c['path']}",
             "name": c["path"].split("/")[-1],  # Last segment
             "priority": c["priority"],
+            "lifecycle_status": c["lifecycle_status"],
             "disclosure": c.get("disclosure"),
             "content_snippet": c["content_snippet"],
             "approx_children_count": c.get("approx_children_count", 0)
@@ -298,6 +301,7 @@ async def get_node(
             "name": path.split("/")[-1] if path else "root",
             "content": memory["content"],
             "priority": memory["priority"],
+            "lifecycle_status": memory["lifecycle_status"],
             "disclosure": memory["disclosure"],
             "created_at": memory["created_at"],
             "is_virtual": memory.get("created_at") is None,
@@ -335,6 +339,7 @@ async def update_node(
             content=body.content,
             priority=body.priority,
             disclosure=body.disclosure,
+            lifecycle_status=body.lifecycle_status,
             namespace=get_namespace(),
         )
     except ValueError as e:
@@ -365,6 +370,7 @@ async def create_node(body: CreateMemoryRequest):
             priority=body.priority,
             title=body.title,
             disclosure=body.disclosure,
+            lifecycle_status=body.lifecycle_status,
             domain=body.domain,
             namespace=get_namespace(),
         )

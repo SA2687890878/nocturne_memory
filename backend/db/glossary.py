@@ -140,6 +140,7 @@ class GlossaryService:
                     Path.domain,
                     Path.path,
                     Memory.content,
+                    Node.lifecycle_status,
                 )
                 .select_from(GlossaryKeyword)
             )
@@ -164,13 +165,24 @@ class GlossaryService:
                     Memory.node_uuid == GlossaryKeyword.node_uuid,
                     Memory.deprecated == False,
                 ),
+            ).outerjoin(
+                Node,
+                Node.uuid == GlossaryKeyword.node_uuid,
             ).order_by(GlossaryKeyword.keyword, Path.domain, Path.path)
 
             result = await session.execute(stmt)
 
             groups: Dict[str, Dict[tuple, Dict[str, Any]]] = defaultdict(dict)
 
-            for keyword, node_uuid, namespace, domain, path, content in result.all():
+            for (
+                keyword,
+                node_uuid,
+                namespace,
+                domain,
+                path,
+                content,
+                lifecycle_status,
+            ) in result.all():
                 key = (node_uuid, namespace, domain, path)
                 if key not in groups[keyword]:
                     snippet = ""
@@ -184,6 +196,7 @@ class GlossaryService:
                         "namespace": namespace,
                         "uri": uri,
                         "content_snippet": snippet,
+                        "lifecycle_status": lifecycle_status or "unspecified",
                     }
 
             return [
@@ -263,9 +276,11 @@ class GlossaryService:
                         Path.namespace == namespace,
                     ),
                 )
+                .join(Node, Node.uuid == GlossaryKeyword.node_uuid)
                 .where(
                     GlossaryKeyword.keyword.in_(found_keywords),
-                    GlossaryKeyword.namespace == namespace
+                    GlossaryKeyword.namespace == namespace,
+                    Node.lifecycle_status != "obsolete",
                 )
                 .order_by(GlossaryKeyword.keyword, Path.domain, Path.path)
             )

@@ -197,6 +197,8 @@ class FrontendBuildManager:
                     subprocess.run,
                     install_cmd,
                     cwd=str(self.src_dir),
+                    # MCP 走 stdio，子进程不能继承 JSON-RPC 的 stdin，否则构建会挂起。
+                    stdin=subprocess.DEVNULL,
                     capture_output=True,
                     text=True,
                     errors="replace",
@@ -219,6 +221,8 @@ class FrontendBuildManager:
                         subprocess.run,
                         mirror_cmd,
                         cwd=str(self.src_dir),
+                        # MCP 走 stdio，子进程不能继承 JSON-RPC 的 stdin，否则构建会挂起。
+                        stdin=subprocess.DEVNULL,
                         capture_output=True,
                         text=True,
                         errors="replace",
@@ -257,6 +261,8 @@ class FrontendBuildManager:
                     subprocess.run,
                     build_cmd,
                     cwd=str(self.src_dir),
+                    # MCP 走 stdio，子进程不能继承 JSON-RPC 的 stdin，否则构建会挂起。
+                    stdin=subprocess.DEVNULL,
                     capture_output=True,
                     text=True,
                     errors="replace",

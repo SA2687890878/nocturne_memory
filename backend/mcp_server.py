@@ -42,6 +42,7 @@ from db import (
 )
 from db.namespace import get_namespace
 from db.snapshot import get_changeset_store
+from db.models import LifecycleStatus
 from text_patch import (
     normalize_with_positions,
     find_valid_matches,
@@ -405,9 +406,13 @@ async def create_memory(
         default=None,
         description="Glanceable ENGLISH-ONLY concept name (alphanumeric, hyphens, underscores ONLY)."
     )],
+    lifecycle_status: LifecycleStatus = "unspecified",
 ) -> str:
     """
     Creates a new memory under a parent URI.
+
+    lifecycle_status: active, completed, obsolete, or unspecified (default).
+    Omitted means unspecified; explicit null is invalid.
 
     Args:
         parent_uri: The existing node to create this memory under.
@@ -480,6 +485,7 @@ async def create_memory(
             disclosure=disclosure,
             domain=domain,
             namespace=get_namespace(),
+            lifecycle_status=lifecycle_status,
         )
 
         created_uri = result.get("uri", make_uri(domain, result["path"]))
@@ -512,9 +518,14 @@ async def update_memory(
     append: Optional[str] = None,
     priority: Optional[int] = None,
     disclosure: Optional[str] = None,
+    lifecycle_status: Optional[LifecycleStatus] = None,
 ) -> str:
     """
-    Updates an existing memory to a new version.
+    Updates content or metadata. Status-only updates do not create a content version.
+
+    lifecycle_status: active, completed, obsolete, or unspecified.
+    Omitted/null keeps the status; unspecified explicitly clears its label.
+    All aliases share this Node status.
 
     PREREQUISITE: You MUST call read_memory(uri) and read the full content BEFORE calling this.
     Updating without reading first is a forbidden operation.
@@ -697,11 +708,11 @@ async def update_memory(
             current_content = memory.get("content", "")
             content = current_content + append
 
-        if content is None and priority is None and disclosure is None:
+        if content is None and priority is None and disclosure is None and lifecycle_status is None:
             return (
                 f"Error: No update fields provided for '{full_uri}'. "
                 f"Use replace mode (old + new), append mode (append), "
-                f"or metadata fields (priority/disclosure)."
+                f"or metadata fields (priority/disclosure/lifecycle_status)."
             )
 
         result = await graph.update_memory(
@@ -709,6 +720,7 @@ async def update_memory(
             content=content,
             priority=priority,
             disclosure=disclosure,
+            lifecycle_status=lifecycle_status,
             domain=domain,
             namespace=get_namespace(),
         )
@@ -1016,7 +1028,7 @@ async def manage_triggers(
 
 @mcp.tool()
 async def search_memory(
-    query: str, domain: Optional[str] = None, limit: int = 10
+    query: str, domain: Optional[str] = None, limit: int = 10, include_obsolete: bool = False
 ) -> str:
     """
     Search memories by path and content using full-text search.
@@ -1029,6 +1041,7 @@ async def search_memory(
         domain: Optional domain filter (e.g., "core", "writer").
                 If not specified, searches all domains.
         limit: Maximum results (default 10)
+        include_obsolete: Include obsolete memories (default false).
 
     Returns:
         List of matching memories with URIs and snippets
@@ -1045,7 +1058,7 @@ async def search_memory(
         if domain is not None and domain not in valid:
             return f"Error: Unknown domain '{domain}'. Valid domains: {', '.join(valid)}"
 
-        results = await search.search(query, limit, domain, namespace=get_namespace())
+        results = await search.search(query, limit, domain, namespace=get_namespace(), include_obsolete=include_obsolete)
 
         if not results:
             scope = f"in '{domain}'" if domain else "across all domains"

@@ -277,15 +277,25 @@ class SearchIndexer:
     # -----------------------------------------------------------------
 
     async def search(
-        self, query: str, limit: int = 10, domain: Optional[str] = None, namespace: str = ""
+        self,
+        query: str,
+        limit: int = 10,
+        domain: Optional[str] = None,
+        namespace: str = "",
+        include_obsolete: bool = False,
     ) -> List[Dict[str, Any]]:
-        """Search memories by path and content using the derived FTS index."""
+        """Search memories by path and content using the derived FTS index.
+
+        Obsolete nodes are excluded by default before ranking, de-duplication
+        and LIMIT, so their slots go to still-valid memories.
+        """
         async with self._session() as session:
             candidate_limit = max(limit * 5, 50)
             params: Dict[str, Any] = {
                 "candidate_limit": candidate_limit,
                 "namespace": namespace,
             }
+            status_clause = "" if include_obsolete else "AND n.lifecycle_status != 'obsolete'"
             domain_clause = ""
             if domain is not None:
                 params["domain"] = domain
@@ -310,6 +320,7 @@ class SearchIndexer:
                             sd.disclosure,
                             bm25(search_documents_fts, 0.0, 0.0, 2.5, 0.0, 2.0, 1.0, 1.0, 0.75) AS score
                         FROM search_documents AS sd
+                        JOIN nodes AS n ON n.uuid = sd.node_uuid
                         JOIN search_documents_fts
                           ON search_documents_fts.namespace = sd.namespace
                          AND search_documents_fts.domain = sd.domain
@@ -317,6 +328,7 @@ class SearchIndexer:
                         WHERE search_documents_fts MATCH :match_query
                           AND sd.namespace = :namespace
                           {domain_clause}
+                          {status_clause}
                         ORDER BY score ASC, sd.priority ASC, length(sd.path) ASC
                         LIMIT :candidate_limit
                         """
@@ -352,7 +364,9 @@ class SearchIndexer:
                                 websearch_to_tsquery('simple', :ts_query)
                             ) AS score
                         FROM search_documents AS sd
+                        JOIN nodes AS n ON n.uuid = sd.node_uuid
                         WHERE sd.namespace = :namespace
+                          {status_clause}
                           AND to_tsvector(
                                 'simple',
                                 coalesce(sd.path, '') || ' ' ||

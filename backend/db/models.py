@@ -11,9 +11,10 @@ Graph-based memory storage with:
 """
 
 from datetime import datetime
-from typing import Dict, Any, List
+from typing import Any, Dict, List, Literal, Tuple
 
 from sqlalchemy import (
+    CheckConstraint,
     Column,
     Integer,
     String,
@@ -32,6 +33,16 @@ Base = declarative_base()
 # Sentinel root node — parent_uuid of all top-level edges.
 # Using a fixed UUID instead of NULL avoids SQLite's NULL != NULL uniqueness quirk.
 ROOT_NODE_UUID = "00000000-0000-0000-0000-000000000000"
+
+# Node lifecycle status values. The field lives on Node (stable identity), so a
+# status survives content-version changes and never creates a Memory version.
+LifecycleStatus = Literal["active", "completed", "obsolete", "unspecified"]
+LIFECYCLE_STATUSES: Tuple[LifecycleStatus, ...] = (
+    "active",
+    "completed",
+    "obsolete",
+    "unspecified",
+)
 
 
 # =============================================================================
@@ -82,6 +93,16 @@ class Node(Base):
     uuid = Column(String(36), primary_key=True)
     created_at = Column(DateTime, default=datetime.now)
     last_accessed_at = Column(DateTime, nullable=True)
+    lifecycle_status = Column(
+        String(16), nullable=False, server_default="unspecified"
+    )
+
+    __table_args__ = (
+        CheckConstraint(
+            "lifecycle_status IN ('active', 'completed', 'obsolete', 'unspecified')",
+            name="ck_nodes_lifecycle_status",
+        ),
+    )
 
     memories = relationship("Memory", back_populates="node")
     child_edges = relationship(

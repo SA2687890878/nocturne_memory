@@ -1,0 +1,55 @@
+{
+  "unchanged": true,
+  "state": {
+    "migration_versions": [
+      "001_v1.0.0_add_migrated_to.py",
+      "002_v1.1.0_add_graph_schema_columns.py",
+      "003_v1.1.0_backfill_graph_data.py",
+      "004_v1.1.0_drop_legacy_path_columns.py",
+      "005_v1.1.0_backfill_cascade_paths.py",
+      "006_v1.1.0_deprecate_orphan_memories.py",
+      "007_v1.1.0_enforce_single_active_memory.py",
+      "008_v1.2.0_add_glossary_keywords.py",
+      "009_v1.3.0_add_search_fts.py",
+      "010_v2.0.0_add_namespace.py",
+      "011_v2.0.0_add_namespace_to_glossary.py",
+      "012_v2.1.0_add_access_logs.py",
+      "013_v2.2.0_add_path_node_uuid.py",
+      "014_v2.5.3_add_presets.py",
+      "015_add_node_lifecycle_status.py"
+    ],
+    "source_pool_sha256": "bc429680822a9c7888583c3ca5c76c9b195a4deecbf9acb60341c8b847a505d8",
+    "source_pool_rows": 151,
+    "business": {
+      "nodes": {
+        "rows": 36,
+        "sha256": "d58b08f490ef0fc866d6e6709a7557be0d89dfdf2fe622b9956f2cbe23df9eeb"
+      },
+      "memories": {
+        "rows": 38,
+        "sha256": "2d13359c28f7dfb57e381d288f627588226ce6a71d52c80b84ace4c4d1feac1d"
+      },
+      "edges": {
+        "rows": 35,
+        "sha256": "d26dbf936a55ea81092768885e6203f4a33a496c947c83bf2fc80bbe298ff58e"
+      },
+      "paths": {
+        "rows": 35,
+        "sha256": "64be5d6a3ef5976de3c6ea8742a7625bb76366fe59b639ba618148df72327223"
+      },
+      "glossary_keywords": {
+        "rows": 8,
+        "sha256": "86c92203551ee07c59d796d5f2ec8e80074270767eb90bbae6dea3dda31d739a"
+      },
+      "presets": {
+        "rows": 1,
+        "sha256": "30ace73b2096b7ee1e0a0f6a1c6f6601f1de27ebc0a5efe59f17dd6b382e17a6"
+      },
+      "schema_migrations": {
+        "rows": 15,
+        "sha256": "8cf4cd2b7a739c4cbcb520612f9d380b82c204191154ed1c17085d146928d61a"
+      }
+    }
+  },
+  "backup_directory": "E:\\myPrivateSpace\\nocturne_memory\\backups\\v3-rollout-1793181513551"
+}

@@ -40,6 +40,7 @@ from .models import (
     escape_like_literal,
     serialize_row,
     serialize_memory_ref,
+    LIFECYCLE_STATUSES,
 )
 
 if TYPE_CHECKING:
@@ -104,9 +105,10 @@ class GraphService:
         """
         async with self.session() as session:
             result = await session.execute(
-                select(Memory, Edge, Path)
+                select(Memory, Edge, Path, Node.lifecycle_status)
                 .select_from(Path)
                 .join(Edge, Path.edge_id == Edge.id)
+                .join(Node, Node.uuid == Edge.child_uuid)
                 .join(
                     Memory,
                     and_(
@@ -135,10 +137,11 @@ class GraphService:
                         "domain": domain,
                         "path": "",
                         "alias_count": 0,
+                        "lifecycle_status": "unspecified",
                     }
                 return None
 
-            memory, edge, path_obj = row
+            memory, edge, path_obj, lifecycle_status = row
 
             # Count total paths (aliases) for this node within namespace
             total_paths = await self._count_incoming_paths(session, edge.child_uuid, namespace=namespace)
@@ -157,6 +160,7 @@ class GraphService:
                 "domain": path_obj.domain,
                 "path": path_obj.path,
                 "alias_count": alias_count,
+                "lifecycle_status": lifecycle_status,
             }
 
     async def get_paths_for_node(
@@ -237,9 +241,11 @@ class GraphService:
             )
             paths = [p["uri"] for p in paths_data]
 
+            node = await session.get(Node, node_uuid)
             return {
                 "id": memory.id,
                 "node_uuid": node_uuid,
+                "lifecycle_status": node.lifecycle_status,
                 "content": memory.content,
                 "deprecated": memory.deprecated,
                 "created_at": memory.created_at.isoformat()
@@ -268,7 +274,8 @@ class GraphService:
         """
         async with self.session() as session:
             stmt = (
-                select(Edge, Memory)
+                select(Edge, Memory, Node.lifecycle_status)
+                .join(Node, Node.uuid == Edge.child_uuid)
                 .join(
                     Memory,
                     and_(
@@ -284,8 +291,8 @@ class GraphService:
 
             prefix = f"{context_path}/" if context_path else None
 
-            child_uuids = {edge.child_uuid for edge, _ in rows}
-            edge_ids = {edge.id for edge, _ in rows}
+            child_uuids = {edge.child_uuid for edge, _, _ in rows}
+            edge_ids = {edge.id for edge, _, _ in rows}
             approx_children_count_map: Dict[str, int] = {}
             paths_by_edge_id: Dict[int, List[Path]] = defaultdict(list)
             if child_uuids:
@@ -314,7 +321,7 @@ class GraphService:
 
             children = []
             seen = set()
-            for edge, memory in rows:
+            for edge, memory, lifecycle_status in rows:
                 if edge.child_uuid in seen:
                     continue
                 seen.add(edge.child_uuid)
@@ -353,6 +360,7 @@ class GraphService:
                         else memory.content,
                         "priority": edge.priority,
                         "disclosure": edge.disclosure,
+                        "lifecycle_status": lifecycle_status,
                         "approx_children_count": approx_children_count,
                     }
                 )
@@ -392,9 +400,10 @@ class GraphService:
         """
         async with self.session() as session:
             stmt = (
-                select(Path, Edge, Memory)
+                select(Path, Edge, Memory, Node.lifecycle_status)
                 .select_from(Path)
                 .join(Edge, Path.edge_id == Edge.id)
+                .join(Node, Node.uuid == Edge.child_uuid)
                 .join(
                     Memory,
                     and_(
@@ -415,7 +424,7 @@ class GraphService:
 
             paths = []
             seen = set()
-            for path_obj, edge, memory in result.all():
+            for path_obj, edge, memory, lifecycle_status in result.all():
                 key = (path_obj.namespace, path_obj.domain, path_obj.path)
                 if key in seen:
                     continue
@@ -430,6 +439,7 @@ class GraphService:
                         "priority": edge.priority,
                         "memory_id": memory.id,
                         "node_uuid": path_obj.node_uuid,
+                        "lifecycle_status": lifecycle_status,
                     }
                 )
 
@@ -735,6 +745,7 @@ class GraphService:
                 .join(Node, Node.uuid == Edge.child_uuid)
                 .where(Path.namespace == namespace)
                 .where(Node.uuid != ROOT_NODE_UUID)
+                .where(Node.lifecycle_status != "obsolete")
                 .group_by(Node.uuid, Node.last_accessed_at, Node.created_at)
             )
             
@@ -1379,12 +1390,16 @@ class GraphService:
         disclosure: Optional[str] = None,
         domain: str = "core",
         namespace: str = "",
+        lifecycle_status: str = "unspecified",
     ) -> Dict[str, Any]:
         """
         Create a new memory under a parent path.
 
         Creates: Node -> Memory -> Edge (parent->child) -> Path.
         """
+        if lifecycle_status not in LIFECYCLE_STATUSES:
+            raise ValueError("Invalid lifecycle_status")
+
         async with self.session() as session:
             if not parent_path:
                 parent_uuid = ROOT_NODE_UUID
@@ -1417,6 +1432,7 @@ class GraphService:
 
             new_uuid = str(uuid_lib.uuid4())
             node = await self._ensure_node(session, new_uuid)
+            node.lifecycle_status = lifecycle_status
             memory = await self._insert_memory(session, new_uuid, content)
 
             edge_name = title if title else final_path.rsplit("/", 1)[-1]
@@ -1441,6 +1457,7 @@ class GraphService:
                 "path": final_path,
                 "uri": f"{domain}://{final_path}",
                 "priority": priority,
+                "lifecycle_status": lifecycle_status,
                 "rows_after": {
                     "nodes": [serialize_row(node)],
                     "memories": [serialize_memory_ref(memory)],
@@ -1457,6 +1474,7 @@ class GraphService:
         disclosure: Optional[str] = None,
         domain: str = "core",
         namespace: str = "",
+        lifecycle_status: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Update a memory.
@@ -1464,10 +1482,12 @@ class GraphService:
         Content change -> new Memory row with the same node_uuid.
         Metadata change -> update the Edge directly.
         """
-        if content is None and priority is None and disclosure is None:
+        if lifecycle_status is not None and lifecycle_status not in LIFECYCLE_STATUSES:
+            raise ValueError("Invalid lifecycle_status")
+        if content is None and priority is None and disclosure is None and lifecycle_status is None:
             raise ValueError(
                 f"No update fields provided for '{domain}://{path}'. "
-                "At least one of content, priority, or disclosure must be set."
+                "At least one of content, priority, disclosure, or lifecycle_status must be set."
             )
 
         async with self.session() as session:
@@ -1501,6 +1521,13 @@ class GraphService:
             rows_before: Dict[str, list] = {}
             rows_after: Dict[str, list] = {}
 
+            if lifecycle_status is not None:
+                node = await session.get(Node, node_uuid)
+                if node.lifecycle_status != lifecycle_status:
+                    rows_before["nodes"] = [serialize_row(node)]
+                    node.lifecycle_status = lifecycle_status
+                    rows_after["nodes"] = [serialize_row(node)]
+
             edge_before = serialize_row(edge)
 
             if priority is not None:
@@ -1517,7 +1544,7 @@ class GraphService:
 
             new_memory_id = old_id
 
-            if content is not None:
+            if content is not None and content != old_memory.content:
                 rows_before["memories"] = [serialize_memory_ref(old_memory)]
 
                 new_memory = await self._insert_memory(
@@ -1962,9 +1989,11 @@ class GraphService:
         """
         async with self.session() as session:
             stmt = (
-                select(Memory, Edge, Path)
+                select(Memory, Edge, Path, Node.lifecycle_status)
                 .select_from(Path)
                 .join(Edge, Path.edge_id == Edge.id)
+                .join(Node, Node.uuid == Edge.child_uuid)
+                .where(Node.lifecycle_status != "obsolete")
                 .join(
                     Memory,
                     and_(
@@ -1984,7 +2013,7 @@ class GraphService:
             seen = set()
             memories = []
 
-            for memory, edge, path_obj in result.all():
+            for memory, edge, path_obj, lifecycle_status in result.all():
                 if memory.id in seen:
                     continue
                 seen.add(memory.id)
@@ -1995,6 +2024,7 @@ class GraphService:
                         "uri": f"{path_obj.domain}://{path_obj.path}",
                         "priority": edge.priority,
                         "disclosure": edge.disclosure,
+                        "lifecycle_status": lifecycle_status,
                         "created_at": memory.created_at.isoformat()
                         if memory.created_at
                         else None,

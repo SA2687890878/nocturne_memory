@@ -1,0 +1,9 @@
+{
+  "release": "E:/myPrivateSpace/nocturne_memory/backups/v3-rollout-1793181513551",
+  "source": "E:/myPrivateSpace/nocturne_memory",
+  "candidate": "E:/myPrivateSpace/nocturne_memory/.agents/worktrees/memory-lifecycle-v3",
+  "connector": "json-nocturne_memory",
+  "sourcePool": "E:/myPrivateSpace/记忆系统数据库/work/snapshots/ce02f04cd63c/changeset.json",
+  "preservePendingGroups": 35,
+  "rule": "No bulk data governance, no restore, no new schema migrations"
+}

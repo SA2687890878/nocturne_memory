@@ -64,7 +64,13 @@ async def fetch_and_format_memory(uri: str, track_access: bool = False) -> str:
     lines.append(f"Memory ID: {memory.get('id')}")
     lines.append(f"Other Aliases: {memory.get('alias_count', 0)}")
     lines.append(f"Priority: {memory.get('priority', 0)}")
-    
+    lifecycle_status = memory.get("lifecycle_status", "unspecified")
+    lines.append(f"Lifecycle: {lifecycle_status}")
+    if lifecycle_status == "obsolete":
+        lines.append(
+            "Lifecycle Warning: marked obsolete; shown because this URI was requested explicitly."
+        )
+
     created_at = memory.get("created_at")
     if created_at:
         try:
@@ -293,7 +299,9 @@ async def generate_memory_index_view(domain_filter: Optional[str] = None) -> str
                     priority = primary.get("priority", 0)
                     memory_id = primary.get("memory_id", "?")
                     imp_str = f" [\u2605{priority}]"
-                    lines.append(f"  - {uri} [#{memory_id}]{imp_str}")
+                    status = primary.get("lifecycle_status", "unspecified")
+                    status_str = "" if status == "unspecified" else f" [lifecycle: {status}]"
+                    lines.append(f"  - {uri} [#{memory_id}]{imp_str}{status_str}")
                 lines.append("")
 
         return "\n".join(lines)
@@ -391,7 +399,9 @@ async def generate_glossary_index_view() -> str:
             nodes = entry["nodes"]
             lines.append(f"- {kw}")
             for node in nodes:
-                lines.append(f"  -> {node['uri']}")
+                status = node.get("lifecycle_status", "unspecified")
+                status_str = "" if status == "unspecified" else f" [lifecycle: {status}]"
+                lines.append(f"  -> {node['uri']}{status_str}")
             lines.append("")
 
         return "\n".join(lines)

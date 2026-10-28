@@ -6,7 +6,10 @@
   crowded   父节点子数 > 10 —— URI 层级没有表达出主题关系
   orphan    无入边且非根 —— 删路径留下的死节点
   nodisc    边缺 disclosure —— 无法按触发条件召回
-  nostatus  正文缺 "状态:" 首行 —— 无法判断在用/已交付/已过时
+  nostatus  字段 lifecycle_status 为 unspecified —— 只提示待标注，不阻断
+  residue   正文仍有旧 "状态:" 专用头部 —— 只提示，不自动改写正文
+  conflict  正文旧状态与 lifecycle_status 不一致 —— 字段是唯一真源，只提示
+  bootold   显式 Boot 配置指向 obsolete 节点 —— 只提示，不静默改写配置
   bloat     正文 > bloat_min_bytes —— 单条挤占检索预算
   untrigger 叶子节点没有触发词 —— 仅提示，不要求为凑覆盖率绑定泛词
   glossary  零命中、正文命中率 >=5%、绑定节点 >2 —— 定向审查词表质量
@@ -20,6 +23,7 @@
 只读，不修改任何数据。
 """
 import json
+import re
 import sqlite3
 import sys
 from datetime import datetime, timedelta
@@ -29,7 +33,16 @@ ROOT = Path(__file__).resolve().parents[2]
 ROOT_UUID = "00000000-0000-0000-0000-000000000000"
 
 
-ADVISORY_CHECKS = frozenset({"untriggered_leaves"})
+ADVISORY_CHECKS = frozenset({
+    "untriggered_leaves",
+    "entries_without_status",
+    "template_status_residue",
+    "status_field_conflicts",
+    "obsolete_boot_references",
+})
+# Legacy body headers are advisory only; lifecycle_status remains the sole truth.
+LEGACY_STATUS_HEADERS = {"在用": "active", "已交付": "completed", "已过时": "obsolete"}
+STATUS_HEADER_RE = re.compile(r"^状态\s*[:：]\s*(在用|已交付|已过时)\s*$")
 # Local policy: these terms produced unrelated glossary links in the migration audit.
 GENERIC_KEYWORDS = frozenset(
     "状态 文件 配置 条目 code 任务 test config server profile .cs data 结论 条件 "
@@ -41,6 +54,7 @@ PRIORITY_LIMITS = {0: 5, 1: 15}
 
 # Columns each check depends on; a partial schema must fail loudly, not read as healthy.
 SCHEMA = {
+    "nodes": ("uuid", "lifecycle_status"),
     "paths": ("namespace", "domain", "path", "node_uuid", "edge_id"),
     "memories": ("id", "node_uuid", "content", "deprecated"),
     "edges": ("id", "priority", "disclosure"),
@@ -223,6 +237,75 @@ def keyword_quality(con: sqlite3.Connection) -> dict:
     return issues
 
 
+def _legacy_body_status(content: str):
+    """Return the legacy 状态 value only for a dedicated leading header line.
+
+    Fenced code is skipped: a quoted command or sample is not a template header.
+    """
+    fenced = False
+    for line in (content or "").splitlines()[:5]:
+        stripped = line.strip()
+        if stripped.startswith("```"):
+            fenced = not fenced
+            continue
+        if fenced:
+            continue
+        match = STATUS_HEADER_RE.match(stripped)
+        if match:
+            return match.group(1)
+    return None
+
+
+def status_issues(con: sqlite3.Connection, boot=frozenset()) -> dict:
+    """Read lifecycle_status as the sole truth; body headers are advisory only.
+
+    Scope matches the former nostatus check: namespace '', live revised
+    memories, leaf paths except Boot entries. Residue and conflicts scan every
+    live node in that default namespace, including containers and Boot entries.
+    """
+    rows = con.execute(
+        """select p.path, p.node_uuid, m.content, n.lifecycle_status
+           from paths p
+           join memories m on m.node_uuid = p.node_uuid and m.deprecated = 0
+           join nodes n on n.uuid = p.node_uuid
+           where p.namespace = ''
+           order by p.path"""
+    ).fetchall()
+    parents = {row[0] for row in con.execute("select parent_uuid from edges")}
+    entries_without_status = []
+    residue = []
+    conflicts = []
+    for path, node_uuid, content, field_status in rows:
+        if (node_uuid not in parents and path not in boot
+                and field_status == "unspecified"):
+            entries_without_status.append(path)
+        body_status = _legacy_body_status(content)
+        if body_status is None:
+            continue
+        residue.append({"path": path, "body_status": body_status,
+                        "field_status": field_status})
+        mapped = LEGACY_STATUS_HEADERS[body_status]
+        if field_status != "unspecified" and field_status != mapped:
+            conflicts.append({"path": path, "body_status": body_status,
+                              "field_status": field_status})
+    obsolete_boot = [
+        {"path": path}
+        for path, in con.execute(
+            """select p.path from paths p
+               join nodes n on n.uuid = p.node_uuid
+               where p.namespace = '' and n.lifecycle_status = 'obsolete'
+               order by p.path"""
+        )
+        if path in boot
+    ]
+    return {
+        "entries_without_status": entries_without_status,
+        "template_status_residue": residue,
+        "status_field_conflicts": conflicts,
+        "obsolete_boot_references": obsolete_boot,
+    }
+
+
 def issue_count(report: dict) -> int:
     return sum(len(value) if isinstance(value, list) else value
                for key, value in report.items()
@@ -279,16 +362,6 @@ def audit(stale_days: int = 90) -> dict:
     nodisc = one("select count(*) from edges where disclosure is null or trim(disclosure)=''")
 
     boot = boot_paths()
-    nostatus = [
-        r[0]
-        for r in q(
-            """select p.path from paths p
-               join memories m on m.node_uuid=p.node_uuid and m.deprecated=0
-               where p.namespace='' and m.content not like '状态:%'
-                 and p.node_uuid not in (select parent_uuid from edges)"""
-        )
-        if r[0] not in boot
-    ]
 
     limit = bloat_limit()
     bloat = q(
@@ -326,11 +399,11 @@ def audit(stale_days: int = 90) -> dict:
         "crowded": crowded,
         "orphan_nodes": [r[0] for r in orphans],
         "edges_without_disclosure": nodisc,
-        "entries_without_status": nostatus,
         "bloat_over_%d" % limit: bloat,
         "untriggered_leaves": untrigger,
         "stale_over_%d_days" % stale_days: stale,
     }
+    report.update(status_issues(con, boot))
     report.update(keyword_quality(con))
     report["priority_over_budget"] = priority_budget(con)
     report.update(derived_document_issues(con))
