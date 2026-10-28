@@ -3,6 +3,7 @@ import importlib.util
 import json
 import sqlite3
 import unittest
+from unittest import mock
 from pathlib import Path
 
 spec = importlib.util.spec_from_file_location(
@@ -473,6 +474,26 @@ class SchemaGuardTests(unittest.TestCase):
         self.assertEqual(audit.issue_count(report), 1)
         report["search_fts_drift"] = [{"uri": "core://a", "field": "content"}]
         self.assertEqual(audit.issue_count(report), 2)
+
+
+class DeadRuleLinkTests(GuardTestBase):
+    def test_only_missing_local_files_are_reported(self):
+        self.add_live("core://a", "见 [x](<C:/real/a b.md>) 与 [y](<C:/no/such/file.md#L3>)")
+        self.add_live("core://b", "无链接")
+        self.add_live("core://d", "[x](<C:/real/a%20b.md>)")
+        real = {"C:/real/a b.md"}
+        with mock.patch.object(audit.Path, "exists", lambda p: p.as_posix() in real):
+            self.assertEqual(audit.dead_rule_links(self.db),
+                             [{"path": "core://a", "target": "C:/no/such/file.md"}])
+
+    def test_code_examples_are_not_links(self):
+        self.add_live("core://c", "示例:\n```\n[规则](<C:/path/to/example.md>)\n```"
+                      "\n行内 `[x](<C:/inline/none.md>)`")
+        self.assertEqual(audit.dead_rule_links(self.db), [])
+
+    def test_key_blocks_the_audit(self):
+        self.assertEqual(audit.issue_count(
+            {"dead_rule_links": [{"path": "a", "target": "b"}]}), 1)
 
 
 if __name__ == "__main__":

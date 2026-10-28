@@ -28,6 +28,7 @@ import sqlite3
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[2]
 ROOT_UUID = "00000000-0000-0000-0000-000000000000"
@@ -306,6 +307,25 @@ def status_issues(con: sqlite3.Connection, boot=frozenset()) -> dict:
     }
 
 
+def dead_rule_links(con: sqlite3.Connection) -> list:
+    """Markdown links to local files must resolve; a rename must not cut the index silently."""
+    missing, seen = [], set()
+    for path, content in con.execute(
+        """select distinct p.path, m.content from memories m
+           join paths p on p.node_uuid = m.node_uuid
+           where p.namespace = '' and m.deprecated = 0"""
+    ):
+        text = re.sub(r"```.*?```|`[^`\n]*`", "", content or "", flags=re.S)
+        for bracketed, bare in re.findall(r"\]\(<([^>\n]+)>|\]\(([^)\s#]+)", text):
+            target = unquote((bracketed or bare).split("#", 1)[0])
+            if not re.match(r"[A-Za-z]:", target):
+                continue
+            if (path, target) not in seen and not Path(target).exists():
+                seen.add((path, target))
+                missing.append({"path": path, "target": target})
+    return missing
+
+
 def issue_count(report: dict) -> int:
     return sum(len(value) if isinstance(value, list) else value
                for key, value in report.items()
@@ -399,6 +419,7 @@ def audit(stale_days: int = 90) -> dict:
         "crowded": crowded,
         "orphan_nodes": [r[0] for r in orphans],
         "edges_without_disclosure": nodisc,
+        "dead_rule_links": dead_rule_links(con),
         "bloat_over_%d" % limit: bloat,
         "untriggered_leaves": untrigger,
         "stale_over_%d_days" % stale_days: stale,
