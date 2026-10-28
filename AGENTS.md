@@ -8,7 +8,8 @@
 - 构建前端：`cd frontend && npm run build`
 - 前端测试：`cd frontend && npm run test:run`
 - 后端测试：`cd backend && python -m pytest`
-- 本地运行：双击根目录 `start-local-dev.bat`；前端 `127.0.0.1:3000`，后端 `127.0.0.1:8233`。
+- 正式入口：Nocturne MCP 进程（stdio 供 DSH，内置 Web UI `127.0.0.1:8233`），由 DSH 连接器启动；不要再单独启动 uvicorn，否则端口冲突。
+- 开发入口：双击根目录 `start-local-dev.bat` 会抢占 `8233/3000`，仅限开发机使用。
 
 ## 结构
 - `backend/`：API、数据库与服务端入口。
