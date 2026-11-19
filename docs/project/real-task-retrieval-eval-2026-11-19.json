@@ -1,0 +1,258 @@
+{
+  "dataset": "Nocturne personal memory real-task benchmark",
+  "created_at": "2026-11-19",
+  "count": 20,
+  "precision_at_10": null,
+  "precision_note": "Not computed: only one positive target per case was labeled; unjudged candidates were not assumed irrelevant.",
+  "cases": [
+    {
+      "query": "Nocturne唯一记忆真源，不要重新启用旧 memory 插件",
+      "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "rank": 1,
+      "top10": [
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent/memory-governance",
+        "core://my_user/rewrite-consent"
+      ],
+      "chars": 1133,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "新会话开始时应该加载哪些核心记忆",
+      "expected_uri": "core://agent",
+      "rank": null,
+      "top10": [
+        "core://agent/delivery"
+      ],
+      "chars": 444,
+      "mode": "direct_entrypoint",
+      "actual_route": "read_memory(system://boot)",
+      "note": "Startup is a known system entrypoint, not a search query; exclude from lexical recall metrics."
+    },
+    {
+      "query": "预计输出很大时怎么控制上下文和 token 消耗",
+      "expected_uri": "core://agent/dsh/context-output",
+      "rank": null,
+      "top10": [
+        "core://agent/environment/toolchain/context-mode-deva-assessment",
+        "core://agent/dsh/compaction",
+        "core://my_user"
+      ],
+      "chars": 1062,
+      "mode": "semantic_fallback",
+      "semantic_rank": 1,
+      "semantic_uri": "core://agent/dsh/context-output",
+      "note": "Lexical search missed; explicit semantic_search_memory recovered the labeled target at rank 1."
+    },
+    {
+      "query": "需求设计开发验证几个阶段如何衔接交付",
+      "expected_uri": "core://agent/delivery",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery",
+        "core://agent/verification",
+        "core://agent/delivery/requirements"
+      ],
+      "chars": 954,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "排查软件故障时先怎么定位根因",
+      "expected_uri": "core://agent/delivery/debugging",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/debugging",
+        "core://agent/delivery/development",
+        "core://agent/delivery/task-contract"
+      ],
+      "chars": 964,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "实现新功能前应该怎样复用现有代码避免过度抽象",
+      "expected_uri": "core://agent/delivery/development",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/development",
+        "core://agent/delivery/design",
+        "core://agent/environment/postgrescompare-pipeline"
+      ],
+      "chars": 1294,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "修改项目配置和核心文件之前如何做备份",
+      "expected_uri": "core://agent/delivery/process",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/process",
+        "core://agent/environment/workbuddy-office-checkin",
+        "core://agent/verification/test-design"
+      ],
+      "chars": 1136,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "需求信息不完整时什么时候应该向用户提问",
+      "expected_uri": "core://agent/delivery/requirements",
+      "rank": 3,
+      "top10": [
+        "core://agent/environment/toolchain/iqa-low-integrity-tests",
+        "core://agent/environment/toolchain/deva-cli-tooling-codegraph-rtk",
+        "core://agent/delivery/requirements"
+      ],
+      "chars": 1276,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "复杂代码改动什么时候需要子代理做只读评审",
+      "expected_uri": "core://agent/delivery/review",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/review",
+        "core://agent/delivery",
+        "core://agent/environment/toolchain/deva-cli-tooling-codegraph-rtk"
+      ],
+      "chars": 1187,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "测试策略如何按风险确定覆盖范围",
+      "expected_uri": "core://agent/delivery/testing",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/testing",
+        "core://agent/verification",
+        "core://agent/delivery/development"
+      ],
+      "chars": 902,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "引入新开发工具前需要比较哪些因素和成本",
+      "expected_uri": "core://agent/delivery/tool-selection",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/tool-selection",
+        "core://agent/verification",
+        "core://my_user"
+      ],
+      "chars": 893,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "Codex通过Copilot bridge使用模型时Responses协议怎么转换",
+      "expected_uri": "core://agent/environment/codex-copilot-provider",
+      "rank": 1,
+      "top10": [
+        "core://agent/environment/codex-copilot-provider",
+        "core://agent/environment/deva-copilot-provider"
+      ],
+      "chars": 1509,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "Deva使用Copilot代理时认证转发和上游域名如何处理",
+      "expected_uri": "core://agent/environment/deva-copilot-provider",
+      "rank": 1,
+      "top10": [
+        "core://agent/environment/deva-copilot-provider",
+        "core://agent/environment/dsh-copilot-latency",
+        "core://agent/environment/codex-copilot-provider"
+      ],
+      "chars": 1761,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "PostgresCompare Pipeline跨schema对象配对和函数误报",
+      "expected_uri": "core://agent/environment/postgrescompare-pipeline",
+      "rank": 1,
+      "top10": [
+        "core://agent/environment/postgrescompare-pipeline"
+      ],
+      "chars": 802,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "SQL脚本说明步骤和数据库列注释必须使用中文",
+      "expected_uri": "core://my_user/sql_chinese_comments",
+      "rank": 1,
+      "top10": [
+        "core://my_user/sql_chinese_comments",
+        "core://agent/source-catalog/database",
+        "core://my_user/technical-context"
+      ],
+      "chars": 1095,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "数据库操作前核对数据库引擎目标环境身份和授权",
+      "expected_uri": "core://agent/source-catalog/database",
+      "rank": 1,
+      "top10": [
+        "core://agent/source-catalog/database",
+        "core://my_user/technical-context",
+        "core://my_user/sql_chinese_comments"
+      ],
+      "chars": 1095,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "Vue2和Vue3前端规范应该如何按当前项目区分",
+      "expected_uri": "core://agent/source-catalog/frontend",
+      "rank": 1,
+      "top10": [
+        "core://agent/source-catalog/frontend",
+        "core://my_user/technical-context",
+        "core://agent/delivery/development"
+      ],
+      "chars": 1038,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "Windows宿主网络配置端口IP网关等易变事实怎么核验",
+      "expected_uri": "core://agent/environment",
+      "rank": 1,
+      "top10": [
+        "core://agent/environment",
+        "core://agent/environment/hangzhou-act-dual-nic",
+        "core://agent/environment/workbuddy-office-checkin"
+      ],
+      "chars": 1243,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "恢复工程任务时active json和历史index是唯一进度来源",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/task-contract",
+        "core://agent/environment/deva-engineering-layer",
+        "core://agent/memory-governance/single-source-memory-retirement"
+      ],
+      "chars": 1345,
+      "mode": "lexical_search"
+    },
+    {
+      "query": "改写已有规则文档和记忆前需要先确认草案",
+      "expected_uri": "core://my_user/rewrite-consent",
+      "rank": 1,
+      "top10": [
+        "core://my_user/rewrite-consent",
+        "core://agent/delivery/development",
+        "core://agent/environment/toolchain/iqa-low-integrity-tests"
+      ],
+      "chars": 1060,
+      "mode": "lexical_search"
+    }
+  ],
+  "methodology": "Queries are manually curated from the user’s actual saved topics and recurring task types. Each case has one manually labeled relevant URI. This is a small, user-specific offline benchmark, not production telemetry.",
+  "total_scenarios": 20,
+  "direct_entrypoint_scenarios": 1,
+  "lexical_search_cases": 19,
+  "lexical_hits_at_10": 18,
+  "lexical_recall_at_10": 0.9473684210526315,
+  "lexical_mrr": 0.9122807017543859,
+  "semantic_fallback_recovered": 1,
+  "combined_coverage_in_this_sample": 1.0
+}

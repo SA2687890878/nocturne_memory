@@ -1,0 +1,186 @@
+{
+  "generated_at": "2026-11-19T16:10:00+08:00",
+  "database": "real work-memory.db read-only",
+  "two_stage_policy": "first include_partial=false; retry include_partial=true only when target Node absent",
+  "paraphrase": {
+    "count": 18,
+    "hits": 18,
+    "recall_at_10": 1.0,
+    "partial_retries": 12,
+    "avg_first_response_chars": 334.5,
+    "avg_final_response_chars": 1166.388888888889,
+    "cases": [
+      {
+        "query": "旧的记忆插件已经退役，怎么保证只有 Nocturne 作为唯一记忆来源？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://agent/memory-governance/single-source-memory-retirement",
+        "first_chars": 46,
+        "final_chars": 1310
+      },
+      {
+        "query": "上下文很长的时候，怎么减少一次性塞进模型的内容？",
+        "stage": "strict",
+        "rank": 1,
+        "expected": "core://agent/dsh/context-output",
+        "first_chars": 426,
+        "final_chars": 426
+      },
+      {
+        "query": "程序运行异常时，应该按什么顺序定位真正原因？",
+        "stage": "strict",
+        "rank": 1,
+        "expected": "core://agent/delivery/debugging",
+        "first_chars": 1487,
+        "final_chars": 1487
+      },
+      {
+        "query": "开发新需求时，怎样优先沿用项目现有实现而不是重新造轮子？",
+        "stage": "strict",
+        "rank": 1,
+        "expected": "core://agent/delivery/development",
+        "first_chars": 1466,
+        "final_chars": 1466
+      },
+      {
+        "query": "改动核心配置前，应该怎样留好可恢复的备份？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://agent/delivery/process",
+        "first_chars": 46,
+        "final_chars": 1326
+      },
+      {
+        "query": "业务描述不清楚时，怎样判断先追问还是按默认假设继续？",
+        "stage": "strict",
+        "rank": 1,
+        "expected": "core://agent/delivery/requirements",
+        "first_chars": 415,
+        "final_chars": 415
+      },
+      {
+        "query": "什么情况下值得让另一个代理检查代码改动？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://agent/delivery/review",
+        "first_chars": 46,
+        "final_chars": 458
+      },
+      {
+        "query": "如何根据变更风险决定单元测试和集成测试的范围？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://agent/delivery/testing",
+        "first_chars": 46,
+        "final_chars": 1067
+      },
+      {
+        "query": "选一个新的 AI 编程工具时，应该比较哪些成本和能力？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://agent/delivery/tool-selection",
+        "first_chars": 46,
+        "final_chars": 1348
+      },
+      {
+        "query": "Codex 接入 Copilot 转发服务后，API 请求格式有哪些适配点？",
+        "stage": "strict",
+        "rank": 1,
+        "expected": "core://agent/environment/codex-copilot-provider",
+        "first_chars": 1226,
+        "final_chars": 1226
+      },
+      {
+        "query": "Deva 通过 Copilot 登录时，如何处理凭证和上游 API 地址？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://agent/environment/deva-copilot-provider",
+        "first_chars": 46,
+        "final_chars": 1639
+      },
+      {
+        "query": "PostgreSQL 比较工具怎样匹配不同 schema 的对象并减少误报？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://agent/environment/postgrescompare-pipeline",
+        "first_chars": 46,
+        "final_chars": 1730
+      },
+      {
+        "query": "写 SQL 时，为什么脚本说明和字段注释都要用中文？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://my_user/sql_chinese_comments",
+        "first_chars": 46,
+        "final_chars": 1379
+      },
+      {
+        "query": "执行数据库变更之前，需要核对哪些环境和权限信息？",
+        "stage": "partial_retry",
+        "rank": 2,
+        "expected": "core://agent/source-catalog/database",
+        "first_chars": 46,
+        "final_chars": 1272
+      },
+      {
+        "query": "前端开发规范如何判断当前项目是 Vue 2 还是 Vue 3？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://agent/source-catalog/frontend",
+        "first_chars": 46,
+        "final_chars": 1174
+      },
+      {
+        "query": "Windows 机器上的 IP、网关和端口信息变化后如何重新确认？",
+        "stage": "partial_retry",
+        "rank": 3,
+        "expected": "core://agent/environment",
+        "first_chars": 46,
+        "final_chars": 1451
+      },
+      {
+        "query": "接手之前没做完的开发工作，应该从哪里恢复进度？",
+        "stage": "strict",
+        "rank": 1,
+        "expected": "core://agent/delivery/task-contract",
+        "first_chars": 449,
+        "final_chars": 449
+      },
+      {
+        "query": "要修改已有的长期规则或记忆内容，应该先做什么确认？",
+        "stage": "partial_retry",
+        "rank": 1,
+        "expected": "core://my_user/rewrite-consent",
+        "first_chars": 46,
+        "final_chars": 1372
+      }
+    ]
+  },
+  "negative_first_pass": {
+    "count": 25,
+    "zero_candidate": 25,
+    "with_candidates": 0,
+    "avg_response_chars": 46
+  },
+  "full_test_suite": {
+    "command": "pytest backend/tests -q",
+    "result": "275 passed, 25 warnings",
+    "duration_seconds": 97.46,
+    "exit_code": 0
+  },
+  "http_mcp_verification": {
+    "service_pid": 6828,
+    "health_status": 200,
+    "database": "connected",
+    "tool_count": 11,
+    "strict_first_pass": {
+      "query": "Deva 通过 Copilot 登录时，如何处理凭证和上游 API 地址？",
+      "response_chars": 46,
+      "candidate_count": 0
+    },
+    "explicit_partial_second_pass": {
+      "response_chars": 1639,
+      "expected_memory_found": true
+    }
+  }
+}

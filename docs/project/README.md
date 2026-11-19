@@ -60,6 +60,11 @@ npm run build
 | [记忆系统建设指南](./memory-system-guide.md) | 协议边界、社区实践与建设检查表 |
 | [交接文档 2026-10-22](./handoff-2026-10-22.md) | 记忆系统重建的结论、踩坑与待办（新会话先读这篇） |
 | [Agent 接入指南](./agent-integration.md) | 通用 MCP 与 DSH 接入、验证 |
+| [个人记忆系统本机使用说明](./personal-memory-quickstart.md) | 本机服务启动、Claude Code / VS Code MCP 接入和当前能力边界 |
+| [Nocturne V3.1 上下文交付方案](./nocturne-v3.1-context-delivery.md) | 摘要优先、渐进式披露、搜索索引同步和 Token 控制的已确认方案 |
+| [Nocturne V3.1 迭代计划](./nocturne-v3.1-iteration-plan.md) | 阶段安排、任务依赖、验收清单、风险和当前进度 |
+| [MCP 工具描述规范](./mcp-tool-descriptions.md) | 11 个 MCP 工具的简明描述与调用边界 |
+| [记忆质量审计](./memory-quality-audit-2026-11-19.md) | 当前工作库只读质量检查结果与复核事项 |
 
 ## 相关现有文档
 
@@ -70,3 +75,13 @@ npm run build
 ## 参考
 - 项目入口：[README.md](../../README.md)
 - 技术与目录事实以当前源码和依赖清单为准；具体来源列在各主题文档末尾。
+
+- [记忆质量只读审计](memory-quality-audit-2026-11-19.md)
+
+- [自然语言改写召回评估](retrieval-paraphrase-eval-2026-11-19.md)
+
+- [生命周期与摘要待复核清单](memory-lifecycle-review-2026-11-19.md)
+
+- [V4.0 Agent 记忆调度验收集](agent-dispatch-evaluation-2026-11-19.md)
+
+- [词法检索负向查询评估](lexical-negative-query-eval-2026-11-19.md)

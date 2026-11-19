@@ -1,6 +1,6 @@
 # MCP Tool Reference
 
-> 本文档是 Nocturne Memory MCP Server 提供的 7 个工具的完整参数说明。
+> 本文档说明 Nocturne Memory MCP Server 的主要工具及其使用方式。
 > 安装 MCP 后，AI 可以直接通过 tool docstring 获取这些信息，无需手动查阅。
 
 ---
@@ -98,11 +98,22 @@ create_memory("core://", "Bluesky 使用规则...", priority=2, disclosure="当�
 
 ---
 
-## `search_memory(query, domain?, limit?)`
-按关键词搜索记忆内容和路径。使用**全文检索**，不是语义搜索。
+## `search_memory(query, domain?, limit?, include_obsolete?, include_partial?)`
+按关键词搜索记忆内容和路径。使用全文检索，不是语义搜索。默认返回 L0 元数据与预算内 L1 摘要；正文片段默认关闭，摘要缺失时不会自动展开全文。严格检索无结果时最多返回 3 条 PARTIAL 兜底候选，默认省略其摘要。
 
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | `query` | `str` | ✅ | 搜索关键词（词项全文检索） |
 | `domain` | `str` | ❌ | 限定搜索域（如 `"core"`, `"writer"`） |
 | `limit` | `int` | ❌ | 最大返回数量（默认 10） |
+
+
+### 检索与披露建议
+
+- 不知道 URI：先调用 `search_memory`，不要猜 URI。
+- 摘要足够：直接使用搜索结果，不调用 `read_memory`。
+- 默认严格检索无结果时可能返回最多 3 条 PARTIAL 兜底候选；默认不交付 PARTIAL 候选摘要以节省 Token；先检查匹配覆盖率和命中词，只有显式 include_partial=true 才查看摘要，弱相关候选不要展开或引用。
+- 需要原文细节：再调用 `read_memory(uri)`。
+- 关键词表达明显不一致、怀疑漏召回：可调用 `semantic_search_memory`；它返回近邻候选，不代表相关性已确认。
+- `sync_semantic_index` 是显式操作，可能调用 Embeddings API；普通 create/update/delete 不会自动同步向量。
+- `diagnose_memory_backend` 检查当前 MCP 进程对数据库的读写能力。

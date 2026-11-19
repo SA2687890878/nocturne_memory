@@ -1,0 +1,374 @@
+{
+  "dataset": "Nocturne lexical negative-query abstention evaluation",
+  "created_at": "2026-11-19",
+  "database_mode": "real work SQLite opened with mode=ro",
+  "method": "Current SearchIndexer query normalization, curated phrase aliases, FTS5 ranking, obsolete filtering, and OR partial fallback replicated in read-only SQL; no writes, no embeddings.",
+  "count": 25,
+  "zero_candidate_count": 13,
+  "with_candidate_count": 12,
+  "results": [
+    {
+      "id": "N01",
+      "query": "帮我规划一次东京五天四晚的自由行，安排景点和交通。",
+      "candidate_count": 3,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://agent/delivery/testing",
+          "memory_id": 48,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/delivery",
+          "memory_id": 40,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/source-catalog",
+          "memory_id": 61,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N02",
+      "query": "今天北京天气怎么样，明天会不会下雨？",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N03",
+      "query": "给我推荐几道适合周末做的川菜家常菜。",
+      "candidate_count": 3,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://agent/delivery/testing",
+          "memory_id": 48,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/delivery",
+          "memory_id": 40,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/source-catalog/code-access/deva-cli-tooling",
+          "memory_id": 101,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N04",
+      "query": "解释一下光合作用的基本过程，适合小学生理解。",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N05",
+      "query": "帮我写一首关于秋天落叶的现代诗。",
+      "candidate_count": 2,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://agent/source-catalog",
+          "memory_id": 61,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/delivery",
+          "memory_id": 40,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N06",
+      "query": "比较几款适合家庭使用的空气净化器。",
+      "candidate_count": 2,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://agent/source-catalog",
+          "memory_id": 61,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/environment/dsh-copilot-latency",
+          "memory_id": 100,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N07",
+      "query": "如何给阳台上的多肉植物浇水和施肥？",
+      "candidate_count": 3,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://my_user",
+          "memory_id": 68,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/environment/workspaces",
+          "memory_id": 58,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/nocturne-memory",
+          "memory_id": 110,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N08",
+      "query": "推荐一部轻松的悬疑电影，最好不要太恐怖。",
+      "candidate_count": 1,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://agent/environment/workbuddy-office-checkin",
+          "memory_id": 98,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N09",
+      "query": "帮我制定一个每周三次的跑步训练计划。",
+      "candidate_count": 3,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://agent/delivery/testing",
+          "memory_id": 48,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent",
+          "memory_id": 39,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/delivery/requirements",
+          "memory_id": 45,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N10",
+      "query": "解释欧元和美元汇率变化通常受哪些因素影响。",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N11",
+      "query": "给婚礼现场写一段温馨的主持人开场白。",
+      "candidate_count": 1,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://my_user/rewrite-consent",
+          "memory_id": 70,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "ambiguous_personal_context"
+    },
+    {
+      "id": "N12",
+      "query": "怎么做一个松软的戚风蛋糕，列出材料比例。",
+      "candidate_count": 2,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://agent/delivery/testing",
+          "memory_id": 48,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/delivery/requirements",
+          "memory_id": 45,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N13",
+      "query": "介绍一下太阳系八大行星的特点。",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N14",
+      "query": "帮我润色一封申请年假的邮件，语气礼貌自然。",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N15",
+      "query": "推荐适合初学者的吉他练习曲和练习方法。",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N16",
+      "query": "分析英超本赛季积分榜和争冠形势。",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N17",
+      "query": "如何清洗白色运动鞋，避免鞋面发黄？",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N18",
+      "query": "解释个人所得税专项附加扣除的申报流程。",
+      "candidate_count": 1,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://my_user/visual-output-routing",
+          "memory_id": 73,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N19",
+      "query": "帮我设计一份适合露营的三天菜单和采购清单。",
+      "candidate_count": 3,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://agent/delivery",
+          "memory_id": 40,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/delivery/testing",
+          "memory_id": 48,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/verification/test-design",
+          "memory_id": 67,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N20",
+      "query": "把这段中文翻译成法语，并保持商务语气。",
+      "candidate_count": 3,
+      "mode": "or_partial",
+      "top3": [
+        {
+          "uri": "core://agent/environment/deva-copilot-provider/codex",
+          "memory_id": 102,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/environment/codex-copilot-provider",
+          "memory_id": 102,
+          "relevance_judgment": "irrelevant"
+        },
+        {
+          "uri": "core://agent/environment/dsh-next-profile-acl-denied",
+          "memory_id": 111,
+          "relevance_judgment": "irrelevant"
+        }
+      ],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N21",
+      "query": "凤凰城周末家庭野餐菜单",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N22",
+      "query": "量子纠缠实验历史",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N23",
+      "query": "猫咪修剪指甲",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N24",
+      "query": "古典吉他与钢琴音域",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    },
+    {
+      "id": "N25",
+      "query": "欧洲足球比分",
+      "candidate_count": 0,
+      "mode": "none",
+      "top3": [],
+      "query_scope": "confirmed_out_of_domain"
+    }
+  ],
+  "limitations": [
+    "全部为人工编写的离线合成查询，不代表线上真实任务分布。",
+    "候选相关性按当前摘要和URI人工判断；N11婚礼主持词可能关联用户既有婚礼上下文，因此排除在确认域外比例之外。",
+    "本评估只测词法检索结果，不测Agent是否会主动调用工具；客户端真实工具轨迹仍需单独采集。",
+    "本轮未修改检索逻辑、真实记忆数据或向量索引。"
+  ],
+  "manual_review": {
+    "reviewed_candidate_count": 27,
+    "irrelevant_candidate_count": 27,
+    "confirmed_out_of_domain_query_count": 24,
+    "confirmed_out_of_domain_with_irrelevant_candidates": 11,
+    "ambiguous_scope_query_ids": [
+      "N11"
+    ],
+    "judgment_method": "人工核对返回候选 URI 与当前摘要；不相关候选逐条标注 irrelevant。N11 涉及用户曾保存的婚礼主题，单独标记为范围不确定，不纳入域外查询比例。"
+  }
+}

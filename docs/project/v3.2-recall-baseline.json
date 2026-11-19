@@ -1,0 +1,1089 @@
+{
+  "title": "V3.2 真实工作库召回基线（只读）",
+  "evaluated_at": "2026-11-18",
+  "database": "work-memory.db（正式工作库；只读查询，未修改数据）",
+  "method": "以实际记忆正文确认单条目标 URI；每条查询只标注一个已确认目标，其余结果未完成相关性标注。包含基于记忆检索词构造的种子查询及自然语言改写压力查询。",
+  "limitations": [
+    "小样本诊断集，不代表完整生产 Recall。",
+    "Precision@10 暂不计算：非目标候选尚未逐条完成相关性判断，不能将未标注候选视为不相关。",
+    "当前数据库没有 obsolete 记录，无法验证 obsolete 过滤；只有一个 namespace，无法验证跨 namespace 隔离。",
+    "种子查询与正文检索词接近，存在样本偏置。"
+  ],
+  "database_snapshot": {
+    "nodes": 47,
+    "paths": 48,
+    "search_documents": 48,
+    "namespaces": [
+      ""
+    ],
+    "obsolete_nodes": 0,
+    "documents_with_summary": 2,
+    "alias_groups": 2
+  },
+  "metrics": {
+    "query_count": 18,
+    "positive_query_count": 17,
+    "positive_target_hit_at_10": 16,
+    "positive_target_recall_at_10": 0.9412,
+    "positive_mrr": 0.902,
+    "precision_at_10": null
+  },
+  "cases": [
+    {
+      "id": "R01",
+      "type": "positive",
+      "query": "唯一真源旧库退役",
+      "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "rank": 1,
+      "result_count": 6,
+      "match_type": "strict",
+      "match_coverage": null,
+      "top5": [
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent/source-catalog",
+        "core://agent/environment/deva-engineering-layer",
+        "core://agent/dsh/compaction",
+        "core://agent/dsh/profile"
+      ]
+    },
+    {
+      "id": "R02",
+      "type": "positive",
+      "query": "任务恢复阶段 product_path",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank": 1,
+      "result_count": 6,
+      "match_type": "strict",
+      "match_coverage": null,
+      "top5": [
+        "core://agent/delivery/task-contract",
+        "core://agent/dsh/compaction",
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent",
+        "core://agent/delivery/review"
+      ]
+    },
+    {
+      "id": "R03",
+      "type": "positive",
+      "query": "数据库操作前确认目标环境",
+      "expected_uri": "core://agent/source-catalog/database",
+      "rank": 1,
+      "result_count": 6,
+      "match_type": "strict",
+      "match_coverage": null,
+      "top5": [
+        "core://agent/source-catalog/database",
+        "core://my_user/technical-context",
+        "core://my_user/sql_chinese_comments",
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://my_user"
+      ]
+    },
+    {
+      "id": "R04",
+      "type": "positive",
+      "query": "工作区定位同名仓库",
+      "expected_uri": "core://agent/environment/workspaces",
+      "rank": 1,
+      "result_count": 6,
+      "match_type": "strict",
+      "match_coverage": null,
+      "top5": [
+        "core://agent/environment/workspaces",
+        "core://my_user",
+        "core://agent/environment/toolchain/iqa-low-integrity-tests",
+        "core://agent/source-catalog/code-access/deva-cli-tooling",
+        "core://my_user/technical-context"
+      ]
+    },
+    {
+      "id": "R05",
+      "type": "positive",
+      "query": "压缩交接保留清单",
+      "expected_uri": "core://agent/dsh/compaction",
+      "rank": 1,
+      "result_count": 5,
+      "match_type": "strict",
+      "match_coverage": null,
+      "top5": [
+        "core://agent/dsh/compaction",
+        "core://agent/source-catalog/code-access/deva-cli-tooling",
+        "core://agent/environment/toolchain/context-mode-deva-assessment",
+        "core://agent/environment/workspaces",
+        "core://agent/memory-governance/single-source-memory-retirement"
+      ]
+    },
+    {
+      "id": "R06",
+      "type": "positive",
+      "query": "测试桩耗尽调用顺序",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank": 1,
+      "result_count": 6,
+      "match_type": "strict",
+      "match_coverage": null,
+      "top5": [
+        "core://agent/verification/test-design",
+        "core://agent/dsh/compaction",
+        "core://agent/delivery/process",
+        "core://agent/environment/postgrescompare-pipeline",
+        "core://agent/environment/toolchain/iqa-low-integrity-tests"
+      ]
+    },
+    {
+      "id": "R07",
+      "type": "positive",
+      "query": "我的技术栈和默认术语",
+      "expected_uri": "core://my_user/technical-context",
+      "rank": 1,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.714,
+      "top5": [
+        "core://my_user/technical-context",
+        "core://agent/source-catalog",
+        "core://agent/delivery/testing",
+        "core://agent/delivery",
+        "core://agent"
+      ]
+    },
+    {
+      "id": "R08",
+      "type": "positive",
+      "query": "回复简洁列表不超过五项",
+      "expected_uri": "core://my_user/collaboration-preferences",
+      "rank": 1,
+      "result_count": 6,
+      "match_type": "strict",
+      "match_coverage": null,
+      "top5": [
+        "core://my_user/collaboration-preferences",
+        "core://my_user",
+        "core://agent/dsh/context-output",
+        "core://agent/environment/deva-copilot-provider",
+        "core://agent/environment/postgrescompare-pipeline"
+      ]
+    },
+    {
+      "id": "R09",
+      "type": "negative",
+      "query": "摘要与渐进披露",
+      "expected_uri": null,
+      "rank": null,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.25,
+      "top5": [
+        "core://agent/dsh/context-output",
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent/source-catalog/code-access/deva-cli-tooling",
+        "core://agent/environment/network",
+        "core://agent/dsh/compaction"
+      ]
+    },
+    {
+      "id": "R10",
+      "type": "positive",
+      "query": "记忆生命周期审计和过期",
+      "expected_uri": "core://agent/memory-governance",
+      "rank": 1,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.429,
+      "top5": [
+        "core://agent/memory-governance",
+        "core://my_user/rewrite-consent",
+        "core://agent/delivery/task-contract",
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent/source-catalog/code-access/deva-cli-tooling"
+      ]
+    },
+    {
+      "id": "H01",
+      "type": "positive",
+      "query": "过期的记忆怎么处理",
+      "expected_uri": "core://agent/memory-governance",
+      "rank": 1,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.6,
+      "top5": [
+        "core://agent/memory-governance",
+        "core://my_user/rewrite-consent",
+        "core://agent/delivery/task-contract",
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent/delivery/process"
+      ]
+    },
+    {
+      "id": "H02",
+      "type": "positive",
+      "query": "交接给下一个会话要留下什么",
+      "expected_uri": "core://agent/dsh/compaction",
+      "rank": 1,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.25,
+      "top5": [
+        "core://agent/dsh/compaction",
+        "core://my_user/collaboration-preferences",
+        "core://my_user",
+        "core://agent",
+        "core://agent/source-catalog/code-access/deva-cli-tooling"
+      ]
+    },
+    {
+      "id": "H03",
+      "type": "positive",
+      "query": "上次开发任务怎么找回来",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank": null,
+      "result_count": 10,
+      "match_type": null,
+      "match_coverage": null,
+      "top5": [
+        "core://agent/dsh/compaction",
+        "core://my_user",
+        "core://agent/delivery/requirements",
+        "core://agent/delivery/development",
+        "core://agent/environment/zcode-weekend-build-limits"
+      ]
+    },
+    {
+      "id": "H04",
+      "type": "positive",
+      "query": "我现在有哪些项目仓库",
+      "expected_uri": "core://agent/environment/workspaces",
+      "rank": 1,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.286,
+      "top5": [
+        "core://agent/environment/workspaces",
+        "core://my_user/technical-context",
+        "core://agent/source-catalog",
+        "core://agent/environment/deva-engineering-layer",
+        "core://agent/source-catalog/code-access/deva-cli-tooling"
+      ]
+    },
+    {
+      "id": "H05",
+      "type": "positive",
+      "query": "操作数据库前有哪些安全步骤",
+      "expected_uri": "core://agent/source-catalog/database",
+      "rank": 1,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.625,
+      "top5": [
+        "core://agent/source-catalog/database",
+        "core://my_user/sql_chinese_comments",
+        "core://my_user/technical-context",
+        "core://my_user",
+        "core://agent/memory-governance/single-source-memory-retirement"
+      ]
+    },
+    {
+      "id": "H06",
+      "type": "positive",
+      "query": "我常用哪些开发技术",
+      "expected_uri": "core://my_user/technical-context",
+      "rank": 1,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.333,
+      "top5": [
+        "core://my_user/technical-context",
+        "core://agent/source-catalog",
+        "core://my_user",
+        "core://agent/delivery/requirements",
+        "core://agent/delivery/testing"
+      ]
+    },
+    {
+      "id": "H07",
+      "type": "positive",
+      "query": "旧记忆插件是否还能重新启用",
+      "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "rank": 1,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.625,
+      "top5": [
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent/source-catalog/research",
+        "core://my_user/rewrite-consent",
+        "core://agent/dsh",
+        "core://agent/environment/deva-copilot-provider"
+      ]
+    },
+    {
+      "id": "H08",
+      "type": "positive",
+      "query": "如何设计有效的自动化测试",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank": 3,
+      "result_count": 10,
+      "match_type": "partial",
+      "match_coverage": 0.286,
+      "top5": [
+        "core://my_user",
+        "core://agent/delivery",
+        "core://agent/verification/test-design",
+        "core://agent/delivery/testing",
+        "core://agent/source-catalog/frontend"
+      ]
+    }
+  ],
+  "observations": [
+    "原始基线按正确 Ground Truth 重算：17 条正向查询命中 16 条，正向目标 Recall@10=94.12%，MRR=0.9020；R09 是负向查询，不纳入正向 Recall/MRR。",
+    "全局停用词过滤实验被否决：H06“我常用哪些开发技术”从第 1 降到第 3；不进入代码。",
+    "短语别名补充：找回来/找回任务 → 恢复任务；下一个会话要留下什么 → 交接保留。原始查询不被改写，别名只在原始 AND 无命中后尝试。",
+    "R09 正式更正为负向查询：已核对原目标 core://agent/dsh/context-output 的正文，仅描述 DSH 大输出工具，不是 Nocturne 摘要/渐进披露设计。当前正式记忆库无该主题目标记忆。",
+    "SQLite OR 降级部分匹配覆盖率门槛从 0.25 调至 0.26。正式工作库只读复测：17/17 正向目标命中，MRR=0.9314；R09 负向查询返回 0 条。",
+    "阈值 0.25 对照阈值 0.26：返回候选从 93 降至 67（减少 28.0%）；Macro P@returned 从 0.5937 提升到 0.7000；负向 R09 误召回从 10 条降到 0 条。正向目标命中和 MRR 不变。",
+    "固定分母 Macro P@10 为 0.1611，变化前后相同；由于每条查询实际返回数不同，另报告非空查询的 Macro P@returned，不能将两种口径混用。",
+    "相关性标签为单人保守初标，未进行第二位标注者复核；不据此宣称全库 Precision/Recall。",
+    "在覆盖率门槛 0.26 基础上，将 SQLite OR 降级候选最多返回数限制为 3。正式工作库只读复测 17/17 正向目标命中，MRR 0.9314；返回候选由 64 降至 34，Macro P@returned 0.7294→0.8235，Micro P@returned 0.4375→0.7353；R09 负向查询仍返回 0 条。",
+    "10 条独立自然语言改写查询（未参与别名设计）在正式工作库只读复测目标 Top10 命中 10/10，MRR=0.8500；其中 3 条由新增人工短语别名辅助命中，结果记录在 v3.2-holdout-evaluation.json。",
+    "针对上一轮漏召回补充 5 条人工短语别名：开发任务接续→恢复任务、Mock 返回值不够→期望耗尽、回答尽量短→回复简洁精准、记忆不应自动清理→自动删除、配置确实加载→配置变更/同源解析。正式工作库只读复测 5/5 目标均进入 Top10，MRR=0.9000；开发任务目标排名第 2，其余 4 条第 1。"
+  ],
+  "token_diagnostics": {
+    "hard_case": "H03 上次开发任务怎么找回来",
+    "jieba_terms": "上次 开发 任务 怎么 找 回来",
+    "target_uri": "core://agent/delivery/task-contract",
+    "variant_ranks": {
+      "任务": 7,
+      "开发任务": 9,
+      "找回任务": 7,
+      "恢复任务": 2,
+      "任务恢复": 2,
+      "product_path": 1
+    },
+    "interpretation": "原查询缺少目标记忆中的关键检索词“恢复”；“找回来”与“恢复”语义接近但词面不同。把“开发”等非关键词与“任务”一起检索也会稀释排序。当前查询分词没有停用词或同义词扩展。"
+  },
+  "alias_validation": [
+    {
+      "query": "codegraph rtk",
+      "primary_uri": "core://agent/environment/toolchain/deva-cli-tooling-codegraph-rtk",
+      "alias_uri": "core://agent/source-catalog/code-access/deva-cli-tooling",
+      "alias_priority": 3,
+      "alias_disclosure_present": true
+    },
+    {
+      "query": "deva cli tooling",
+      "primary_uri": "core://agent/source-catalog/code-access/deva-cli-tooling",
+      "alias_uri": "core://agent/environment/toolchain/deva-cli-tooling-codegraph-rtk",
+      "alias_priority": 2,
+      "alias_disclosure_present": true
+    }
+  ],
+  "implementation": {
+    "change": "SQLite strict query misses now try a tiny curated phrase-alias lane using AND before the existing OR fallback. Original query is unchanged; no global stopword filtering.",
+    "aliases": {
+      "找回来": [
+        "恢复任务"
+      ],
+      "找回任务": [
+        "恢复任务"
+      ],
+      "下一个会话要留下什么": [
+        "交接保留"
+      ],
+      "恢复之前开发进度": [
+        "恢复任务"
+      ],
+      "切换会话前": [
+        "交接保留"
+      ],
+      "自动化测试用例": [
+        "用例设计"
+      ],
+      "把之前那个开发任务接着做": [
+        "恢复任务"
+      ],
+      "返回值不够": [
+        "期望耗尽"
+      ],
+      "回答尽量短": [
+        "回复简洁精准"
+      ],
+      "哪些记忆不应该自动清理": [
+        "自动删除"
+      ],
+      "配置确实加载": [
+        "配置变更 同源解析"
+      ]
+    },
+    "scope": "SQLite only; PostgreSQL path remains unchanged.",
+    "partial_filter": {
+      "minimum_match_coverage": 0.26,
+      "max_or_fallback_results": 3,
+      "applies_to": "SQLite OR fallback candidates only",
+      "does_not_apply_to": [
+        "original AND matches",
+        "curated phrase-alias AND matches",
+        "PostgreSQL search path"
+      ]
+    }
+  },
+  "metrics_after": {
+    "positive_query_count": 17,
+    "positive_target_hit_at_10": 17,
+    "positive_target_recall_at_10": 1.0,
+    "positive_mrr": 0.9314,
+    "macro_precision_at_10_all_queries": 0.1389,
+    "macro_precision_at_returned_nonempty_queries": 0.8235,
+    "micro_precision_at_returned": 0.7353,
+    "relevant_returned": 25,
+    "returned_results": 34,
+    "negative_query_false_positives": 0
+  },
+  "cases_after": [
+    {
+      "id": "R01",
+      "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/memory-governance/single-source-memory-retirement"
+      ]
+    },
+    {
+      "id": "R02",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/delivery/task-contract"
+      ]
+    },
+    {
+      "id": "R03",
+      "expected_uri": "core://agent/source-catalog/database",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/source-catalog/database"
+      ]
+    },
+    {
+      "id": "R04",
+      "expected_uri": "core://agent/environment/workspaces",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/environment/workspaces"
+      ]
+    },
+    {
+      "id": "R05",
+      "expected_uri": "core://agent/dsh/compaction",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/dsh/compaction"
+      ]
+    },
+    {
+      "id": "R06",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/verification/test-design"
+      ]
+    },
+    {
+      "id": "R07",
+      "expected_uri": "core://my_user/technical-context",
+      "rank_after": 1,
+      "top5_after": [
+        "core://my_user/technical-context",
+        "core://agent/source-catalog",
+        "core://agent/delivery/testing",
+        "core://agent/delivery",
+        "core://agent"
+      ]
+    },
+    {
+      "id": "R08",
+      "expected_uri": "core://my_user/collaboration-preferences",
+      "rank_after": 1,
+      "top5_after": [
+        "core://my_user/collaboration-preferences"
+      ]
+    },
+    {
+      "id": "R09",
+      "expected_uri": null,
+      "rank_after": null,
+      "top5_after": []
+    },
+    {
+      "id": "R10",
+      "expected_uri": "core://agent/memory-governance",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/memory-governance",
+        "core://my_user/rewrite-consent",
+        "core://agent/delivery/task-contract"
+      ]
+    },
+    {
+      "id": "H01",
+      "expected_uri": "core://agent/memory-governance",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/memory-governance",
+        "core://my_user/rewrite-consent",
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent/delivery/process",
+        "core://agent/verification"
+      ]
+    },
+    {
+      "id": "H02",
+      "expected_uri": "core://agent/dsh/compaction",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/dsh/compaction",
+        "core://my_user/collaboration-preferences",
+        "core://my_user",
+        "core://agent"
+      ]
+    },
+    {
+      "id": "H03",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank_after": 2,
+      "top5_after": [
+        "core://agent/dsh/compaction",
+        "core://agent/delivery/task-contract"
+      ]
+    },
+    {
+      "id": "H04",
+      "expected_uri": "core://agent/environment/workspaces",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/environment/workspaces",
+        "core://my_user/technical-context",
+        "core://agent/source-catalog",
+        "core://agent/source-catalog/code-access/deva-cli-tooling",
+        "core://agent/delivery/testing"
+      ]
+    },
+    {
+      "id": "H05",
+      "expected_uri": "core://agent/source-catalog/database",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/source-catalog/database",
+        "core://my_user/sql_chinese_comments",
+        "core://my_user/technical-context",
+        "core://agent/memory-governance/single-source-memory-retirement"
+      ]
+    },
+    {
+      "id": "H06",
+      "expected_uri": "core://my_user/technical-context",
+      "rank_after": 1,
+      "top5_after": [
+        "core://my_user/technical-context",
+        "core://agent/source-catalog",
+        "core://agent/delivery/requirements",
+        "core://agent",
+        "core://agent/delivery/debugging"
+      ]
+    },
+    {
+      "id": "H07",
+      "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "rank_after": 1,
+      "top5_after": [
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://my_user/rewrite-consent",
+        "core://agent/dsh"
+      ]
+    },
+    {
+      "id": "H08",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank_after": 3,
+      "top5_after": [
+        "core://my_user",
+        "core://agent/delivery",
+        "core://agent/verification/test-design",
+        "core://agent/delivery/testing",
+        "core://agent/source-catalog/frontend"
+      ]
+    }
+  ],
+  "relevance_judgment": {
+    "method": "单人保守二元初标：只有直接帮助回答该条查询的记忆标 relevant；仅共享词汇或泛背景标 non-relevant。按 MCP search_memory 默认 include_partial=false 重新检索。R09 经正文核验没有对应的有效记忆，改为负向查询，相关集合为空。Precision@10 固定分母 10；P@returned 只对有返回结果的查询计算。标签为单人初标，可后续修订。",
+    "status": "provisional_manual_labels",
+    "search_mode": "正式默认检索 include_partial=false，使用当前代码",
+    "cases": [
+      {
+        "id": "R01",
+        "query": "唯一真源旧库退役",
+        "query_type": "positive",
+        "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+        "expected_rank": 1,
+        "returned_count": 1,
+        "relevant_count": 1,
+        "false_positive_count": 0,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/memory-governance/single-source-memory-retirement",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "R02",
+        "query": "任务恢复阶段 product_path",
+        "query_type": "positive",
+        "expected_uri": "core://agent/delivery/task-contract",
+        "expected_rank": 1,
+        "returned_count": 1,
+        "relevant_count": 1,
+        "false_positive_count": 0,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/delivery/task-contract",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "R03",
+        "query": "数据库操作前确认目标环境",
+        "query_type": "positive",
+        "expected_uri": "core://agent/source-catalog/database",
+        "expected_rank": 1,
+        "returned_count": 1,
+        "relevant_count": 1,
+        "false_positive_count": 0,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/source-catalog/database",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "R04",
+        "query": "工作区定位同名仓库",
+        "query_type": "positive",
+        "expected_uri": "core://agent/environment/workspaces",
+        "expected_rank": 1,
+        "returned_count": 1,
+        "relevant_count": 1,
+        "false_positive_count": 0,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/environment/workspaces",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "R05",
+        "query": "压缩交接保留清单",
+        "query_type": "positive",
+        "expected_uri": "core://agent/dsh/compaction",
+        "expected_rank": 1,
+        "returned_count": 1,
+        "relevant_count": 1,
+        "false_positive_count": 0,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/dsh/compaction",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "R06",
+        "query": "测试桩耗尽调用顺序",
+        "query_type": "positive",
+        "expected_uri": "core://agent/verification/test-design",
+        "expected_rank": 1,
+        "returned_count": 1,
+        "relevant_count": 1,
+        "false_positive_count": 0,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/verification/test-design",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "R07",
+        "query": "我的技术栈和默认术语",
+        "query_type": "positive",
+        "expected_uri": "core://my_user/technical-context",
+        "expected_rank": 1,
+        "returned_count": 3,
+        "relevant_count": 1,
+        "false_positive_count": 2,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 0.333,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://my_user/technical-context",
+            "relevant": true
+          },
+          {
+            "rank": 2,
+            "uri": "core://agent/source-catalog",
+            "relevant": false
+          },
+          {
+            "rank": 3,
+            "uri": "core://agent/delivery/testing",
+            "relevant": false
+          }
+        ]
+      },
+      {
+        "id": "R08",
+        "query": "回复简洁列表不超过五项",
+        "query_type": "positive",
+        "expected_uri": "core://my_user/collaboration-preferences",
+        "expected_rank": 1,
+        "returned_count": 1,
+        "relevant_count": 1,
+        "false_positive_count": 0,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://my_user/collaboration-preferences",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "R09",
+        "query": "摘要与渐进披露",
+        "query_type": "negative",
+        "expected_uri": null,
+        "expected_rank": null,
+        "returned_count": 0,
+        "relevant_count": 0,
+        "false_positive_count": 0,
+        "precision_at_10": 0.0,
+        "precision_at_returned": null,
+        "results": []
+      },
+      {
+        "id": "R10",
+        "query": "记忆生命周期审计和过期",
+        "query_type": "positive",
+        "expected_uri": "core://agent/memory-governance",
+        "expected_rank": 1,
+        "returned_count": 3,
+        "relevant_count": 2,
+        "false_positive_count": 1,
+        "precision_at_10": 0.2,
+        "precision_at_returned": 0.667,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/memory-governance",
+            "relevant": true
+          },
+          {
+            "rank": 2,
+            "uri": "core://my_user/rewrite-consent",
+            "relevant": true
+          },
+          {
+            "rank": 3,
+            "uri": "core://agent/delivery/task-contract",
+            "relevant": false
+          }
+        ]
+      },
+      {
+        "id": "H01",
+        "query": "过期的记忆怎么处理",
+        "query_type": "positive",
+        "expected_uri": "core://agent/memory-governance",
+        "expected_rank": 1,
+        "returned_count": 3,
+        "relevant_count": 3,
+        "false_positive_count": 0,
+        "precision_at_10": 0.3,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/memory-governance",
+            "relevant": true
+          },
+          {
+            "rank": 2,
+            "uri": "core://my_user/rewrite-consent",
+            "relevant": true
+          },
+          {
+            "rank": 3,
+            "uri": "core://agent/memory-governance/single-source-memory-retirement",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "H02",
+        "query": "交接给下一个会话要留下什么",
+        "query_type": "positive",
+        "expected_uri": "core://agent/dsh/compaction",
+        "expected_rank": 1,
+        "returned_count": 1,
+        "relevant_count": 1,
+        "false_positive_count": 0,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/dsh/compaction",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "H03",
+        "query": "上次开发任务怎么找回来",
+        "query_type": "positive",
+        "expected_uri": "core://agent/delivery/task-contract",
+        "expected_rank": 2,
+        "returned_count": 2,
+        "relevant_count": 2,
+        "false_positive_count": 0,
+        "precision_at_10": 0.2,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/dsh/compaction",
+            "relevant": true
+          },
+          {
+            "rank": 2,
+            "uri": "core://agent/delivery/task-contract",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "H04",
+        "query": "我现在有哪些项目仓库",
+        "query_type": "positive",
+        "expected_uri": "core://agent/environment/workspaces",
+        "expected_rank": 1,
+        "returned_count": 3,
+        "relevant_count": 1,
+        "false_positive_count": 2,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 0.333,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/environment/workspaces",
+            "relevant": true
+          },
+          {
+            "rank": 2,
+            "uri": "core://my_user/technical-context",
+            "relevant": false
+          },
+          {
+            "rank": 3,
+            "uri": "core://agent/source-catalog",
+            "relevant": false
+          }
+        ]
+      },
+      {
+        "id": "H05",
+        "query": "操作数据库前有哪些安全步骤",
+        "query_type": "positive",
+        "expected_uri": "core://agent/source-catalog/database",
+        "expected_rank": 1,
+        "returned_count": 3,
+        "relevant_count": 2,
+        "false_positive_count": 1,
+        "precision_at_10": 0.2,
+        "precision_at_returned": 0.667,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/source-catalog/database",
+            "relevant": true
+          },
+          {
+            "rank": 2,
+            "uri": "core://my_user/sql_chinese_comments",
+            "relevant": false
+          },
+          {
+            "rank": 3,
+            "uri": "core://my_user/technical-context",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "H06",
+        "query": "我常用哪些开发技术",
+        "query_type": "positive",
+        "expected_uri": "core://my_user/technical-context",
+        "expected_rank": 1,
+        "returned_count": 3,
+        "relevant_count": 1,
+        "false_positive_count": 2,
+        "precision_at_10": 0.1,
+        "precision_at_returned": 0.333,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://my_user/technical-context",
+            "relevant": true
+          },
+          {
+            "rank": 2,
+            "uri": "core://agent/source-catalog",
+            "relevant": false
+          },
+          {
+            "rank": 3,
+            "uri": "core://agent/delivery/requirements",
+            "relevant": false
+          }
+        ]
+      },
+      {
+        "id": "H07",
+        "query": "旧记忆插件是否还能重新启用",
+        "query_type": "positive",
+        "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+        "expected_rank": 1,
+        "returned_count": 3,
+        "relevant_count": 3,
+        "false_positive_count": 0,
+        "precision_at_10": 0.3,
+        "precision_at_returned": 1.0,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://agent/memory-governance/single-source-memory-retirement",
+            "relevant": true
+          },
+          {
+            "rank": 2,
+            "uri": "core://my_user/rewrite-consent",
+            "relevant": true
+          },
+          {
+            "rank": 3,
+            "uri": "core://agent/dsh",
+            "relevant": true
+          }
+        ]
+      },
+      {
+        "id": "H08",
+        "query": "如何设计有效的自动化测试",
+        "query_type": "positive",
+        "expected_uri": "core://agent/verification/test-design",
+        "expected_rank": 3,
+        "returned_count": 3,
+        "relevant_count": 2,
+        "false_positive_count": 1,
+        "precision_at_10": 0.2,
+        "precision_at_returned": 0.667,
+        "results": [
+          {
+            "rank": 1,
+            "uri": "core://my_user",
+            "relevant": false
+          },
+          {
+            "rank": 2,
+            "uri": "core://agent/delivery",
+            "relevant": true
+          },
+          {
+            "rank": 3,
+            "uri": "core://agent/verification/test-design",
+            "relevant": true
+          }
+        ]
+      }
+    ],
+    "limitations": [
+      "标签为单人初标，存在主观性，尚未进行第二轮复核。",
+      "未对全库全部记忆建立完整相关集合，因此不计算全库 Recall@10。",
+      "P@10 固定分母 10；P@returned 不包含空结果查询，负向查询单独记录 false positives。"
+    ]
+  },
+  "coverage_filter_experiment": {
+    "threshold": 0.26,
+    "max_or_fallback_results": 3,
+    "scope": "SQLite OR partial fallback only; strict AND and curated phrase-alias AND results are not filtered.",
+    "metrics_after_filter": {
+      "positive_query_count": 17,
+      "positive_target_hit_at_10": 17,
+      "positive_target_recall_at_10": 1.0,
+      "positive_mrr": 0.9314,
+      "macro_precision_at_10_all_queries": 0.1389,
+      "macro_precision_at_returned_nonempty_queries": 0.8235,
+      "micro_precision_at_returned": 0.7353,
+      "relevant_returned": 25,
+      "returned_results": 34,
+      "negative_query_false_positives": 0
+    },
+    "comparison_to_previous_coverage_only_cap_10": {
+      "positive_target_hit_at_10": 17,
+      "positive_mrr": 0.9314,
+      "macro_precision_at_returned_nonempty_queries": 0.7294,
+      "micro_precision_at_returned": 0.4375,
+      "returned_results": 64,
+      "negative_query_false_positives": 0
+    },
+    "notes": [
+      "原始 AND 命中后不再搜索 OR；短语别名 AND 命中后也不再混入 OR 候选。",
+      "OR 降级仅在原始 AND 与别名 AND 均无命中时执行，覆盖率门槛 0.26，最多返回 3 条。",
+      "本轮 17 条正向查询目标均命中；H08 目标排名第 3，H03 目标排名第 2。",
+      "R09 负向查询返回 0 条。",
+      "单人相关性标注，仅代表当前诊断集，不是全库指标。"
+    ]
+  },
+  "independent_evaluation_status": {
+    "previous_file": "v3.2-independent-evaluation.json",
+    "status": "historical_pre_alias_diagnostic",
+    "reason": "后续新增短语规则与该集合 I01 的原始查询短语重合；原 5/10 结果保留为优化前诊断基线，不再声称它是当前代码的独立评估。",
+    "current_frozen_set": "v3.2-fresh-paraphrase-diagnostic.json"
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "title": "Nocturne V3.2 fresh paraphrase diagnostic",
+  "evaluated_at": "2026-11-18",
+  "status": "frozen_no_tuning_after_evaluation",
+  "database": "正式工作库 work-memory.db（只读）",
+  "method": "在本轮 5 条人工短语规则落地后，另外编写 10 条未参与规则设计的自然语言查询，使用默认检索 include_partial=false 测量预先指定目标 URI 的 Top10 命中与排名。未对其他候选逐条标注，不计算 Precision。该集合冻结，不再用于当前规则调参。",
+  "metrics": {
+    "query_count": 10,
+    "target_hit_at_10": 3,
+    "recall_at_10": 0.3,
+    "mrr": 0.2333,
+    "mrr_conditional_on_hits": 0.7778,
+    "returned_results": 20
+  },
+  "cases": [
+    {
+      "id": "N01",
+      "query": "接着上次没完成的编码工作，从哪里恢复上下文",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank": null,
+      "returned_count": 2
+    },
+    {
+      "id": "N02",
+      "query": "伪造响应序列被消费完了，单测应该怎样失败",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank": null,
+      "returned_count": 0
+    },
+    {
+      "id": "N03",
+      "query": "以后答复控制篇幅，先给最重要的结论",
+      "expected_uri": "core://my_user/collaboration-preferences",
+      "rank": 1,
+      "returned_count": 2
+    },
+    {
+      "id": "N04",
+      "query": "知识库里的历史条目什么情况下才做淘汰",
+      "expected_uri": "core://agent/memory-governance",
+      "rank": null,
+      "returned_count": 1
+    },
+    {
+      "id": "N05",
+      "query": "程序启动时如何确认读取的是刚修改的配置",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank": null,
+      "returned_count": 3
+    },
+    {
+      "id": "N06",
+      "query": "交接给新会话前要留下哪些进度信息",
+      "expected_uri": "core://agent/dsh/compaction",
+      "rank": null,
+      "returned_count": 3
+    },
+    {
+      "id": "N07",
+      "query": "恢复某个正在做的事项要先查哪个任务清单",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank": null,
+      "returned_count": 3
+    },
+    {
+      "id": "N08",
+      "query": "Mock 的预期调用次数超限后怎么让测试失败",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank": 1,
+      "returned_count": 3
+    },
+    {
+      "id": "N09",
+      "query": "不要写太多解释，条目控制在五条以内",
+      "expected_uri": "core://my_user/collaboration-preferences",
+      "rank": null,
+      "returned_count": 0
+    },
+    {
+      "id": "N10",
+      "query": "长期知识应该按什么规则清退，而不是定期清空",
+      "expected_uri": "core://agent/memory-governance",
+      "rank": 3,
+      "returned_count": 3
+    }
+  ],
+  "limitations": [
+    "10 条小样本，不代表生产流量。",
+    "只评估指定目标 URI，不计算 Precision；其他候选未逐条标注。",
+    "部分目标可能存在多条可回答记忆，当前单目标标注会低估召回。",
+    "本集合冻结，后续优化需要另建新的诊断集。"
+  ],
+  "retrieval_readiness": {
+    "local_embedding_runtime": {
+      "onnxruntime_installed": true,
+      "sqlite_vec_installed": true,
+      "sentence_transformers_installed": false,
+      "fastembed_installed": false,
+      "torch_installed": false,
+      "transformers_installed": true
+    },
+    "cached_models": [
+      {
+        "name": "answerdotai/ModernBERT-base",
+        "status": "tokenizer_and_config_only_no_weights",
+        "architecture": "ModernBertForMaskedLM",
+        "suitable_as_sentence_embedding_model": false
+      },
+      {
+        "name": "chopratejas/kompress-v2-base",
+        "status": "empty_snapshot_no_model_files"
+      }
+    ],
+    "conclusion": "当前环境具备 ONNX Runtime 和 sqlite-vec Python 包，但没有可直接使用的句向量模型权重；现有 ModernBERT 缓存只有 tokenizer/config 且架构是 MaskedLM，不能直接当作句向量模型。暂不接入 embedding，也不安装新依赖。"
+  }
+}

@@ -1,0 +1,285 @@
+{
+  "dataset": "Nocturne natural-language paraphrase retrieval benchmark",
+  "created_at": "2026-11-19",
+  "count": 18,
+  "database_mode": "SQLite read-only URI; real work database",
+  "retrieval_mode": "FTS5 with curated phrase alternatives; limit=10",
+  "matching_rule": "A hit is counted when the returned Memory has the same Node identity as the labeled URI. This avoids false misses when a Node has multiple URI paths.",
+  "hits_at_10": 18,
+  "recall_at_10": 1.0,
+  "mrr": 0.9351851851851851,
+  "rank_distribution": {
+    "1": 16,
+    "2": 1,
+    "3": 1
+  },
+  "cases": [
+    {
+      "query": "旧的记忆插件已经退役，怎么保证只有 Nocturne 作为唯一记忆来源？",
+      "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "rank": 1,
+      "top10": [
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent/memory-governance",
+        "core://my_user/rewrite-consent"
+      ],
+      "top10_memory_ids": [
+        60,
+        59,
+        70
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "上下文很长的时候，怎么减少一次性塞进模型的内容？",
+      "expected_uri": "core://agent/dsh/context-output",
+      "rank": 1,
+      "top10": [
+        "core://agent/dsh/context-output"
+      ],
+      "top10_memory_ids": [
+        52
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "程序运行异常时，应该按什么顺序定位真正原因？",
+      "expected_uri": "core://agent/delivery/debugging",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/debugging"
+      ],
+      "top10_memory_ids": [
+        41
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "开发新需求时，怎样优先沿用项目现有实现而不是重新造轮子？",
+      "expected_uri": "core://agent/delivery/development",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/development",
+        "core://agent/environment/deva-copilot-provider"
+      ],
+      "top10_memory_ids": [
+        43,
+        79
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "改动核心配置前，应该怎样留好可恢复的备份？",
+      "expected_uri": "core://agent/delivery/process",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/process",
+        "core://agent/memory-governance/single-source-memory-retirement",
+        "core://agent/dsh/compaction"
+      ],
+      "top10_memory_ids": [
+        44,
+        60,
+        51
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "业务描述不清楚时，怎样判断先追问还是按默认假设继续？",
+      "expected_uri": "core://agent/delivery/requirements",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/requirements"
+      ],
+      "top10_memory_ids": [
+        45
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "什么情况下值得让另一个代理检查代码改动？",
+      "expected_uri": "core://agent/delivery/review",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/review"
+      ],
+      "top10_memory_ids": [
+        46
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "如何根据变更风险决定单元测试和集成测试的范围？",
+      "expected_uri": "core://agent/delivery/testing",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/testing",
+        "core://agent/verification/test-design",
+        "core://agent/verification"
+      ],
+      "top10_memory_ids": [
+        48,
+        67,
+        66
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "选一个新的 AI 编程工具时，应该比较哪些成本和能力？",
+      "expected_uri": "core://agent/delivery/tool-selection",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/tool-selection",
+        "core://agent/environment/deva-engineering-layer",
+        "core://my_user/collaboration-preferences"
+      ],
+      "top10_memory_ids": [
+        49,
+        87,
+        69
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "Codex 接入 Copilot 转发服务后，API 请求格式有哪些适配点？",
+      "expected_uri": "core://agent/environment/codex-copilot-provider",
+      "rank": 1,
+      "top10": [
+        "core://agent/environment/deva-copilot-provider/codex",
+        "core://agent/environment/dsh-copilot-latency"
+      ],
+      "top10_memory_ids": [
+        102,
+        100
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "Deva 通过 Copilot 登录时，如何处理凭证和上游 API 地址？",
+      "expected_uri": "core://agent/environment/deva-copilot-provider",
+      "rank": 1,
+      "top10": [
+        "core://agent/environment/deva-copilot-provider",
+        "core://agent/environment/deva-copilot-provider/codex"
+      ],
+      "top10_memory_ids": [
+        79,
+        102
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "PostgreSQL 比较工具怎样匹配不同 schema 的对象并减少误报？",
+      "expected_uri": "core://agent/environment/postgrescompare-pipeline",
+      "rank": 1,
+      "top10": [
+        "core://agent/environment/postgrescompare-pipeline",
+        "core://my_user/collaboration-preferences",
+        "core://agent/environment/zcode-weekend-build-limits"
+      ],
+      "top10_memory_ids": [
+        105,
+        69,
+        84
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "写 SQL 时，为什么脚本说明和字段注释都要用中文？",
+      "expected_uri": "core://my_user/sql_chinese_comments",
+      "rank": 1,
+      "top10": [
+        "core://my_user/sql_chinese_comments",
+        "core://agent/source-catalog",
+        "core://agent/environment/deva-copilot-provider"
+      ],
+      "top10_memory_ids": [
+        71,
+        61,
+        79
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "执行数据库变更之前，需要核对哪些环境和权限信息？",
+      "expected_uri": "core://agent/source-catalog/database",
+      "rank": 2,
+      "top10": [
+        "core://my_user/sql_chinese_comments",
+        "core://agent/source-catalog/database",
+        "core://my_user/technical-context"
+      ],
+      "top10_memory_ids": [
+        71,
+        63,
+        72
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "前端开发规范如何判断当前项目是 Vue 2 还是 Vue 3？",
+      "expected_uri": "core://agent/source-catalog/frontend",
+      "rank": 1,
+      "top10": [
+        "core://agent/source-catalog/frontend",
+        "core://my_user",
+        "core://my_user/technical-context"
+      ],
+      "top10_memory_ids": [
+        64,
+        68,
+        72
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "Windows 机器上的 IP、网关和端口信息变化后如何重新确认？",
+      "expected_uri": "core://agent/environment",
+      "rank": 3,
+      "top10": [
+        "core://agent/environment/hangzhou-act-dual-nic",
+        "core://agent/environment/deva-copilot-provider",
+        "core://agent/environment"
+      ],
+      "top10_memory_ids": [
+        91,
+        79,
+        55
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "接手之前没做完的开发工作，应该从哪里恢复进度？",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank": 1,
+      "top10": [
+        "core://agent/delivery/task-contract"
+      ],
+      "top10_memory_ids": [
+        47
+      ],
+      "match_by_same_memory_node": true
+    },
+    {
+      "query": "要修改已有的长期规则或记忆内容，应该先做什么确认？",
+      "expected_uri": "core://my_user/rewrite-consent",
+      "rank": 1,
+      "top10": [
+        "core://my_user/rewrite-consent",
+        "core://agent/nocturne-memory",
+        "core://agent/environment/toolchain/iqa-low-integrity-tests"
+      ],
+      "top10_memory_ids": [
+        70,
+        110,
+        80
+      ],
+      "match_by_same_memory_node": true
+    }
+  ],
+  "limitations": [
+    "18 manually authored paraphrases from actual user topics; small offline sample, not production telemetry.",
+    "One positive target per case; Precision@10 is not computed because unjudged candidates are not assumed irrelevant.",
+    "Negative-query noise review is maintained separately."
+  ]
+}

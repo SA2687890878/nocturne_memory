@@ -1,0 +1,103 @@
+{
+  "title": "Nocturne V3.2 paraphrase development-set evaluation",
+  "evaluated_at": "2026-11-18",
+  "database": "正式工作库 work-memory.db（只读）",
+  "method": "10 条自然语言改写查询用于探索性诊断。首次运行时尚未增加本轮 3 条别名，目标 Top10 命中 7/10、MRR 0.6000；根据 X02/X03/X07 的漏召回设计 3 条人工短语别名后复测，目标 Top10 命中 10/10、MRR 0.8500。由于该集合已参与规则调试，不再称为独立 holdout。",
+  "metrics": {
+    "query_count": 10,
+    "target_hit_at_10": 10,
+    "recall_at_10": 1.0,
+    "mrr": 0.85,
+    "returned_results": 26
+  },
+  "cases": [
+    {
+      "id": "X01",
+      "query": "我平时用的语言和框架是什么",
+      "expected_uri": "core://my_user/technical-context",
+      "rank": 1,
+      "returned_count": 3
+    },
+    {
+      "id": "X02",
+      "query": "恢复之前开发进度需要先看什么",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank": 2,
+      "returned_count": 2
+    },
+    {
+      "id": "X03",
+      "query": "切换会话前应该交代哪些信息",
+      "expected_uri": "core://agent/dsh/compaction",
+      "rank": 1,
+      "returned_count": 1
+    },
+    {
+      "id": "X04",
+      "query": "多仓库项目目录怎么定位",
+      "expected_uri": "core://agent/environment/workspaces",
+      "rank": 1,
+      "returned_count": 3
+    },
+    {
+      "id": "X05",
+      "query": "执行正式库 SQL 前要核对什么",
+      "expected_uri": "core://agent/source-catalog/database",
+      "rank": 1,
+      "returned_count": 3
+    },
+    {
+      "id": "X06",
+      "query": "Mock 对象调用次数用完后如何处理",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank": 2,
+      "returned_count": 3
+    },
+    {
+      "id": "X07",
+      "query": "自动化测试用例应该怎么设计",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank": 1,
+      "returned_count": 2
+    },
+    {
+      "id": "X08",
+      "query": "过期的记忆要不要删除",
+      "expected_uri": "core://agent/memory-governance",
+      "rank": 2,
+      "returned_count": 3
+    },
+    {
+      "id": "X09",
+      "query": "回复内容和列表长度有什么偏好",
+      "expected_uri": "core://my_user/collaboration-preferences",
+      "rank": 1,
+      "returned_count": 3
+    },
+    {
+      "id": "X10",
+      "query": "旧记忆插件现在是否支持恢复",
+      "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "rank": 1,
+      "returned_count": 3
+    }
+  ],
+  "limitations": [
+    "该集已用于设计 X02/X03/X07 的短语别名，不是独立 holdout。",
+    "样本只有 10 条，不代表生产流量。",
+    "只评估目标 URI 是否召回，不计算 Precision；其他候选未逐条标注。",
+    "新增别名是人工规则，不能视为无监督语义泛化。"
+  ],
+  "status": "development_set_not_independent_holdout",
+  "metrics_before_aliases": {
+    "target_hit_at_10": 7,
+    "recall_at_10": 0.7,
+    "mrr": 0.6
+  },
+  "metrics_after_aliases": {
+    "target_hit_at_10": 10,
+    "recall_at_10": 1.0,
+    "mrr": 0.85,
+    "returned_results": 26
+  }
+}

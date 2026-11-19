@@ -1,0 +1,99 @@
+{
+  "title": "Nocturne V3.2 independent paraphrase evaluation",
+  "evaluated_at": "2026-11-18",
+  "status": "independent_diagnostic_no_tuning_after_run",
+  "database": "正式工作库 work-memory.db（只读）",
+  "method": "在既有规则冻结后新增 10 条未参与别名设计的自然语言查询，使用最终默认 search API（include_partial=false）检索。每条预先指定目标 URI，记录目标 Top10 命中与排名。未对候选逐条标注，不计算 Precision。该结果作为当前规则的独立诊断，不基于这 10 条查询继续调参。",
+  "metrics": {
+    "query_count": 10,
+    "target_hit_at_10": 5,
+    "recall_at_10": 0.5,
+    "mrr": 0.3833,
+    "mrr_conditional_on_hits": 0.7667,
+    "returned_results": 19
+  },
+  "cases": [
+    {
+      "id": "I01",
+      "query": "把之前那个开发任务接着做，第一步去哪里找",
+      "expected_uri": "core://agent/delivery/task-contract",
+      "rank": null,
+      "returned_count": 0
+    },
+    {
+      "id": "I02",
+      "query": "要压缩上下文时先保存哪些产物",
+      "expected_uri": "core://agent/dsh/compaction",
+      "rank": 1,
+      "returned_count": 3
+    },
+    {
+      "id": "I03",
+      "query": "Mock 返回值不够了测试应当怎么报错",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank": null,
+      "returned_count": 0
+    },
+    {
+      "id": "I04",
+      "query": "SQL 脚本执行前怎样防止连错数据库",
+      "expected_uri": "core://agent/source-catalog/database",
+      "rank": 3,
+      "returned_count": 3
+    },
+    {
+      "id": "I05",
+      "query": "我在不同项目之间怎么确认仓库位置",
+      "expected_uri": "core://agent/environment/workspaces",
+      "rank": 1,
+      "returned_count": 3
+    },
+    {
+      "id": "I06",
+      "query": "回答尽量短一点，列清楚重点",
+      "expected_uri": "core://my_user/collaboration-preferences",
+      "rank": null,
+      "returned_count": 0
+    },
+    {
+      "id": "I07",
+      "query": "以前用的记忆工具还能打开吗",
+      "expected_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "rank": 1,
+      "returned_count": 3
+    },
+    {
+      "id": "I08",
+      "query": "我用的后端语言和前端组件库是什么",
+      "expected_uri": "core://my_user/technical-context",
+      "rank": 2,
+      "returned_count": 3
+    },
+    {
+      "id": "I09",
+      "query": "Nocturne 里哪些记忆不应该自动清理",
+      "expected_uri": "core://agent/memory-governance",
+      "rank": null,
+      "returned_count": 3
+    },
+    {
+      "id": "I10",
+      "query": "配置调整后怎样证明新配置确实加载了",
+      "expected_uri": "core://agent/verification/test-design",
+      "rank": null,
+      "returned_count": 1
+    }
+  ],
+  "misses": [
+    "I01: 开发任务接续表达未召回 task-contract。",
+    "I03: Mock 返回耗尽表达未召回 test-design。",
+    "I06: 简洁回复偏好表达未召回 collaboration-preferences。",
+    "I09: Nocturne 记忆自动清理表达未召回 memory-governance。",
+    "I10: 配置实际加载验证表达只返回 environment，未召回 test-design。"
+  ],
+  "limitations": [
+    "只有 10 条小样本查询，不代表生产流量。",
+    "只计算目标 Recall@10 和 MRR，不计算 Precision。",
+    "该集合在本轮仅测量，不参与当前代码规则调整；后续若据此调整，需另建新的独立评估集。"
+  ]
+}

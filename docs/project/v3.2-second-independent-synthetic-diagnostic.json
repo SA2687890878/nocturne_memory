@@ -1,0 +1,115 @@
+{
+  "title": "Nocturne V3.2 second independent synthetic diagnostic",
+  "created_at": "2026-11-19",
+  "status": "frozen_before_embedding_evaluation",
+  "database": "work-memory.db read-only corpus",
+  "method": "20 条新编写的合成自然语言查询，预先指定单一目标 URI；与既有两组 10 条诊断集不同，不用于调参。只衡量目标 URI 的 Recall@K/MRR，不把未标注候选视为不相关，不计算 Precision。",
+  "query_origin": "synthetic; not user logs",
+  "cases": [
+    {
+      "id": "S01",
+      "query": "终端一次打印太多内容时，怎样只把关键结果带回对话",
+      "expected_uri": "core://agent/dsh/context-output"
+    },
+    {
+      "id": "S02",
+      "query": "排查异常时不能把以前遇到过的故障直接当成这次原因",
+      "expected_uri": "core://agent/delivery/debugging"
+    },
+    {
+      "id": "S03",
+      "query": "做系统方案时，组件边界和用户操作行为应该分别考虑什么",
+      "expected_uri": "core://agent/delivery/design"
+    },
+    {
+      "id": "S04",
+      "query": "准备增加功能前先看看仓库里是否已经有可复用的代码",
+      "expected_uri": "core://agent/delivery/development"
+    },
+    {
+      "id": "S05",
+      "query": "修改配置或清理文件之前，怎样限定备份和回退范围",
+      "expected_uri": "core://agent/delivery/process"
+    },
+    {
+      "id": "S06",
+      "query": "分析需求时如何区分用户确认的内容、推测和还没决定的事",
+      "expected_uri": "core://agent/delivery/requirements"
+    },
+    {
+      "id": "S07",
+      "query": "纯文案调整没有风险时，是否也必须机械执行完整测试",
+      "expected_uri": "core://agent/delivery/testing"
+    },
+    {
+      "id": "S08",
+      "query": "评估一个新的开发辅助工具，要比较收益边界和实际代价",
+      "expected_uri": "core://agent/delivery/tool-selection"
+    },
+    {
+      "id": "S09",
+      "query": "上下文快满需要交给另一个会话时，哪些信息必须留下",
+      "expected_uri": "core://agent/dsh/compaction"
+    },
+    {
+      "id": "S10",
+      "query": "网络连接或证书认证失败时，不应该直接按旧记录改代理设置",
+      "expected_uri": "core://agent/environment/network"
+    },
+    {
+      "id": "S11",
+      "query": "执行数据库变更前要确认连接的实例和环境，不能混用不同数据库的命令",
+      "expected_uri": "core://agent/source-catalog/database"
+    },
+    {
+      "id": "S12",
+      "query": "开始改页面之前，先根据实际前端框架加载对应的界面规范",
+      "expected_uri": "core://agent/source-catalog/frontend"
+    },
+    {
+      "id": "S13",
+      "query": "验证阶段应该围绕本次风险选择必要证据，不做无关的测试",
+      "expected_uri": "core://agent/verification"
+    },
+    {
+      "id": "S14",
+      "query": "模拟对象的返回队列或预期调用次数耗尽时，测试不能静默通过",
+      "expected_uri": "core://agent/verification/test-design"
+    },
+    {
+      "id": "S15",
+      "query": "回答任务前先判断当前需要哪部分资料，够用就停止继续翻找",
+      "expected_uri": "core://agent"
+    },
+    {
+      "id": "S16",
+      "query": "需求、技术设计、编码实现和测试验收之间要保持一致，不能各做各的",
+      "expected_uri": "core://agent/delivery"
+    },
+    {
+      "id": "S17",
+      "query": "讨论需求和验收标准不代表已经授权开始修改代码",
+      "expected_uri": "core://agent/delivery/requirements"
+    },
+    {
+      "id": "S18",
+      "query": "电脑版本、进程和网络配置会变化，历史环境信息使用前要重新核对",
+      "expected_uri": "core://agent/environment"
+    },
+    {
+      "id": "S19",
+      "query": "只在确实要管理技能安装或启停时才读取宿主的技能注册配置",
+      "expected_uri": "core://agent/dsh/skills-config"
+    },
+    {
+      "id": "S20",
+      "query": "查找源码时优先利用现有符号索引，再打开命中的少量代码",
+      "expected_uri": "core://agent/source-catalog/code-access"
+    }
+  ],
+  "limitations": [
+    "合成查询，不代表真实用户分布。",
+    "单目标标签可能低估可由多条记忆回答的情况。",
+    "未对非目标候选逐条人工标注，不计算 Precision。"
+  ]
+}
