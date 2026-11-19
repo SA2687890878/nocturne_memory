@@ -9,19 +9,21 @@ Imports from ``mcp_server`` (parse_uri, make_uri, config constants) are
 done inside function bodies to avoid circular imports at module level.
 """
 
-import asyncio
 from datetime import datetime
+import logging
 from typing import Any, Dict, List, Optional, Tuple
 
 from db import get_graph_service, get_glossary_service
 from db.namespace import get_namespace
 from locales import t
 
+logger = logging.getLogger(__name__)
+
 
 async def fetch_and_format_memory(uri: str, track_access: bool = False) -> str:
     """
-    Fetch memory data and return a formatted string.
-    Used by read_memory tool and boot view.
+    Fetch a full memory body and return a formatted string.
+    Used by explicit read_memory requests; boot delivery uses the summary-only query.
     """
     import config as _cfg
     from mcp_server import parse_uri, make_uri, DEFAULT_DOMAIN
@@ -37,13 +39,16 @@ async def fetch_and_format_memory(uri: str, track_access: bool = False) -> str:
             uri=make_uri(domain, path)))
 
     if track_access and memory.get("node_uuid"):
-        asyncio.create_task(
-            graph.log_access(
+        # Access analytics are secondary: a logging failure must never block
+        # delivery of the requested memory body.
+        try:
+            await graph.log_access(
                 memory["node_uuid"],
                 namespace=get_namespace(),
                 context="mcp_read"
             )
-        )
+        except Exception as exc:
+            logger.warning("Unable to record access for %s; continuing memory read: %s", uri, exc)
 
     children = await graph.get_children(
         memory["node_uuid"],
@@ -169,49 +174,116 @@ async def fetch_and_format_memory(uri: str, track_access: bool = False) -> str:
     return "\n".join(lines)
 
 
-async def generate_boot_memory_view(core_memory_uris: List[str]) -> str:
-    """Generate the system boot memory view (system://boot)."""
+def _estimate_context_tokens(content: str) -> int:
+    """Cheap conservative estimate; avoids a tokenizer dependency."""
+    return max(1, (len(content.encode("utf-8")) + 2) // 3) if content else 0
 
+
+def _truncate_utf8_to_token_budget(content: str, token_budget: int) -> str:
+    """Keep a UTF-8-safe prefix within the approximate byte budget."""
+    max_bytes = max(0, token_budget) * 3
+    encoded = content.encode("utf-8")[:max_bytes]
+    return encoded.decode("utf-8", errors="ignore").rstrip()
+
+
+async def generate_boot_memory_view(core_memory_uris: List[str]) -> str:
+    """Generate a summary-first boot view without loading memory bodies."""
+    from mcp_server import parse_uri
+
+    import config as _cfg
+
+    graph = get_graph_service()
+    try:
+        configured_budget = _cfg.get("boot_summary_token_budget")
+        summary_budget = 2000 if configured_budget is None else max(0, int(configured_budget))
+    except (TypeError, ValueError):
+        summary_budget = 2000
+    used_summary_tokens = 0
     results = []
     loaded = 0
     failed = []
 
     for uri in core_memory_uris:
         try:
-            content = await fetch_and_format_memory(uri, track_access=True)
-            results.append(content)
+            domain, path = parse_uri(uri)
+            memory = await graph.get_memory_summary_by_path(
+                path, domain, namespace=get_namespace()
+            )
+            if not memory:
+                raise ValueError(t("system.uri_not_found").format(uri=uri))
+
             loaded += 1
+            lines = [
+                f"- {memory['uri']}",
+                f"  Memory ID: {memory['memory_id']}",
+                f"  Priority: {memory.get('priority', 0)}",
+                f"  Lifecycle: {memory.get('lifecycle_status', 'unspecified')}",
+            ]
+            if memory.get("disclosure"):
+                lines.append(f"  Disclosure: {memory['disclosure']}")
+
+            summary = memory.get("summary")
+            if summary:
+                required_tokens = _estimate_context_tokens(summary)
+                remaining_tokens = max(0, summary_budget - used_summary_tokens)
+                if required_tokens <= remaining_tokens:
+                    delivered_summary = summary
+                    used_summary_tokens += required_tokens
+                    lines.append(f"  Summary [VALID]: {delivered_summary}")
+                elif remaining_tokens > 0:
+                    delivered_summary = _truncate_utf8_to_token_budget(summary, remaining_tokens)
+                    used_summary_tokens = summary_budget
+                    lines.append(
+                        f"  Summary [TRUNCATED]: {delivered_summary}... "
+                        "(context budget reached; use read_memory(uri) for full details)"
+                    )
+                else:
+                    lines.append(
+                        "  Summary [OMITTED]: boot summary budget reached; "
+                        "use read_memory(uri) when this memory is needed."
+                    )
+            else:
+                lines.append("  Summary [MISSING]: no summary is available; body was not expanded.")
+
+            lines.append(f"  Expand when needed: read_memory(\"{memory['uri']}\")")
+            results.append("\n".join(lines))
+
+            if memory.get("node_uuid"):
+                await graph.log_access(
+                    memory["node_uuid"],
+                    namespace=get_namespace(),
+                    context="mcp_boot",
+                )
         except Exception as e:
             failed.append(f"- {uri}: {str(e)}")
 
-    output_parts = []
-
-    output_parts.append("# Core Memories")
-    output_parts.append(f"# Loaded: {loaded}/{len(core_memory_uris)} memories")
-    output_parts.append("")
+    output_parts = [
+        "# Core Memories",
+        f"# Loaded: {loaded}/{len(core_memory_uris)} memories (L0/L1 only)",
+        f"# Summary budget: {summary_budget} estimated tokens; used: {used_summary_tokens}",
+        "# Full memory bodies are not loaded automatically. Use read_memory(uri) when details are required.",
+        "",
+    ]
 
     if failed:
-        output_parts.append("## Failed to load:")
-        output_parts.extend(failed)
-        output_parts.append("")
+        output_parts.extend(["## Failed to load:", *failed, ""])
 
     if results:
-        output_parts.append("## Contents:")
-        output_parts.append("")
-        output_parts.append(
-            "For a memory index, use: system://index/<domain> (e.g. system://index/core)"
-        )
-        output_parts.append("For recent memories, use: system://recent")
-        output_parts.extend(results)
+        output_parts.extend([
+            "## Memory summaries",
+            "",
+            "For a memory index, use: system://index/<domain> (e.g. system://index/core)",
+            "For recent memories, use: system://recent",
+            *results,
+        ])
     else:
         output_parts.append("(No core memories loaded. Run migration first.)")
 
+    # Recent view contains only URI / priority / disclosure / timestamp metadata,
+    # not memory bodies, so retain the small five-entry orientation aid.
     try:
-        recent_view = await generate_recent_memories_view(limit=5)
-        output_parts.append("")
-        output_parts.append("---")
-        output_parts.append("")
-        output_parts.append(recent_view)
+        recent_view = await generate_recent_memories_view(limit=5, include_disclosure=False)
+        output_parts.extend(["", "---", "", recent_view])
     except Exception:
         pass
 
@@ -310,7 +382,9 @@ async def generate_memory_index_view(domain_filter: Optional[str] = None) -> str
         return t("system.error_index").format(error=str(e))
 
 
-async def generate_recent_memories_view(limit: int = 10) -> str:
+async def generate_recent_memories_view(
+    limit: int = 10, *, include_disclosure: bool = True
+) -> str:
     """
     Generate a view of recently modified memories (system://recent).
 
@@ -348,10 +422,11 @@ async def generate_recent_memories_view(limit: int = 10) -> str:
             imp_str = f"\u2605{priority}"
 
             lines.append(f"{i}. {uri}  [{imp_str}]  modified: {modified}")
-            if disclosure:
-                lines.append(f"   disclosure: {disclosure}")
-            else:
-                lines.append("   disclosure: (NOT SET \u2014 consider adding one)")
+            if include_disclosure:
+                if disclosure:
+                    lines.append(f"   disclosure: {disclosure}")
+                else:
+                    lines.append("   disclosure: (NOT SET — consider adding one)")
             lines.append("")
 
         return "\n".join(lines)

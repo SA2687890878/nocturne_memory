@@ -1,4 +1,8 @@
-from db.search_terms import build_document_search_terms, expand_query_terms
+from db.search_terms import (
+    build_document_search_terms,
+    expand_query_terms,
+    expand_query_alternatives,
+)
 
 
 def test_expand_query_terms_normalizes_paths_and_cjk_content():
@@ -64,3 +68,42 @@ def test_glossary_index_is_searchable_from_a_fresh_process():
         assert con.execute(
             "SELECT count(*) FROM docs WHERE docs MATCH ?", (match_query,)
         ).fetchone()[0] == 1
+
+
+
+def test_query_phrase_aliases_are_conservative_and_do_not_rewrite_original_terms():
+    query = "上次开发任务怎么找回来"
+
+    assert expand_query_alternatives(query) == ["恢复任务"]
+    assert expand_query_alternatives("我常用哪些开发技术") == []
+    assert expand_query_alternatives("交接给下一个会话要留下什么") == ["交接保留"]
+    assert expand_query_alternatives("恢复之前开发进度需要先看什么") == ["恢复任务"]
+    assert expand_query_alternatives("切换会话前应该交代哪些信息") == ["交接保留"]
+    assert expand_query_alternatives("自动化测试用例应该怎么设计") == ["用例设计"]
+    assert expand_query_alternatives("把之前那个开发任务接着做，第一步去哪里找") == ["恢复任务"]
+    assert expand_query_alternatives("Mock 返回值不够了测试应当怎么报错") == ["期望耗尽"]
+    assert expand_query_alternatives("回答尽量短一点，列清楚重点") == ["回复简洁精准"]
+    assert expand_query_alternatives("Nocturne 里哪些记忆不应该自动清理") == ["自动删除"]
+    assert expand_query_alternatives("配置调整后怎样证明新配置确实加载了") == ["配置变更 同源解析"]
+    assert expand_query_terms(query) == "上次 开发 任务 怎么 找 回来"
+
+
+
+def test_partial_match_coverage_requires_multiple_query_terms():
+    from db.search import MIN_PARTIAL_MATCH_COVERAGE, _partial_match_coverage
+
+    query = "alpha beta gamma delta epsilon"
+    relevant_terms, relevant_coverage = _partial_match_coverage(
+        query, {"snippet": "alpha beta gamma"}
+    )
+    noise_terms, noise_coverage = _partial_match_coverage(
+        query, {"snippet": "alpha"}
+    )
+
+    assert MIN_PARTIAL_MATCH_COVERAGE == 0.26
+    assert relevant_terms == ["alpha", "beta", "gamma"]
+    assert relevant_coverage == 0.6
+    assert noise_terms == ["alpha"]
+    assert noise_coverage == 0.2
+    assert relevant_coverage >= MIN_PARTIAL_MATCH_COVERAGE
+    assert noise_coverage < MIN_PARTIAL_MATCH_COVERAGE

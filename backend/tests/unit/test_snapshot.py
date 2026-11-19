@@ -1,3 +1,4 @@
+from pathlib import Path
 from db.snapshot import ChangesetStore
 
 
@@ -75,3 +76,17 @@ def test_changeset_store_migrates_legacy_keys_on_load(tmp_path):
     assert store.get_change_count() == 0
     assert store.get_snapshot_view()[0] == {}
 
+
+
+def test_default_snapshot_dir_uses_user_database_directory(tmp_path, monkeypatch):
+    from db.snapshot import _default_snapshot_dir
+    monkeypatch.delenv("SNAPSHOT_DIR", raising=False)
+    db_path = tmp_path / "user-memory.db"
+    actual = Path(_default_snapshot_dir(f"sqlite+aiosqlite:///{db_path.as_posix()}"))
+    assert actual == tmp_path / ".nocturne-snapshots"
+
+
+def test_snapshot_dir_env_override_keeps_precedence(tmp_path, monkeypatch):
+    from db.snapshot import _default_snapshot_dir
+    monkeypatch.setenv("SNAPSHOT_DIR", str(tmp_path / "custom"))
+    assert Path(_default_snapshot_dir("sqlite:///ignored.db")) == tmp_path / "custom"

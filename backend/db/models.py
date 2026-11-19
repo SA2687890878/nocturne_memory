@@ -125,6 +125,8 @@ class Memory(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     node_uuid = Column(String(36), ForeignKey("nodes.uuid"), nullable=True)
     content = Column(Text, nullable=False)
+    summary_content = Column(Text, nullable=True)
+    summary_updated_at = Column(DateTime, nullable=True)
     deprecated = Column(Boolean, default=False)
     migrated_to = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=datetime.now)
@@ -237,6 +239,7 @@ class SearchDocument(Base):
         nullable=False,
     )
     uri = Column(Text, nullable=False)
+    summary_content = Column(Text, nullable=True)
     content = Column(Text, nullable=False)
     disclosure = Column(Text, nullable=True)
     # Stores glossary keywords plus auxiliary CJK search terms.

@@ -6,7 +6,7 @@ Overwrite semantics:
   - Subsequent touches of the same PK: overwrite `after` only; `before` is frozen.
   - Net-zero changes (before == after) are filtered from display automatically.
 
-Storage: one JSON file at `snapshots/<db-hash>/changeset.json`.
+Storage: one JSON file at `<sqlite-db-dir>/.nocturne-snapshots/<db-hash>/changeset.json` (or SNAPSHOT_DIR override).
 """
 
 import os
@@ -17,13 +17,26 @@ from pathlib import Path
 from filelock import FileLock
 
 
-def _default_snapshot_dir() -> str:
+def _default_snapshot_dir(database_url: Optional[str] = None) -> str:
     env_dir = os.environ.get("SNAPSHOT_DIR")
     if env_dir:
         return env_dir
 
-    # Local layout: <repo>/backend/db/snapshot.py -> snapshots under <repo>/snapshots
-    # Docker layout: /app/db/snapshot.py -> snapshots under /app/snapshots
+    # SQLite changesets live beside the user-owned database, not in the
+    # source checkout. This avoids workspace ACL and read-only checkout issues.
+    if database_url:
+        try:
+            from sqlalchemy.engine import make_url
+            parsed = make_url(database_url)
+            if parsed.get_backend_name() == "sqlite" and parsed.database not in (None, ":memory:"):
+                db_path = Path(parsed.database)
+                if not db_path.is_absolute():
+                    db_path = Path(__file__).resolve().parents[2] / db_path
+                return str(db_path.resolve().parent / ".nocturne-snapshots")
+        except Exception:
+            pass
+
+    # PostgreSQL / fallback: keep the repository-local snapshot location.
     db_dir = Path(__file__).resolve().parent
     app_root = db_dir.parent.parent
     if app_root.name == "backend":
@@ -390,6 +403,6 @@ def get_changeset_store() -> ChangesetStore:
     key = get_effective_database_url()
     if _store is None or _store_key != key:
         sub = hashlib.sha1(key.encode("utf-8")).hexdigest()[:12]
-        _store = ChangesetStore(os.path.join(_default_snapshot_dir(), sub))
+        _store = ChangesetStore(os.path.join(_default_snapshot_dir(key), sub))
         _store_key = key
     return _store

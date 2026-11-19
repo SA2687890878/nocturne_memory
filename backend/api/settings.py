@@ -64,8 +64,17 @@ class DatabasePickPath(BaseModel):
 @router.get("")
 async def get_settings():
     """Return all current settings from config.json."""
+    settings = config.get_all()
+    # Never expose provider credentials to the browser/UI. Return only whether
+    # a key is configured; the key itself remains in the local config.json.
+    embedding = settings.get("embedding")
+    if isinstance(embedding, dict):
+        embedding = dict(embedding)
+        embedding["has_api_key"] = bool(embedding.get("api_key"))
+        embedding["api_key"] = ""
+        settings["embedding"] = embedding
     result = {
-        "settings": config.get_all(),
+        "settings": settings,
         "config_path": str(config.CONFIG_PATH),
     }
     if _IN_DOCKER:

@@ -59,6 +59,7 @@ async def mcp_env():
 async def _seed_two_agents():
     """Create standard memories for agent_a and agent_b."""
     from mcp_server import create_memory, manage_triggers
+    from db import get_graph_service
 
     set_namespace("agent_a")
     await create_memory(parent_uri="core://", content="I am Agent A's identity.",
@@ -73,6 +74,16 @@ async def _seed_two_agents():
     await create_memory(parent_uri="core://", content="I am Agent B's identity.",
                         priority=0, title="agent", disclosure="When asking who I am")
     await manage_triggers("core://agent", add=["soul_trigger_b"])
+
+    # Boot is summary-first: seed explicit summaries so namespace tests verify
+    # that each namespace receives its own summary, never another agent's body.
+    graph = get_graph_service()
+    for namespace, summary in [
+        ("agent_a", "Agent A identity summary."),
+        ("agent_b", "Agent B identity summary."),
+    ]:
+        memory = await graph.get_memory_by_path("agent", namespace=namespace)
+        await graph.update_memory_summary(memory["id"], summary)
 
 
 # ====================================================================
@@ -145,13 +156,15 @@ async def test_system_boot_isolation(mcp_env):
 
     set_namespace("agent_a")
     boot_a = await read_memory("system://boot")
-    assert "Agent A" in boot_a
+    assert "Agent A identity summary" in boot_a
     assert "Agent B" not in boot_a
+    assert "I am Agent A's identity" not in boot_a
 
     set_namespace("agent_b")
     boot_b = await read_memory("system://boot")
-    assert "Agent B" in boot_b
+    assert "Agent B identity summary" in boot_b
     assert "Agent A" not in boot_b
+    assert "I am Agent B's identity" not in boot_b
 
 
 @pytest.mark.asyncio
@@ -168,14 +181,16 @@ async def test_system_boot_per_namespace_uris(mcp_env):
     try:
         set_namespace("agent_a")
         boot_a = await read_memory("system://boot")
-        assert "Agent A" in boot_a
+        assert "Agent A identity summary" in boot_a
+        assert "I am Agent A's identity" not in boot_a
         # core://my_user is in the global fallback but NOT in agent_a's override
         assert "met User" not in boot_a
 
         set_namespace("agent_b")
         boot_b = await read_memory("system://boot")
-        assert "Agent B" in boot_b
+        assert "Agent B identity summary" in boot_b
         assert "Agent A" not in boot_b
+        assert "I am Agent B's identity" not in boot_b
     finally:
         os.environ.pop("CORE_MEMORY_URIS__agent_a", None)
         os.environ.pop("CORE_MEMORY_URIS__agent_b", None)
@@ -370,6 +385,10 @@ async def test_default_namespace_mcp_full_flow(mcp_env):
     assert "Success" in await create_memory(
         parent_uri="core://agent", content="Default user info.", priority=1,
         title="my_user", disclosure="When talking about user")
+    from db import get_graph_service
+    graph = get_graph_service()
+    default_agent = await graph.get_memory_by_path("agent", namespace="")
+    await graph.update_memory_summary(default_agent["id"], "Default agent identity summary.")
 
     # Read
     content = await read_memory("core://agent")
@@ -377,7 +396,8 @@ async def test_default_namespace_mcp_full_flow(mcp_env):
 
     # Boot
     boot = await read_memory("system://boot")
-    assert "Default agent identity" in boot
+    assert "Default agent identity summary" in boot
+    assert "Default agent identity." not in boot
 
     # Index
     index = await read_memory("system://index/core")
@@ -394,7 +414,7 @@ async def test_default_namespace_mcp_full_flow(mcp_env):
         new_string="Updated default agent identity.")
 
     # Search
-    results = await search_memory("identity")
+    results = await search_memory("identity", include_snippets=True)
     assert "Updated default agent" in results
 
     # Alias

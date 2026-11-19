@@ -93,6 +93,44 @@ class GraphService:
             )
             session.add(log_entry)
 
+    async def get_memory_summary_by_path(
+        self, path: str, domain: str = "core", namespace: str = ""
+    ) -> Optional[Dict[str, Any]]:
+        """Fetch only L0/L1 fields for boot delivery; never select the body."""
+        async with self.session() as session:
+            stmt = (
+                select(
+                    Memory.id.label("memory_id"),
+                    Memory.node_uuid.label("node_uuid"),
+                    Memory.summary_content.label("summary"),
+                    Memory.summary_updated_at.label("summary_updated_at"),
+                    Memory.created_at.label("created_at"),
+                    Path.domain.label("domain"),
+                    Path.path.label("path"),
+                    Edge.priority.label("priority"),
+                    Edge.disclosure.label("disclosure"),
+                    Node.lifecycle_status.label("lifecycle_status"),
+                )
+                .select_from(Path)
+                .join(Edge, Path.edge_id == Edge.id)
+                .join(Node, Node.uuid == Edge.child_uuid)
+                .join(
+                    Memory,
+                    and_(Memory.node_uuid == Edge.child_uuid, Memory.deprecated == False),
+                )
+                .where(Path.namespace == namespace)
+                .where(Path.domain == domain, Path.path == path)
+                .order_by(Memory.created_at.desc())
+                .limit(1)
+            )
+            row = (await session.execute(stmt)).mappings().first()
+            if row is None:
+                return None
+            result = dict(row)
+            result["uri"] = f"{result['domain']}://{result['path']}"
+            result["summary_status"] = "VALID" if result.get("summary") else "MISSING"
+            return result
+
     async def get_memory_by_path(
         self, path: str, domain: str = "core", namespace: str = ""
     ) -> Optional[Dict[str, Any]]:
@@ -1466,6 +1504,50 @@ class GraphService:
                 },
             }
 
+    async def update_memory_summary(
+        self, memory_id: int, summary_content: Optional[str]
+    ) -> Dict[str, Any]:
+        """Save or clear the summary for one exact Memory version."""
+        from datetime import datetime
+
+        if summary_content is not None and not isinstance(summary_content, str):
+            raise ValueError("summary_content must be a string or null")
+
+        normalized_summary = (
+            unicodedata.normalize("NFC", summary_content.strip())
+            if summary_content and summary_content.strip()
+            else None
+        )
+
+        async with self.session() as session:
+            memory = await session.get(Memory, memory_id)
+            if memory is None:
+                raise ValueError(f"Memory ID {memory_id} not found")
+
+            rows_before = {"memories": [serialize_memory_ref(memory)]}
+            memory.summary_content = normalized_summary
+            memory.summary_updated_at = datetime.now() if normalized_summary else None
+            await session.flush()
+
+            # Search documents represent active versions only. Historical summaries
+            # stay on their Memory row and must not replace active search data.
+            if not memory.deprecated and memory.node_uuid:
+                await self._search.refresh_search_documents_for_node(
+                    memory.node_uuid,
+                    session=session,
+                    refresh_all_namespaces=True,
+                )
+
+            return {
+                "memory_id": memory.id,
+                "node_uuid": memory.node_uuid,
+                "summary_status": "VALID" if normalized_summary else "MISSING",
+                "summary_updated_at": memory.summary_updated_at.isoformat()
+                if memory.summary_updated_at else None,
+                "rows_before": rows_before,
+                "rows_after": {"memories": [serialize_memory_ref(memory)]},
+            }
+
     async def update_memory(
         self,
         path: str,
@@ -1988,8 +2070,19 @@ class GraphService:
         that have at least one path.
         """
         async with self.session() as session:
+            # Select only fields needed by the recent-memory view. Selecting the
+            # Memory ORM entity also fetches its potentially large content column,
+            # even though this view only renders URI/metadata.
             stmt = (
-                select(Memory, Edge, Path, Node.lifecycle_status)
+                select(
+                    Memory.id,
+                    Memory.created_at,
+                    Edge.priority,
+                    Edge.disclosure,
+                    Path.domain,
+                    Path.path,
+                    Node.lifecycle_status,
+                )
                 .select_from(Path)
                 .join(Edge, Path.edge_id == Edge.id)
                 .join(Node, Node.uuid == Edge.child_uuid)
@@ -2013,21 +2106,19 @@ class GraphService:
             seen = set()
             memories = []
 
-            for memory, edge, path_obj, lifecycle_status in result.all():
-                if memory.id in seen:
+            for memory_id, created_at, priority, disclosure, domain, path, lifecycle_status in result.all():
+                if memory_id in seen:
                     continue
-                seen.add(memory.id)
+                seen.add(memory_id)
 
                 memories.append(
                     {
-                        "memory_id": memory.id,
-                        "uri": f"{path_obj.domain}://{path_obj.path}",
-                        "priority": edge.priority,
-                        "disclosure": edge.disclosure,
+                        "memory_id": memory_id,
+                        "uri": f"{domain}://{path}",
+                        "priority": priority,
+                        "disclosure": disclosure,
                         "lifecycle_status": lifecycle_status,
-                        "created_at": memory.created_at.isoformat()
-                        if memory.created_at
-                        else None,
+                        "created_at": created_at.isoformat() if created_at else None,
                     }
                 )
 

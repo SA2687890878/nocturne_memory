@@ -20,7 +20,26 @@ from .models import (
     SearchDocument,
     escape_like_literal,
 )
-from .search_terms import build_document_search_terms, expand_query_terms
+from .search_terms import (
+    build_document_search_terms,
+    expand_query_terms,
+    expand_query_alternatives,
+)
+
+
+MIN_PARTIAL_MATCH_COVERAGE = 0.26
+MAX_PARTIAL_FALLBACK_RESULTS = 3
+
+
+def _partial_match_coverage(query: str, row: Dict[str, Any]) -> tuple[List[str], float]:
+    tokens = list(dict.fromkeys(expand_query_terms(query).split()))
+    searchable = " ".join(
+        str(row.get(field) or "")
+        for field in ("path", "uri", "summary_content", "snippet", "disclosure")
+    ).lower()
+    matched_terms = [token for token in tokens if token.lower() in searchable]
+    coverage = round(len(matched_terms) / max(len(tokens), 1), 3)
+    return matched_terms, coverage
 
 if TYPE_CHECKING:
     from .database import DatabaseManager
@@ -44,14 +63,20 @@ class SearchIndexer:
     # -----------------------------------------------------------------
 
     @staticmethod
-    def _to_sqlite_match_query(query: str) -> str:
-        """Convert free text into a conservative FTS5 MATCH expression."""
+    def _to_sqlite_match_query(query: str, operator: str = "AND") -> str:
+        """Convert free text into a safe FTS5 expression.
+
+        AND is preferred for precision. OR is used only as a fallback when
+        the strict query returns no candidates, avoiding empty results for
+        natural-language requests that contain extra descriptive words.
+        """
         normalized = expand_query_terms(query)
         tokens = [token.replace('"', '""') for token in normalized.split() if token]
         if not tokens:
             raw = query.strip().replace('"', '""')
             return f'"{raw}"' if raw else ""
-        return " AND ".join(f'"{token}"' for token in tokens)
+        joiner = " OR " if operator.upper() == "OR" else " AND "
+        return joiner.join(f'"{token}"' for token in tokens)
 
     @staticmethod
     def _format_search_snippet(content: str, query: str) -> str:
@@ -147,6 +172,7 @@ class SearchIndexer:
                     "node_uuid": node_uuid,
                     "memory_id": memory.id,
                     "uri": uri,
+                    "summary_content": memory.summary_content,
                     "content": memory.content,
                     "disclosure": row.disclosure,
                     "search_terms": build_document_search_terms(
@@ -212,9 +238,9 @@ class SearchIndexer:
                 text(
                     """
                     INSERT INTO search_documents_fts (
-                        namespace, domain, path, node_uuid, uri, content, disclosure, search_terms
+                        namespace, domain, path, node_uuid, uri, summary_content, content, disclosure, search_terms
                     ) VALUES (
-                        :namespace, :domain, :path, :node_uuid, :uri, :content, coalesce(:disclosure, ''), :search_terms
+                        :namespace, :domain, :path, :node_uuid, :uri, coalesce(:summary_content, ''), :content, coalesce(:disclosure, ''), :search_terms
                     )
                     """
                 ),
@@ -283,6 +309,7 @@ class SearchIndexer:
         domain: Optional[str] = None,
         namespace: str = "",
         include_obsolete: bool = False,
+        include_partial: bool = False,
     ) -> List[Dict[str, Any]]:
         """Search memories by path and content using the derived FTS index.
 
@@ -301,40 +328,113 @@ class SearchIndexer:
                 params["domain"] = domain
                 domain_clause = "AND sd.domain = :domain"
 
+            partial_rows = []
+            synonym_rows = []
+            used_relaxed_fallback = False
             if self.db_type == "sqlite":
                 match_query = self._to_sqlite_match_query(query)
                 if not match_query:
                     return []
 
                 params["match_query"] = match_query
-                result = await session.execute(
-                    text(
-                        f"""
-                        SELECT
-                            sd.domain,
-                            sd.path,
-                            sd.node_uuid,
-                            sd.uri,
-                            sd.priority,
-                            sd.content,
-                            sd.disclosure,
-                            bm25(search_documents_fts, 0.0, 0.0, 2.5, 0.0, 2.0, 1.0, 1.0, 0.75) AS score
-                        FROM search_documents AS sd
-                        JOIN nodes AS n ON n.uuid = sd.node_uuid
-                        JOIN search_documents_fts
-                          ON search_documents_fts.namespace = sd.namespace
-                         AND search_documents_fts.domain = sd.domain
-                         AND search_documents_fts.path = sd.path
-                        WHERE search_documents_fts MATCH :match_query
-                          AND sd.namespace = :namespace
-                          {domain_clause}
-                          {status_clause}
-                        ORDER BY score ASC, sd.priority ASC, length(sd.path) ASC
-                        LIMIT :candidate_limit
-                        """
-                    ),
-                    params,
+                search_stmt = text(
+                    f"""
+                    SELECT
+                        sd.domain,
+                        sd.path,
+                        sd.node_uuid,
+                        sd.uri,
+                        sd.priority,
+                        sd.memory_id,
+                        sd.summary_content,
+                        CASE
+                            WHEN snippet(search_documents_fts, 6, '', '', ' … ', 24) != ''
+                            THEN snippet(search_documents_fts, 6, '', '', ' … ', 24)
+                            ELSE substr(sd.content, 1, 240)
+                        END AS snippet,
+                        sd.disclosure,
+                        bm25(search_documents_fts, 0.0, 0.0, 2.5, 0.0, 2.0, 2.5, 1.0, 1.0, 0.75) AS score
+                    FROM search_documents AS sd
+                    JOIN nodes AS n ON n.uuid = sd.node_uuid
+                    JOIN search_documents_fts
+                      ON search_documents_fts.namespace = sd.namespace
+                     AND search_documents_fts.domain = sd.domain
+                     AND search_documents_fts.path = sd.path
+                    WHERE search_documents_fts MATCH :match_query
+                      AND sd.namespace = :namespace
+                      {domain_clause}
+                      {status_clause}
+                    ORDER BY score ASC, sd.priority ASC, length(sd.path) ASC
+                    LIMIT :candidate_limit
+                    """
                 )
+                result = await session.execute(search_stmt, params)
+                rows = [dict(row) for row in result.mappings().all()]
+
+                # Evaluate curated phrase aliases even when the original query
+                # has broad strict hits. Generic shared words can otherwise mask
+                # the intended memory. Keep original strict hits first; aliases
+                # are appended only when they refer to a different Node.
+                strict_positions = {
+                    row["node_uuid"]: index for index, row in enumerate(rows)
+                }
+                seen_synonym_nodes = set()
+                promoted_synonym_nodes = set()
+                for alternative in expand_query_alternatives(query):
+                    alternative_match = self._to_sqlite_match_query(alternative)
+                    if not alternative_match:
+                        continue
+                    alternative_params = {**params, "match_query": alternative_match}
+                    alternative_result = await session.execute(search_stmt, alternative_params)
+                    for row in alternative_result.mappings().all():
+                        node_uuid = row["node_uuid"]
+                        if node_uuid in seen_synonym_nodes:
+                            continue
+                        seen_synonym_nodes.add(node_uuid)
+                        strict_position = strict_positions.get(node_uuid)
+                        if strict_position == 0:
+                            # Never displace the best original-query hit.
+                            continue
+                        if strict_position is not None:
+                            # The alias target already matched the broad strict
+                            # query, but ranked below the first result. Promote
+                            # it into the curated lane instead of deduplicating
+                            # it away behind dozens of generic matches.
+                            promoted_synonym_nodes.add(node_uuid)
+                        synonym_rows.append(dict(row))
+
+                if promoted_synonym_nodes:
+                    rows = [
+                        row for row in rows
+                        if row["node_uuid"] not in promoted_synonym_nodes
+                    ]
+
+                if not rows and synonym_rows:
+                    # A curated AND alternative is a precise recovery; do not
+                    # dilute it with broad OR candidates.
+                    pass
+                elif not rows and include_partial:
+                    # OR fallback is a second-stage disclosure. The default
+                    # strict pass must stay empty rather than silently returning
+                    # weak candidates; callers explicitly opt in after review.
+                    params["match_query"] = self._to_sqlite_match_query(query, operator="OR")
+                    result = await session.execute(search_stmt, params)
+                    rows = [dict(row) for row in result.mappings().all()]
+                    rows = [
+                        row for row in rows
+                        if _partial_match_coverage(query, row)[1] >= MIN_PARTIAL_MATCH_COVERAGE
+                    ][:min(limit, MAX_PARTIAL_FALLBACK_RESULTS)]
+                    used_relaxed_fallback = bool(rows)
+                elif include_partial:
+                    # Optional diagnostic lane; strict and curated alias hits
+                    # remain ahead of partial candidates.
+                    params["match_query"] = self._to_sqlite_match_query(query, operator="OR")
+                    result = await session.execute(search_stmt, params)
+                    partial_rows = [
+                        dict(row) for row in result.mappings().all()
+                        if row["node_uuid"] not in seen_synonym_nodes
+                        and _partial_match_coverage(query, row)[1] >= MIN_PARTIAL_MATCH_COVERAGE
+                    ][:min(limit, 5)]
             else:
                 normalized = expand_query_terms(query)
                 if not normalized:
@@ -350,13 +450,20 @@ class SearchIndexer:
                             sd.node_uuid,
                             sd.uri,
                             sd.priority,
-                            sd.content,
+                            sd.memory_id,
+                            sd.summary_content,
+                            ts_headline(
+                                'simple', coalesce(sd.content, ''),
+                                websearch_to_tsquery('simple', :ts_query),
+                                'MaxFragments=1, MinWords=8, MaxWords=24, ShortWord=2'
+                            ) AS snippet,
                             sd.disclosure,
                             ts_rank_cd(
                                 to_tsvector(
                                     'simple',
                                     coalesce(sd.path, '') || ' ' ||
                                     coalesce(sd.uri, '') || ' ' ||
+                                    coalesce(sd.summary_content, '') || ' ' ||
                                     coalesce(sd.content, '') || ' ' ||
                                     coalesce(sd.disclosure, '') || ' ' ||
                                     coalesce(sd.search_terms, '')
@@ -371,7 +478,8 @@ class SearchIndexer:
                                 'simple',
                                 coalesce(sd.path, '') || ' ' ||
                                 coalesce(sd.uri, '') || ' ' ||
-                                coalesce(sd.content, '') || ' ' ||
+                                coalesce(sd.summary_content, '') || ' ' ||
+                                 coalesce(sd.content, '') || ' ' ||
                                 coalesce(sd.disclosure, '') || ' ' ||
                                 coalesce(sd.search_terms, '')
                               ) @@ websearch_to_tsquery('simple', :ts_query)
@@ -382,26 +490,64 @@ class SearchIndexer:
                     ),
                     params,
                 )
+                rows = result.mappings().all()
 
             matches = []
-            seen_nodes = set()
+            matches_by_node = {}
 
-            for row in result.mappings():
-                if row["node_uuid"] in seen_nodes:
+            strict_or_fallback_rows = [
+                (row, "partial" if used_relaxed_fallback else "strict") for row in rows
+            ]
+            # Preserve the strongest original-query result at rank 1, then
+            # surface curated phrase-alias hits before weaker generic strict
+            # matches. This prevents broad shared words from consuming Top10.
+            if synonym_rows and not used_relaxed_fallback and strict_or_fallback_rows:
+                combined_rows = strict_or_fallback_rows[:1]
+                combined_rows.extend((row, "strict") for row in synonym_rows)
+                combined_rows.extend(strict_or_fallback_rows[1:])
+            else:
+                combined_rows = strict_or_fallback_rows
+                combined_rows.extend((row, "strict") for row in synonym_rows)
+            combined_rows.extend((row, "partial") for row in partial_rows)
+            for row, match_type in combined_rows:
+                node_uuid = row["node_uuid"]
+                entry = {
+                    "domain": row["domain"],
+                    "path": row["path"],
+                    "uri": row["uri"],
+                    "priority": row["priority"],
+                    "disclosure": row["disclosure"],
+                }
+                existing = matches_by_node.get(node_uuid)
+                if existing is not None:
+                    # Keep one content payload per entity while retaining each
+                    # matching URI entry and its actual edge metadata.
+                    existing["aliases"].append(entry)
                     continue
-                seen_nodes.add(row["node_uuid"])
-                matches.append(
-                    {
-                        "domain": row["domain"],
-                        "path": row["path"],
-                        "uri": row["uri"],
-                        "name": row["path"].rsplit("/", 1)[-1],
-                        "snippet": self._format_search_snippet(row["content"], query),
-                        "priority": row["priority"],
-                        "disclosure": row["disclosure"],
-                    }
-                )
                 if len(matches) >= limit:
-                    break
+                    continue
+
+                summary = row["summary_content"]
+                match = {
+                    **entry,
+                    "name": row["path"].rsplit("/", 1)[-1],
+                    "memory_id": row["memory_id"],
+                    "summary": summary or None,
+                    "summary_status": "VALID" if summary else "MISSING",
+                    "expandable": True,
+                    "snippet": row["snippet"] or "",
+                    "aliases": [],
+                }
+                # Always expose relaxed-fallback provenance. Otherwise the
+                # default MCP response makes weak OR/partial candidates look
+                # indistinguishable from strict hits to the calling agent.
+                if include_partial or match_type == "partial":
+                    match["match_type"] = match_type
+                    if match_type == "partial":
+                        matched_terms, coverage = _partial_match_coverage(query, row)
+                        match["matched_terms"] = matched_terms
+                        match["match_coverage"] = coverage
+                matches_by_node[node_uuid] = match
+                matches.append(match)
 
             return matches

@@ -83,6 +83,46 @@ def expand_query_terms(query: str) -> str:
     return " ".join(SearchTokenizer.tokenize(query))
 
 
+# Conservative, manually reviewed phrase aliases evaluated alongside original strict matches.
+# Keep this list small and task-oriented; do not globally rewrite user language.
+_QUERY_PHRASE_ALIASES = {
+    "找回来": ("恢复任务",),
+    "找回任务": ("恢复任务",),
+    "恢复之前开发进度": ("恢复任务",),
+    "下一个会话要留下什么": ("交接保留",),
+    "切换会话前": ("交接保留",),
+    "自动化测试用例": ("用例设计",),
+    "把之前那个开发任务接着做": ("恢复任务",),
+    "返回值不够": ("期望耗尽",),
+    "回答尽量短": ("回复简洁精准",),
+    "哪些记忆不应该自动清理": ("自动删除",),
+    "配置确实加载": ("配置变更 同源解析",),
+    # 2026-11-19 自然语言改写评估新增：与原始 AND 严格结果并行评估。
+    "上下文很长": ("输出 超过 5KB",),
+    "一次性塞进模型的内容": ("输出 超过 5KB",),
+    "程序运行异常": ("故障 排查",),
+    "沿用项目现有实现": ("复用",),
+    "不重新造轮子": ("复用",),
+    "业务描述不清楚": ("阻塞 澄清 问题",),
+    "先追问还是": ("阻塞 澄清 问题",),
+    "接手之前没做完": ("恢复任务 进度",),
+    "恢复进度": ("恢复任务 进度",),
+    "Codex 接入 Copilot 转发服务": ("Codex Copilot Responses 协议",),
+}
+
+
+def expand_query_alternatives(query: str) -> List[str]:
+    """Return curated phrase alternatives without changing the original query."""
+    alternatives: List[str] = []
+    for phrase, replacements in _QUERY_PHRASE_ALIASES.items():
+        if phrase not in query:
+            continue
+        for replacement in replacements:
+            if replacement not in alternatives:
+                alternatives.append(replacement)
+    return alternatives
+
+
 def build_document_search_terms(
     path: str,
     uri: str,

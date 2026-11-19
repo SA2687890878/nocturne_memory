@@ -51,6 +51,43 @@ async def test_diagnostic_view_points_duplicate_aliases_to_delete_memory(mcp_mod
     assert "core://folder_copy" in diagnostic
 
 
+def test_read_memory_tool_description_discourages_duplicate_reads(mcp_module):
+    description = mcp_module.read_memory.__doc__ or ""
+    assert "同一会话中某 URI 已成功读取后" in description
+    assert "不要重复读取" in description
+    assert "正文已更新" in description
+
+
+def test_search_memory_tool_description_discourages_first_pass_expansion(mcp_module):
+    description = mcp_module.search_memory.__doc__ or ""
+    assert "首轮保持 include_partial=false" in description
+    assert "include_snippets=false" in description
+    assert "用户明确要求原文片段" in description
+    assert "read_memory(uri)" in description
+
+
+async def test_search_memory_omits_partial_fallback_summaries_by_default(mcp_module, graph_service):
+    await graph_service.create_memory(
+        parent_path="",
+        content="alpha beta gamma",
+        priority=2,
+        title="partial_summary_probe",
+    )
+    memory = await graph_service.get_memory_by_path("partial_summary_probe", "core")
+    await mcp_module.update_memory_summary(
+        memory["id"], "PARTIAL_SUMMARY_SENTINEL should only appear when explicitly requested."
+    )
+
+    query = "alpha beta gamma delta epsilon"
+    default_result = await mcp_module.search_memory(query)
+    assert "No matching memories found" in default_result
+    assert "PARTIAL_SUMMARY_SENTINEL" not in default_result
+
+    explicit_result = await mcp_module.search_memory(query, include_partial=True)
+    assert "Match: PARTIAL" in explicit_result
+    assert "PARTIAL_SUMMARY_SENTINEL" in explicit_result
+
+
 async def test_mcp_tool_flow_covers_crud_alias_triggers_and_search(mcp_module, graph_service):
     created = await mcp_module.create_memory(
         "core://",
@@ -566,3 +603,167 @@ async def test_diagnostic_view_respects_config_bloat_min_bytes(mcp_module, monke
     assert "## 4. Bloated Memories" in diagnostic
     assert "core://bloated_node_test" in diagnostic
 
+async def test_update_memory_summary_tool_and_search_output(mcp_module, graph_service):
+    await graph_service.create_memory(
+        parent_path="",
+        content="The body contains detailed implementation notes.",
+        priority=1,
+        title="mcp_summary_note",
+        disclosure="When testing the summary MCP tool",
+    )
+    from db import get_search_indexer
+
+    result = (await get_search_indexer().search("mcp_summary_note"))[0]
+    saved = await mcp_module.update_memory_summary(
+        result["memory_id"], "MCP summary unique phrase for context delivery."
+    )
+    search_output = await mcp_module.search_memory("MCP summary unique phrase", include_snippets=True)
+
+    assert "Success: summary" in saved
+    assert "Summary [VALID]" in search_output
+    assert "MCP summary unique phrase" in search_output
+    assert "Body snippet:" in search_output
+    assert "read_memory(\"core://mcp_summary_note\")" in search_output
+
+async def test_boot_delivers_only_summary_and_preserves_explicit_full_read(
+    mcp_module, graph_service
+):
+    summarized = await graph_service.create_memory(
+        parent_path="",
+        content="PRIVATE_BODY_SENTINEL full details must not appear in boot output.",
+        priority=1,
+        title="boot_summary_ready",
+        disclosure="When testing summary-first boot",
+    )
+    missing = await graph_service.create_memory(
+        parent_path="",
+        content="MISSING_SUMMARY_BODY_SENTINEL also stays out of boot output.",
+        priority=2,
+        title="boot_summary_missing",
+        disclosure="When testing missing summary behavior",
+    )
+    await graph_service.update_memory_summary(
+        summarized["rows_after"]["memories"][0]["id"],
+        "Boot summary contains only the essential project context.",
+    )
+
+    from system_views import generate_boot_memory_view
+
+    boot = await generate_boot_memory_view([
+        "core://boot_summary_ready",
+        "core://boot_summary_missing",
+    ])
+    assert "Summary [VALID]" in boot
+    assert "essential project context" in boot
+    assert "Summary [MISSING]" in boot
+    assert "PRIVATE_BODY_SENTINEL" not in boot
+    assert "MISSING_SUMMARY_BODY_SENTINEL" not in boot
+
+    full_read = await mcp_module.read_memory("core://boot_summary_ready")
+    assert "PRIVATE_BODY_SENTINEL" in full_read
+
+async def test_boot_respects_configured_summary_token_budget(
+    mcp_module, graph_service, monkeypatch
+):
+    created = await graph_service.create_memory(
+        parent_path="",
+        content="This body is not part of the boot payload.",
+        priority=1,
+        title="boot_budget_note",
+        disclosure="When testing boot token budget",
+    )
+    await graph_service.update_memory_summary(
+        created["rows_after"]["memories"][0]["id"],
+        "A deliberately long summary that must be shortened by the configured context budget.",
+    )
+
+    import config
+    from system_views import generate_boot_memory_view
+
+    original_get = config.get
+    monkeypatch.setattr(
+        config,
+        "get",
+        lambda key: 5 if key == "boot_summary_token_budget" else original_get(key),
+    )
+    boot = await generate_boot_memory_view(["core://boot_budget_note"])
+
+    assert "Summary [TRUNCATED]" in boot
+    assert "Summary budget: 5 estimated tokens" in boot
+    assert "This body is not part of the boot payload" not in boot
+
+async def test_boot_recent_index_is_compact_but_recent_view_keeps_disclosure(
+    graph_service,
+):
+    from system_views import generate_recent_memories_view
+
+    disclosure = "ONLY_RECENT_DISCLOSURE_TRIGGER_FOR_TEST"
+    await graph_service.create_memory(
+        parent_path="",
+        content="Recent disclosure retention test",
+        priority=2,
+        title="recent_disclosure_retention",
+        disclosure=disclosure,
+    )
+
+    compact = await generate_recent_memories_view(limit=5, include_disclosure=False)
+    detailed = await generate_recent_memories_view(limit=5)
+
+    assert "core://recent_disclosure_retention" in compact
+    assert disclosure not in compact
+    assert "core://recent_disclosure_retention" in detailed
+    assert disclosure in detailed
+
+
+
+async def test_read_memory_survives_access_tracking_failure(mcp_module, graph_service, monkeypatch):
+    await graph_service.create_memory(
+        parent_path="",
+        content="Memory body remains available even if access analytics fail.",
+        priority=2,
+        title="read_without_access_log",
+        disclosure="When validating read resilience",
+    )
+
+    async def fail_access_log(*args, **kwargs):
+        raise RuntimeError("simulated access-log failure")
+
+    monkeypatch.setattr(graph_service, "log_access", fail_access_log)
+    content = await mcp_module.read_memory("core://read_without_access_log")
+
+    assert "MEMORY: core://read_without_access_log" in content
+    assert "Memory body remains available" in content
+
+
+async def test_search_memory_omits_body_snippets_by_default(mcp_module, graph_service):
+    await graph_service.create_memory(
+        parent_path="", content="A compact summary-first retrieval fixture.",
+        priority=1, title="summary_first_search_fixture",
+    )
+    result = await mcp_module.search_memory("summary-first retrieval fixture")
+    assert "core://summary_first_search_fixture" in result
+    assert "Body snippet:" not in result
+    assert "Summary budget:" in result
+
+
+async def test_search_memory_can_include_snippets_on_demand(mcp_module, graph_service):
+    await graph_service.create_memory(
+        parent_path="", content="An opt-in snippet retrieval fixture.",
+        priority=1, title="snippet_opt_in_fixture",
+    )
+    result = await mcp_module.search_memory("snippet retrieval fixture", include_snippets=True)
+    assert "Body snippet:" in result
+
+
+async def test_search_memory_respects_summary_token_budget(mcp_module, graph_service):
+    created = await graph_service.create_memory(
+        parent_path="", content="Budget fixture content that can be retrieved by its unique marker.",
+        priority=1, title="budget_fixture",
+    )
+    await graph_service.update_memory_summary(
+        created["memory"]["id"] if "memory" in created else created["id"],
+        "This is a deliberately long summary used to verify the search token budget."
+    )
+    result = await mcp_module.search_memory("unique marker", token_budget=3)
+    assert "Summary [TRUNCATED]" in result or "Summary [OMITTED]" in result
+    assert "Body snippet:" not in result

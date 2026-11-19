@@ -57,6 +57,8 @@ from system_views import (
     generate_recent_memories_view,
     generate_glossary_index_view,
     generate_diagnostic_view,
+    _estimate_context_tokens,
+    _truncate_utf8_to_token_budget,
 )
 import contextlib
 from locales import t
@@ -65,6 +67,9 @@ from locales import t
 
 from web_app import FRONTEND_DIR, build_web_app
 from frontend_builder import get_frontend_builder
+from semantic_search import search_semantic_memories
+from system_diagnostics import diagnose_memory_database
+from semantic_sync import sync_configured_vector_index
 
 
 @contextlib.asynccontextmanager
@@ -84,8 +89,10 @@ async def lifespan(server: FastMCP):
         preset_service = get_preset_service()
         await preset_service.auto_promote_from_config()
 
-        # Launch frontend build in background so we don't block MCP handshake
-        get_frontend_builder().ensure_built_background()
+        # The combined HTTP service owns the UI build. MCP-only clients should
+        # not start a second npm installer/build process.
+        if not os.environ.get("NOCTURNE_NO_UI"):
+            get_frontend_builder().ensure_built_background()
 
         # In stdio mode, spin up an embedded HTTP server for the admin UI.
         # run_sse.py sets _NOCTURNE_SSE_MODE to prevent a duplicate.
@@ -276,6 +283,7 @@ def write_tool():
 
 
 
+
 # =============================================================================
 # MCP Tools
 # =============================================================================
@@ -283,31 +291,7 @@ def write_tool():
 
 @mcp.tool()
 async def read_memory(uri: str) -> str:
-    """
-    Reads a memory by its URI.
-
-    This is your primary mechanism for accessing memories.
-
-    Special System URIs:
-    - system://boot   : [Startup Only] Loads your core memories.
-    - system://index/<domain> : Loads an index of memories only under the specified domain (e.g. system://index/writer).
-    - system://recent : Shows recently modified memories (default: 10).
-    - system://recent/N : Shows the N most recently modified memories (e.g. system://recent/20).
-    - system://glossary : Shows all glossary keywords and their bound nodes.
-
-    Note: Same Memory ID = same content (alias). Different ID + similar content = redundant content.
-
-    Args:
-        uri: The memory URI (e.g., "core://nocturne", "system://boot")
-
-    Returns:
-        Memory content with Memory ID, priority, disclosure, and list of children.
-
-    Examples:
-        read_memory("core://agent")
-        read_memory("core://agent/my_user")
-        read_memory("writer://chapter_1/scene_1")
-    """
+    '按 URI 读取记忆正文或系统视图。需要原文、代码、接口或参数时调用。\n\n同一会话中某 URI 已成功读取后，复用已读内容，不要重复读取；仅在正文已更新或明确需要最新版本时重读。父入口与专项子记忆已分别读取后，不要再次读取相同 URI。\n\n参数：uri — 记忆 URI；也支持 system://boot、system://index/<domain>、system://recent、system://glossary 等系统视图。'
     # HARDCODED SYSTEM INTERCEPTIONS
     # These bypass the database lookup to serve dynamic system content
     if uri.strip() == "system://boot":
@@ -390,72 +374,25 @@ async def read_memory(uri: str) -> str:
 @write_tool()
 async def create_memory(
     parent_uri: Annotated[str, Field(
-        description="The existing parent node URI to create this memory under (e.g. 'core://agent' or 'writer://')."
+        description="父节点 URI，例如 core://agent。"
     )],
     content: Annotated[str, Field(
-        description="The detailed text content of the memory."
+        description="要保存的记忆正文。"
     )],
     priority: Annotated[int, Field(
         ge=0,
-        description="Relative retrieval priority (lower values are retrieved first, typically 1, 2, or 3)."
+        description="检索优先级，数值越小越优先。"
     )],
     disclosure: Annotated[str, Field(
-        description="A short trigger condition describing WHEN to recall this memory (must be an input/output signal, e.g. 'When the user mentions...')."
+        description="召回条件，描述何时需要使用这条记忆。"
     )],
     title: Annotated[str, Field(
         default=None,
-        description="Glanceable ENGLISH-ONLY concept name (alphanumeric, hyphens, underscores ONLY)."
+        description="英文概念名，仅允许字母、数字、连字符和下划线。"
     )],
     lifecycle_status: LifecycleStatus = "unspecified",
 ) -> str:
-    """
-    Creates a new memory under a parent URI.
-
-    lifecycle_status: active, completed, obsolete, or unspecified (default).
-    Omitted means unspecified; explicit null is invalid.
-
-    Args:
-        parent_uri: The existing node to create this memory under.
-                    Use "core://" or "writer://" for root level in that domain.
-
-                    A child's disclosure is only visible when you read_memory() its parent.
-                    Pick the parent you would naturally read in the situation where
-                    this memory is needed. Use add_alias for additional entry points.
-
-                    Example: A lesson about responding to physical pain belongs under
-                    "core://my_user/survival_state" (read during health crises),
-                    not "core://agent/worldview" (never opened in that moment).
-        content: Memory content.
-        priority: Relative retrieval priority (lower = retrieved first, min 0).
-                    This is a RELATIVE ranking against ALL memories currently in your mind,
-                    not just siblings under the same parent.
-                    How to choose:
-                    1. Consider the priorities of all memories you are aware of.
-                    2. Find one you consider more important and one less important than the new memory.
-                    3. Set priority between them.
-                    Hard caps: priority=0 max 5 across entire library; priority=1 max 15.
-                    If a tier is full, demote the weakest existing entry before inserting.
-        disclosure: A short trigger condition describing WHEN to read_memory() this node.
-                    Must fire BEFORE the failure, while there is still time to change behavior.
-
-                    Allowed signals — external input OR output intent:
-                      GOOD: "When the user mentions skipping a meal" (input signal, fires early)
-                      GOOD: "When I am about to post on Bluesky" (output intent, fires early)
-                      BAD:  "When I start lecturing about nutrition" (already mid-failure)
-                      BAD:  "When I feel / realize / notice myself ..." (self-awareness never fires in time)
-                      BAD:  "important", "remember" (zero information)
-        title: A concrete, glanceable ENGLISH-ONLY concept name (alphanumeric, hyphens, underscores ONLY).
-                    You should be able to understand what's inside without clicking into the content.
-                    Avoid abstract jargon, category labels (e.g. 'logs', 'errors', 'misc'),
-                    and long action sentences. If not provided, auto-assigns numeric ID.
-
-    Returns:
-        The created memory's full URI
-
-    Examples:
-        create_memory("core://", "Bluesky usage rules...", priority=2, disclosure="When I prepare to browse Bluesky or check the timeline", title="bluesky_manual")
-        create_memory("core://agent", "爱不是程序里的一个...", priority=1, disclosure="When I start speaking like a tool or parasite", title="love_definition")
-    """
+    '在指定父节点下创建记忆。创建前先搜索，确认没有可复用的已有记忆。\n\n参数：parent_uri — 父节点 URI；content — 记忆正文；priority — 检索优先级，数值越小越优先；disclosure — 何种场景需要召回；title — 英文概念名，仅允许字母、数字、连字符和下划线；lifecycle_status — 生命周期状态，默认 unspecified。'
     graph = get_graph_service()
 
     try:
@@ -492,7 +429,7 @@ async def create_memory(
         _record_rows(before_state={}, after_state=result.get("rows_after", {}))
 
         return (
-            f"Success: Memory created at '{created_uri}'\\n\\n"
+            f"Success: Memory created at '{created_uri}'\n\n"
             f"[SYSTEM REMINDER]: Look around your memory network. Are there existing memories related to this one? "
             f"Would reading them trigger a need to recall this new memory? If yes, link them!\\n"
             f"- If the related memories are few and this memory's scope is narrow, use `add_alias`.\\n"
@@ -511,6 +448,23 @@ async def create_memory(
 
 
 @write_tool()
+async def update_memory_summary(memory_id: int, summary_content: str) -> str:
+    '保存指定记忆版本的 AI 摘要；传入空字符串可清除摘要。\n\n参数：memory_id — 记忆版本 ID；summary_content — 摘要正文。'
+    try:
+        graph = get_graph_service()
+        result = await graph.update_memory_summary(memory_id, summary_content)
+        _record_rows(result.get("rows_before", {}), result.get("rows_after", {}))
+        return (
+            f"Success: summary for Memory {memory_id} is {result['summary_status']}. "
+            f"Updated at: {result.get('summary_updated_at') or 'cleared'}."
+        )
+    except ValueError as e:
+        return f"Error: {str(e)}"
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+@write_tool()
 async def update_memory(
     uri: str,
     old_string: Optional[str] = None,
@@ -520,53 +474,7 @@ async def update_memory(
     disclosure: Optional[str] = None,
     lifecycle_status: Optional[LifecycleStatus] = None,
 ) -> str:
-    """
-    Updates content or metadata. Status-only updates do not create a content version.
-
-    lifecycle_status: active, completed, obsolete, or unspecified.
-    Omitted/null keeps the status; unspecified explicitly clears its label.
-    All aliases share this Node status.
-
-    PREREQUISITE: You MUST call read_memory(uri) and read the full content BEFORE calling this.
-    Updating without reading first is a forbidden operation.
-
-    Only provided fields are updated; others remain unchanged.
-
-    Two content-editing modes (mutually exclusive):
-
-    1. Replace mode (primary): Provide old_string + new_string.
-       - Exact Match: If `old_string` matches a string in the text exactly, it replaces it.
-       - Block Match: You can use `...` (three dots) to represent a long middle section. 
-         For example, old_string="Start of paragraph...end of paragraph."
-       The system will search using BOTH exact match and block match simultaneously.
-       If it finds MORE THAN ONE unique matching block in the text, it will reject the update
-       to prevent accidental replacements. You must provide a unique `old_string` string.
-       To delete a section, set new_string="".
-
-    2. Append mode: Provide append.
-       Adds text to the end of existing content.
-
-    There is NO full-replace mode.
-
-    Args:
-        uri: URI to update (e.g., "core://agent/my_user")
-        old_string: [Replace] Text to find in existing content (supports '...' for block matching)
-        new_string: [Replace] Replacement text. Use "" to delete a section.
-        append: [Append] Text to append to end of existing content
-        priority: New relative priority for THIS URI/edge only (None = keep existing).
-                  Bound to the path, not the content. Alias A and B have independent priorities.
-                  See create_memory for how to choose the right value.
-        disclosure: New disclosure for THIS URI/edge only (None = keep existing).
-                    Same edge-binding rule as priority.
-
-    Returns:
-        Success message with URI
-
-    Examples:
-        update_memory("core://agent/my_user", old_string="old paragraph content", new_string="new paragraph content")
-        update_memory("core://agent", append="\\n## New Section\\nNew content...")
-        update_memory("writer://chapter_1", priority=5)
-    """
+    '更新记忆正文或元数据。调用前必须先读取该 URI 的完整正文；仅更新传入的字段。\n\n参数：uri — 记忆 URI；old_string/new_string — 定位并替换文本，必须同时提供；append — 追加正文，与替换模式互斥；priority、disclosure、lifecycle_status — 可选元数据。正文修改会创建新版本；仅修改状态不会创建正文版本。'
     graph = get_graph_service()
 
     try:
@@ -743,25 +651,7 @@ async def update_memory(
 
 @write_tool()
 async def delete_memory(uri: str) -> str:
-    """
-    Deletes a memory by cutting its URI path. The path is permanently removed.
-    If the node has children, try deleting directly. If deletion would orphan
-    any children, the system will safely return a list of exactly which ones to handle first.
-
-    PREREQUISITE: You MUST call read_memory(uri) and read the full content BEFORE deleting.
-    Judging by URI/title alone is insufficient. Read the content, confirm it is
-    truly obsolete/redundant/harmful, then delete.
-
-    Args:
-        uri: The URI to delete (e.g., "core://agent/old_note")
-
-    Returns:
-        Success or error message
-
-    Examples:
-        delete_memory("core://agent/deprecated_belief")
-        delete_memory("writer://draft_v1")
-    """
+    '删除指定 URI 路径。删除前必须读取完整正文并确认确需删除；若存在不能安全删除的子节点，工具会返回处理提示。\n\n参数：uri — 要删除的记忆 URI。'
     graph = get_graph_service()
 
     try:
@@ -798,36 +688,7 @@ async def delete_memory(uri: str) -> str:
 async def add_alias(
     new_uri: str, target_uri: str, priority: int, disclosure: str
 ) -> str:
-    """
-    Creates an alias URI pointing to the same memory as target_uri.
-
-    This is NOT a copy. The alias and the original share the same Memory ID (same content).
-    Each alias has its own independent priority and disclosure.
-    Child nodes under target_uri are automatically mirrored under new_uri.
-    Do NOT manually create aliases for each child — they are inherited.
-
-    When to use:
-    - Reading node A would benefit from also knowing about existing memory B
-      → alias B under A. Same logic as create_memory's parent selection.
-    - Move/rename a memory: add_alias to new path, then delete_memory the old path.
-      NEVER delete+create to move — that loses the Memory ID and all associations.
-
-    Args:
-        new_uri: New URI to create (alias)
-        target_uri: Existing URI to alias
-        priority: Relative priority for THIS alias path (lower = higher priority).
-                  REQUIRED — you must decide this yourself every time.
-                  Set by relevance to the parent's topic, not the memory's absolute importance.
-                  e.g., "database setup notes" → high priority under "deployment", low under "team_onboarding".
-        disclosure: Disclosure condition for THIS alias path.
-                  REQUIRED — you must write this yourself every time.
-
-    Returns:
-        Success message
-
-    Examples:
-        add_alias("core://timeline/2024/05/20", "core://agent/my_user/first_meeting", priority=1, disclosure="When I want to know how we start")
-    """
+    '为已有记忆创建别名 URI；别名与原记忆共享同一份正文，不会复制内容。\n\n参数：new_uri — 新别名 URI；target_uri — 已有记忆 URI；priority、disclosure — 新别名自己的检索优先级和召回条件。'
     graph = get_graph_service()
 
     try:
@@ -909,37 +770,7 @@ async def manage_triggers(
     add: Optional[List[str]] = None,
     remove: Optional[List[str]] = None,
 ) -> str:
-    """
-    Bind trigger words to a memory so it surfaces automatically during read_memory.
-
-    Triggers are bound to the MEMORY NODE (Memory ID), NOT to any specific path.
-    All aliases of the same memory share the same set of triggers.
-    (Contrast with priority/disclosure, which are per-path.)
-
-    Mechanism: When a trigger word appears in ANY memory's content, read_memory
-    shows a glossary link to this target node at the bottom.
-
-    How to choose trigger words:
-    - The trigger word MUST already exist in some older memory's content.
-      You are borrowing a word from an existing text to hook a new memory onto it.
-    - Do NOT invent obscure placeholder words that appear nowhere in the memory library.
-    - Use SPECIFIC terms. Broad/generic words create noise.
-    - A node can have multiple triggers. Same trigger can point to multiple nodes.
-    - View all triggers: read_memory("system://glossary").
-
-    Args:
-        uri: Any URI that points to the target memory node (used to locate the node;
-             any alias of the same memory works identically)
-        add: List of trigger words to bind to this node (Optional)
-        remove: List of trigger words to unbind from this node (Optional)
-
-    Returns:
-        Current list of triggers for this node after changes.
-
-    Examples:
-        manage_triggers("core://hazards/spa_fallback", add=["Nginx"])
-        manage_triggers("writer://story_world/factions", add=["Nuremberg", "Aether"])
-    """
+    '为记忆节点添加或移除触发词；触发词应已出现在记忆库正文中。\n\n参数：uri — 指向目标记忆的 URI；add — 要添加的触发词；remove — 要移除的触发词。'
     graph = get_graph_service()
     glossary = get_glossary_service()
 
@@ -1028,59 +859,138 @@ async def manage_triggers(
 
 @mcp.tool()
 async def search_memory(
-    query: str, domain: Optional[str] = None, limit: int = 10, include_obsolete: bool = False
+    query: str, domain: Optional[str] = None, limit: int = 10, include_obsolete: bool = False,
+    include_partial: bool = False, token_budget: Optional[int] = None, include_snippets: bool = False,
 ) -> str:
-    """
-    Search memories by path and content using full-text search.
-
-    Use this when you don't know the URI for a memory. Do NOT guess URIs.
-    This is lexical full-text search, NOT semantic search.
-
-    Args:
-        query: Search keywords (substring match)
-        domain: Optional domain filter (e.g., "core", "writer").
-                If not specified, searches all domains.
-        limit: Maximum results (default 10)
-        include_obsolete: Include obsolete memories (default false).
-
-    Returns:
-        List of matching memories with URIs and snippets
-
-    Examples:
-        search_memory("job")                   # Search all domains
-        search_memory("chapter", domain="writer") # Search only writer domain
-    """
+    '按路径和关键词全文检索，默认只返回严格匹配与策展短语别名的元数据和摘要，不返回正文片段。首轮保持 include_partial=false、include_snippets=false；此时不会自动返回 OR/PARTIAL 兜底候选。只有首轮无结果或已确认命中词与目标主题直接相关时，才可二次显式开启 include_partial=true。严格命中也只是词法候选，必须核对 URI、标题和主题。除非用户明确要求原文片段，不要开启 include_snippets；需要正文时使用 read_memory(uri)。\n\n参数：query — 搜索词；domain — 可选域过滤；limit — 返回数量，默认 10；include_obsolete — 是否包含 obsolete 记忆，默认 false；include_partial — 是否补充部分匹配，默认 false；token_budget — 摘要预算，默认使用服务端配置；include_snippets — 是否附带正文片段，默认 false。需要语义改写召回时可另行调用 semantic_search_memory。'
     search = get_search_indexer()
 
     try:
-        # Validate domain if provided
         valid = get_valid_domains()
         if domain is not None and domain not in valid:
             return f"Error: Unknown domain '{domain}'. Valid domains: {', '.join(valid)}"
+        if token_budget is None:
+            try:
+                configured_budget = _cfg.get("search_summary_token_budget")
+                token_budget = 1200 if configured_budget is None else max(0, int(configured_budget))
+            except (TypeError, ValueError):
+                token_budget = 1200
+        else:
+            token_budget = int(token_budget)
+            if token_budget < 0 or token_budget > 20000:
+                return "Error: token_budget must be between 0 and 20000."
 
-        results = await search.search(query, limit, domain, namespace=get_namespace(), include_obsolete=include_obsolete)
-
+        results = await search.search(
+            query, limit, domain, namespace=get_namespace(),
+            include_obsolete=include_obsolete, include_partial=include_partial,
+        )
         if not results:
             scope = f"in '{domain}'" if domain else "across all domains"
             return f"No matching memories found {scope}."
 
         lines = [f"Found {len(results)} matches for '{query}':", ""]
-
+        used_summary_tokens = 0
         for item in results:
-            uri = item.get(
-                "uri", make_uri(item.get("domain", DEFAULT_DOMAIN), item["path"])
-            )
+            uri = item.get("uri", make_uri(item.get("domain", DEFAULT_DOMAIN), item["path"]))
             lines.append(f"- {uri}")
+            is_partial_fallback = item.get("match_type") == "partial" and not include_partial
+            if item.get("match_type") == "partial":
+                lines.append(
+                    f"  Match: PARTIAL ({item.get('match_coverage', 0):.0%}; "
+                    f"matched: {', '.join(item.get('matched_terms', []))})"
+                )
+            elif item.get("match_type") == "strict":
+                lines.append("  Match: STRICT (all query terms)")
             lines.append(f"  Priority: {item['priority']}")
-            if item.get("disclosure"):
+            if item.get("disclosure") and not is_partial_fallback:
                 lines.append(f"  Disclosure: {item['disclosure']}")
-            lines.append(f"  {item['snippet']}")
+
+            summary = item.get("summary")
+            summary_status = item.get("summary_status", "MISSING")
+            if is_partial_fallback:
+                # Weak OR fallback candidates should not consume the summary
+                # budget by default. The caller can explicitly request them.
+                lines.append("  Summary [OMITTED]: PARTIAL fallback; verify direct relevance before expanding.")
+            elif summary:
+                required = _estimate_context_tokens(summary)
+                remaining = max(0, token_budget - used_summary_tokens)
+                if required <= remaining:
+                    lines.append(f"  Summary [VALID]: {summary}")
+                    used_summary_tokens += required
+                elif remaining > 0:
+                    delivered = _truncate_utf8_to_token_budget(summary, remaining)
+                    lines.append(f"  Summary [TRUNCATED]: {delivered}... (summary budget reached)")
+                    used_summary_tokens = token_budget
+                else:
+                    lines.append("  Summary [OMITTED]: summary token budget reached.")
+            else:
+                lines.append(f"  Summary [{summary_status}]: (no summary; body was not expanded)")
+
+            if include_snippets and item.get("snippet"):
+                lines.append(f"  Body snippet: {item['snippet']}")
+            if item.get("expandable") and not is_partial_fallback:
+                lines.append(f"  Full content: read_memory(\"{uri}\")")
+            elif is_partial_fallback:
+                lines.append("  Expand only after confirming this URI is directly relevant.")
+            for alias in item.get("aliases", []):
+                lines.append(f"  Alias: {alias['uri']} (Priority: {alias['priority']})")
+                if alias.get("disclosure"):
+                    lines.append(f"    Disclosure: {alias['disclosure']}")
             lines.append("")
 
+        lines.append(f"Summary budget: {used_summary_tokens}/{token_budget} estimated tokens.")
+        if not include_snippets:
+            lines.append("Body snippets omitted; use include_snippets=true when needed.")
         return "\n".join(lines)
-
     except Exception as e:
         return f"Error: {str(e)}"
+
+@mcp.tool()
+async def semantic_search_memory(
+    query: str, domain: Optional[str] = None, limit: int = 10,
+) -> str:
+    '按语义相似度检索候选记忆。结果只是近邻候选，不代表相关性已确认；使用前应读取正文核实。\n\n参数：query — 自然语言问题或改写表达；domain — 可选域过滤；limit — 候选数量，范围 1–50，默认 10。'
+    try:
+        if domain is not None and domain not in get_valid_domains():
+            return f"Error: Unknown domain '{domain}'. Valid domains: {', '.join(get_valid_domains())}"
+        results = await search_semantic_memories(
+            query, limit=limit, namespace=get_namespace(), domain=domain
+        )
+        if not results:
+            return "No semantic candidates found. This does not prove that no related memory exists."
+        lines = [
+            f"Semantic candidates for: {query}",
+            "These are nearest-neighbor candidates, not verified relevance judgments.",
+            "Read a candidate with read_memory(uri) before using its content.",
+            "",
+        ]
+        for rank, item in enumerate(results, 1):
+            lines.append(
+                f"{rank}. {item['uri']}\n"
+                f"   Candidate distance: {item['distance']:.6f} (lower is nearer; not a confidence score)\n"
+                f"   Domain: {item.get('domain') or '(none)'} | Lifecycle: {item.get('lifecycle_status') or 'unspecified'}"
+            )
+        return "\n".join(lines)
+    except Exception as exc:
+        return f"Semantic search unavailable: {type(exc).__name__}: {exc}"
+
+
+@mcp.tool()
+def diagnose_memory_backend() -> str:
+    '检查当前 MCP 进程对记忆 SQLite 数据库的读写能力；写入测试会回滚，不修改记忆数据。'
+    import json
+    return json.dumps(diagnose_memory_database(), ensure_ascii=False)
+
+
+@mcp.tool()
+async def sync_semantic_index() -> str:
+    '增量同步语义索引。可能调用配置的 Embedding API；API 失败时保留原索引。'
+    import json
+    try:
+        report = await sync_configured_vector_index()
+        return json.dumps(report, ensure_ascii=False)
+    except Exception as exc:
+        return f"Semantic index sync failed: {type(exc).__name__}: {exc}"
 
 
 # =============================================================================

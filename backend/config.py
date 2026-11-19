@@ -57,6 +57,23 @@ DEFAULTS: dict[str, Any] = {
     "public_readonly_mcp": False,
     "locale": None,
     "bloat_min_bytes": 2400,
+    # Approximate token budget for summaries delivered by system://boot.
+    "boot_summary_token_budget": 2000,
+    # Approximate L1 summary budget for each search_memory response.
+    "search_summary_token_budget": 1200,
+    # Optional semantic embedding provider; credentials are read from config.json and never exposed by settings APIs.
+    "embedding": {
+        "enabled": False,
+        "provider": "nvidia",
+        "base_url": "https://integrate.api.nvidia.com/v1/embeddings",
+        "model": "nvidia/nemotron-3-embed-1b",
+        "api_key": "",
+        "query_input_type": "query",
+        "document_input_type": "passage",
+        "encoding_format": "float",
+        "truncate": "END",
+        "timeout_seconds": 30,
+    },
 }
 
 _ENV_MAP: dict[str, str] = {
