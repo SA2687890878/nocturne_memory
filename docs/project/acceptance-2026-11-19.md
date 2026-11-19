@@ -118,3 +118,10 @@
 - HTTP MCP initialize/tools/list 实测 11 个工具，read_memory 新去重描述已生效。
 - 原 Deva stdio 进程 PID 28544 保持运行，未强制终止用户会话；该进程仍可能持有旧工具描述。下一次新会话/重载 MCP 后会加载新描述。
 - 工具说明基准文档同步修正，明确首轮严格检索不自动执行 PARTIAL，避免文档与当前实现不一致。
+
+### 真实会话重复读取率基线与 Deva 配置补强（2026-11-19 16:40）
+- 55 个真实 Deva 会话：148 次 read_memory，其中 25 次同 URI 重复读取，重复调用率 16.9%；最近 20 个会话为 6/41（14.6%），最近 10 个会话为 2/20（10.0%）。
+- 最新会话仍存在同一专项 URI 重读，说明 MCP 工具描述更新尚未被当前 stdio 进程加载，不能宣称去重已在客户端行为层生效。
+- 已修改用户级 ~/.deva/mcp.json 的 Nocturne server description，明确：严格检索优先、PARTIAL 显式第二阶段、同会话同 URI 读取后复用。原配置已备份，JSON 校验通过。
+- 下一次客户端 reload/restart 后采集新会话，验证真实重复读取率是否下降；本轮不强制终止 Deva 进程，避免打断会话。
+- HTTP 服务健康检查 HTTP 200，数据库 connected；全量测试 276 passed、25 warnings。
