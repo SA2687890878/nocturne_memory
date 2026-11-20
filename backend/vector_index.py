@@ -7,12 +7,34 @@ from __future__ import annotations
 
 import math
 import sqlite3
+from importlib.util import find_spec
 from pathlib import Path
+from struct import pack
 from typing import Any, Iterable
 
 
 class VectorIndexError(RuntimeError):
     """Raised when the vector index is unavailable or incompatible."""
+
+
+def _serialize_float32(vector: list[float]) -> bytes:
+    """Match sqlite-vec's float32 wire format without its optional NumPy import."""
+    return pack(f"{len(vector)}f", *vector)
+
+
+def _load_extension(connection: sqlite3.Connection) -> None:
+    # sqlite_vec.__init__ eagerly imports optional numpy.typing. On Windows
+    # that native import can hang a live stdio MCP loop, although this class
+    # only needs the bundled SQLite extension and struct-packed float arrays.
+    spec = find_spec("sqlite_vec")
+    if spec is None or spec.origin is None:
+        raise VectorIndexError("sqlite-vec package is not installed")
+    extension = Path(spec.origin).parent / "vec0"
+    connection.enable_load_extension(True)
+    try:
+        connection.load_extension(str(extension))
+    finally:
+        connection.enable_load_extension(False)
 
 
 class VectorIndex:
@@ -44,14 +66,12 @@ class VectorIndex:
         if not self.read_only:
             self.path.parent.mkdir(parents=True, exist_ok=True)
         try:
-            import sqlite_vec
             if self.read_only:
                 connection = sqlite3.connect(self.path.as_uri() + "?mode=ro", uri=True)
             else:
                 connection = sqlite3.connect(self.path)
             connection.row_factory = sqlite3.Row
-            connection.enable_load_extension(True)
-            sqlite_vec.load(connection)
+            _load_extension(connection)
             if self.read_only:
                 tables = {row[0] for row in connection.execute(
                     "SELECT name FROM sqlite_master WHERE type IN ('table','view')"
@@ -155,7 +175,6 @@ class VectorIndex:
         delete_uris: Iterable[str] = (),
     ) -> dict[str, int]:
         """Atomically apply vector upserts and URI deletions in one transaction."""
-        import sqlite_vec
         docs = list(upserts)
         deletes = list(dict.fromkeys(delete_uris))
         prepared = []
@@ -197,7 +216,7 @@ class VectorIndex:
                 )
                 con.execute(
                     "INSERT INTO memory_vectors(rowid,embedding) VALUES(?,?)",
-                    (rowid, sqlite_vec.serialize_float32(vector)),
+                    (rowid, _serialize_float32(vector)),
                 )
             meta_count = con.execute("SELECT COUNT(*) FROM memory_meta").fetchone()[0]
             vector_count = con.execute("SELECT COUNT(*) FROM memory_vectors").fetchone()[0]
@@ -223,7 +242,6 @@ class VectorIndex:
         namespace: str | None = None,
         domain: str | None = None,
     ) -> list[dict[str, Any]]:
-        import sqlite_vec
         if limit < 1:
             raise ValueError("limit must be at least 1")
         vector = self._validate_vector(query_vector)
@@ -234,7 +252,7 @@ class VectorIndex:
         # sqlite-vec applies k before ordinary metadata predicates. Fetch nearest
         # candidates progressively until the filtered result is full or exhausted.
         candidate_count = min(total, limit)
-        serialized = sqlite_vec.serialize_float32(vector)
+        serialized = _serialize_float32(vector)
         while True:
             rows = con.execute("""SELECT m.memory_id,m.uri,m.content_hash,m.namespace,m.domain,
                         m.path,m.lifecycle_status,v.distance

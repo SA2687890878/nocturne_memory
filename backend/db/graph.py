@@ -26,6 +26,7 @@ from sqlalchemy import (
     and_,
     or_,
     not_,
+    tuple_,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from .models import (
@@ -130,6 +131,37 @@ class GraphService:
             result["uri"] = f"{result['domain']}://{result['path']}"
             result["summary_status"] = "VALID" if result.get("summary") else "MISSING"
             return result
+
+    async def get_memory_summaries_by_uris(
+        self, uris: List[str], namespace: str = "",
+    ) -> Dict[str, Dict[str, Any]]:
+        """Resolve current path/version metadata in one query, without bodies."""
+        pairs = list(dict.fromkeys(tuple(uri.split("://", 1)) for uri in uris if "://" in uri))
+        if not pairs:
+            return {}
+        async with self.session() as session:
+            rows = (await session.execute(
+                select(
+                    Memory.id.label("memory_id"), Memory.node_uuid.label("node_uuid"),
+                    Memory.summary_content.label("summary"),
+                    Path.domain.label("domain"), Path.path.label("path"),
+                    Edge.priority.label("priority"), Edge.disclosure.label("disclosure"),
+                    Node.lifecycle_status.label("lifecycle_status"),
+                )
+                .select_from(Path)
+                .join(Edge, Path.edge_id == Edge.id)
+                .join(Node, Node.uuid == Edge.child_uuid)
+                .join(Memory, and_(Memory.node_uuid == Edge.child_uuid, Memory.deprecated == False))
+                .where(Path.namespace == namespace, tuple_(Path.domain, Path.path).in_(pairs))
+                .order_by(Memory.created_at.desc())
+            )).mappings().all()
+        current = {}
+        for row in rows:
+            item = dict(row)
+            item["uri"] = f"{item['domain']}://{item['path']}"
+            item["summary_status"] = "VALID" if item.get("summary") else "MISSING"
+            current.setdefault(item["uri"], item)
+        return current
 
     async def get_memory_by_path(
         self, path: str, domain: str = "core", namespace: str = ""

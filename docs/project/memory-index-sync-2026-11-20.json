@@ -1,0 +1,67 @@
+{
+  "before": {
+    "source_access": "Windows read-only handle excluding writers, no WAL sidecar, locked copy; no source writes/migration",
+    "source_documents": 59,
+    "index_documents": 58,
+    "missing": [
+      "core://agent/environment/magpie-gateway-integration"
+    ],
+    "stale_paths": [],
+    "hash_mismatches": [
+      "core://agent/environment/codex-copilot-provider",
+      "core://agent/environment/deva-copilot-provider/codex"
+    ],
+    "version_mismatches": [
+      "core://agent/environment/codex-copilot-provider",
+      "core://agent/environment/deva-copilot-provider/codex"
+    ],
+    "metadata_mismatches": [
+      "core://agent/environment/codex-copilot-provider",
+      "core://agent/environment/deva-copilot-provider/codex"
+    ],
+    "integrity_ok": true,
+    "embedding_requests": 0,
+    "source_sha256_matches_snapshot_after_validation": true,
+    "status": "needs_sync"
+  },
+  "sync": {
+    "source_count": 59,
+    "upserted": 3,
+    "deleted": 0,
+    "unchanged": 56,
+    "integrity_ok": true,
+    "source": "work-memory.db",
+    "target": "work-memory-vectors.db",
+    "model": "nvidia/nemotron-3-embed-1b",
+    "dimensions": 2048,
+    "index_health": {
+      "ok": true,
+      "metadata_count": 59,
+      "vector_count": 59,
+      "model_name": "nvidia/nemotron-3-embed-1b",
+      "dimensions": 2048,
+      "document_format_version": 2,
+      "updated_at": "2026-11-19 02:18:21",
+      "database_bytes": 8462336
+    },
+    "elapsed_seconds": 4.92
+  },
+  "backup": ".tmp/backups/work-memory-vectors.before-sync-20261120-111501.db",
+  "backup_sha256": "d6c4092d82e4228333e06ed4a74f3556a53551b7f55b93f88dbf94d1f60beb4e",
+  "memory_sha256_before": "90f13db51ee7f9be73428b45f21bbf42e2349585659f8486bf02f097d7bf5e83",
+  "after": {
+    "source_access": "SQLite mode=ro backup; no source initialization/migration",
+    "source_documents": 59,
+    "index_documents": 59,
+    "missing": [],
+    "stale_paths": [],
+    "hash_mismatches": [],
+    "version_mismatches": [],
+    "metadata_mismatches": [],
+    "integrity_ok": true,
+    "embedding_requests": 0,
+    "source_sha256_unchanged_after_validation": true,
+    "status": "pass"
+  },
+  "memory_sha256_unchanged_after_sync_and_runtime": true
+}

@@ -56,6 +56,15 @@ def test_read_memory_tool_description_discourages_duplicate_reads(mcp_module):
     assert "同一会话中某 URI 已成功读取后" in description
     assert "不要重复读取" in description
     assert "正文已更新" in description
+    assert "禁止遍历整个 domain" in description
+    assert "最多读取 3 条直接相关正文" in description
+
+
+async def test_memory_index_is_navigation_not_read_all_checklist(mcp_module):
+    index = await mcp_module.read_memory("system://index/core")
+    assert "导航地图，不是待读清单" in index
+    assert "禁止遍历整个 domain" in index
+    assert "最多读取 3 条" in index
 
 
 def test_search_memory_tool_description_discourages_first_pass_expansion(mcp_module):
@@ -64,6 +73,11 @@ def test_search_memory_tool_description_discourages_first_pass_expansion(mcp_mod
     assert "include_snippets=false" in description
     assert "用户明确要求原文片段" in description
     assert "read_memory(uri)" in description
+    assert "2-5 个有区分度的关键词/短语" in description
+    assert "不要直接提交完整问题长句" in description
+    assert "token_budget=0" in description
+    assert "保留默认摘要预算" in description
+    assert "不要全局默认 0" in description
 
 
 async def test_search_memory_omits_partial_fallback_summaries_by_default(mcp_module, graph_service):

@@ -64,6 +64,9 @@ npm run build
 | [Nocturne V3.1 上下文交付方案](./nocturne-v3.1-context-delivery.md) | 摘要优先、渐进式披露、搜索索引同步和 Token 控制的已确认方案 |
 | [Nocturne V3.1 迭代计划](./nocturne-v3.1-iteration-plan.md) | 阶段安排、任务依赖、验收清单、风险和当前进度 |
 | [MCP 工具描述规范](./mcp-tool-descriptions.md) | 11 个 MCP 工具的简明描述与调用边界 |
+| [分层读取与召回保持验收（2026-11-20）](./progressive-disclosure-2026-11-20.md) | 按 URI 取摘要、正文行段、SQL 片段按需生成、295 项全量回归与真实工作库快照对照 |
+| [核心链路可用验收（2026-11-20 后续）](./memory-core-ready-2026-11-20.md) | 310 项回归、59/59 索引修复、语义当前版本校验与摘要交付、真实 stdio/NVIDIA Top1 验证 |
+| [真实任务检索与加载成本验收（2026-11-20）](./real-task-eval-2026-11-20.md) | 通用记忆写入后的全文/语义 Top-1、Boot 成本与摘要压缩对照 |
 | [记忆质量审计](./memory-quality-audit-2026-11-19.md) | 当前工作库只读质量检查结果与复核事项 |
 
 ## 相关现有文档

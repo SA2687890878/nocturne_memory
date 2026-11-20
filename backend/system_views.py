@@ -20,7 +20,10 @@ from locales import t
 logger = logging.getLogger(__name__)
 
 
-async def fetch_and_format_memory(uri: str, track_access: bool = False) -> str:
+async def fetch_and_format_memory(
+    uri: str, track_access: bool = False,
+    start_line: Optional[int] = None, end_line: Optional[int] = None,
+) -> str:
     """
     Fetch a full memory body and return a formatted string.
     Used by explicit read_memory requests; boot delivery uses the summary-only query.
@@ -49,13 +52,6 @@ async def fetch_and_format_memory(uri: str, track_access: bool = False) -> str:
             )
         except Exception as exc:
             logger.warning("Unable to record access for %s; continuing memory read: %s", uri, exc)
-
-    children = await graph.get_children(
-        memory["node_uuid"],
-        context_domain=domain,
-        context_path=path,
-        namespace=get_namespace(),
-    )
 
     lines = []
 
@@ -92,13 +88,32 @@ async def fetch_and_format_memory(uri: str, track_access: bool = False) -> str:
     else:
         lines.append("Disclosure: (not set)")
 
+    content = memory.get("content", "(empty)")
+    if start_line is not None or end_line is not None:
+        # A targeted body read must not pull in child bodies or glossary links.
+        # Explicit full reads retain the original verbatim content below.
+        body_lines = content.splitlines()
+        total = len(body_lines)
+        first = start_line if start_line is not None else 1
+        last = min(end_line if end_line is not None else total, total)
+        if first > total:
+            raise ValueError(f"start_line {first} exceeds total lines ({total}).")
+        lines.extend([
+            f"Content lines: {first}-{last}/{total}",
+            "Partial body read; omitted lines and related memories were not expanded.",
+            "", "=" * 60, "",
+        ])
+        lines.extend(f"{number}: {body_lines[number - 1]}" for number in range(first, last + 1))
+        if last < total:
+            lines.extend(["", f"Continue only if needed: read_memory(\"{disp_uri}\", start_line={last + 1}, end_line={min(last + 50, total)})"])
+        return "\n".join(lines)
+
     node_keywords = await glossary.get_glossary_for_node(memory["node_uuid"], namespace=get_namespace())
     if node_keywords:
         lines.append(f"Keywords: [{', '.join(node_keywords)}]")
     else:
         lines.append("Keywords: (none)")
 
-    content = memory.get("content", "(empty)")
     bloat_min = _cfg.get("bloat_min_bytes")
     if bloat_min is not None and bloat_min > 0:
         content_bytes = len(content.encode("utf-8"))
@@ -144,6 +159,12 @@ async def fetch_and_format_memory(uri: str, track_access: bool = False) -> str:
     except Exception:
         pass
 
+    children = await graph.get_children(
+        memory["node_uuid"],
+        context_domain=domain,
+        context_path=path,
+        namespace=get_namespace(),
+    )
     if children:
         lines.append("=" * 60)
         lines.append("")
@@ -184,6 +205,54 @@ def _truncate_utf8_to_token_budget(content: str, token_budget: int) -> str:
     max_bytes = max(0, token_budget) * 3
     encoded = content.encode("utf-8")[:max_bytes]
     return encoded.decode("utf-8", errors="ignore").rstrip()
+
+
+async def fetch_and_format_summary(uri: str) -> str:
+    """Read an explicit URI at L1 without querying its body or related nodes."""
+    import config as _cfg
+    from mcp_server import parse_uri
+
+    domain, path = parse_uri(uri)
+    memory = await get_graph_service().get_memory_summary_by_path(
+        path, domain, namespace=get_namespace()
+    )
+    if not memory:
+        raise ValueError(t("system.uri_not_found").format(uri=uri))
+    configured = _cfg.get("search_summary_token_budget")
+    try:
+        budget = 1200 if configured is None else max(0, min(20000, int(configured)))
+    except (TypeError, ValueError):
+        budget = 1200
+    lines = [
+        f"MEMORY: {memory['uri']}",
+        f"Memory ID: {memory['memory_id']}",
+        f"Priority: {memory.get('priority', 0)}",
+        f"Lifecycle: {memory.get('lifecycle_status', 'unspecified')}",
+    ]
+    if memory.get("lifecycle_status") == "obsolete":
+        lines.append("Lifecycle Warning: marked obsolete; shown because this URI was requested explicitly.")
+    if memory.get("disclosure"):
+        lines.append(f"Disclosure: {memory['disclosure']}")
+    summary = memory.get("summary")
+    used = 0
+    if not summary:
+        lines.append("Summary [MISSING]: (no summary; body was not expanded)")
+    elif not budget:
+        lines.append("Summary [OMITTED]: summary token budget reached.")
+    else:
+        delivered = _truncate_utf8_to_token_budget(summary, budget)
+        used = _estimate_context_tokens(delivered)
+        if _estimate_context_tokens(summary) > budget:
+            lines.append(f"Summary [TRUNCATED]: {delivered}... (summary budget reached)")
+        else:
+            lines.append(f"Summary [VALID]: {summary}")
+            used = _estimate_context_tokens(summary)
+    lines.extend([
+        "Body and related memories were not expanded.",
+        f"Full content only if needed: read_memory(\"{memory['uri']}\")",
+        f"Summary budget: {used}/{budget} estimated tokens.",
+    ])
+    return "\n".join(lines)
 
 
 async def generate_boot_memory_view(core_memory_uris: List[str]) -> str:
@@ -347,7 +416,9 @@ async def generate_memory_index_view(domain_filter: Optional[str] = None) -> str
             "# This index ONLY shows ONE primary path per memory node.",
             "# Other aliases, triggers, and child nodes located under those hidden aliases ARE NOT SHOWN HERE.",
             "# DO NOT assume the children shown here are the ONLY children of a node.",
-            "# To see ALL paths, aliases, and triggers for a specific memory, you MUST use `read_memory()` on its URI.",
+            "# 索引仅是导航地图，不是待读清单；禁止遍历整个 domain。",
+            "# 默认每项任务最多读取 3 条直接相关正文；不得批量展开。",
+            "# 只有任务确实需要时才核对特定 URI 的别名/触发词。",
             "#",
             "# Legend: [#ID] = Memory ID, [\u2605N] = priority (lower = higher)",
             "",

@@ -90,17 +90,17 @@ def test_apply_changes_commits_upserts_and_deletes_atomically(tmp_path):
 
 
 def test_apply_changes_rolls_back_database_failure(tmp_path, monkeypatch):
-    import sqlite_vec
+    from backend import vector_index as module
     with VectorIndex(tmp_path / "rollback.db", dimensions=DIMS, model_name="test-model") as index:
         index.upsert_many([document("memory://old", [1.0] + [0.0] * 7)])
         before = index.list_documents()
-        original = sqlite_vec.serialize_float32
+        original = module._serialize_float32
         def failing_serialize(vector):
             raise RuntimeError("injected write failure")
-        monkeypatch.setattr(sqlite_vec, "serialize_float32", failing_serialize)
+        monkeypatch.setattr(module, "_serialize_float32", failing_serialize)
         with pytest.raises(RuntimeError, match="injected write failure"):
             index.apply_changes([document("memory://new", [0.0, 1.0] + [0.0] * 6)], ["memory://old"])
-        monkeypatch.setattr(sqlite_vec, "serialize_float32", original)
+        monkeypatch.setattr(module, "_serialize_float32", original)
         assert index.list_documents() == before
         assert index.health_check()["metadata_count"] == index.health_check()["vector_count"] == 1
 
@@ -122,3 +122,19 @@ def test_read_only_index_does_not_create_missing_file(tmp_path):
     with pytest.raises(FileNotFoundError, match="does not exist"):
         VectorIndex(db, dimensions=DIMS, model_name="test-model", read_only=True).open()
     assert not db.exists()
+
+
+def test_vector_index_never_imports_numpy_or_sqlite_vec_package(tmp_path, monkeypatch):
+    import builtins
+
+    original_import = builtins.__import__
+
+    def guarded_import(name, *args, **kwargs):
+        if name == "sqlite_vec" or name == "numpy" or name.startswith("numpy."):
+            raise AssertionError("Vector operations must not initialize optional NumPy")
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", guarded_import)
+    with VectorIndex(tmp_path / "no_numpy.db", dimensions=DIMS, model_name="test-model") as index:
+        index.upsert_many([document("memory://no_numpy", [1.0] + [0.0] * 7)])
+        assert index.search([1.0] + [0.0] * 7, limit=1)[0]["uri"] == "memory://no_numpy"

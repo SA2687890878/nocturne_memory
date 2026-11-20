@@ -52,7 +52,9 @@ async def _reset_database(db_url: str):
 async def isolated_test_environment(tmp_path, monkeypatch):
     db_url = os.environ.get("TEST_DATABASE_URL")
     if not db_url:
-        db_url = f"sqlite+aiosqlite:///{tmp_path / 'test.db'}"
+        # SQLAlchemy SQLite URLs on Windows must use forward slashes; raw Path
+        # strings contain backslashes and can fail during FTS5 migration DDL.
+        db_url = f"sqlite+aiosqlite:///{(tmp_path / 'test.db').as_posix()}"
 
     snapshot_dir = tmp_path / "snapshots"
     snapshot_dir.mkdir(parents=True, exist_ok=True)

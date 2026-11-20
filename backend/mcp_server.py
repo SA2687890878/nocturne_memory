@@ -52,6 +52,7 @@ from text_patch import (
 )
 from system_views import (
     fetch_and_format_memory,
+    fetch_and_format_summary,
     generate_boot_memory_view,
     generate_memory_index_view,
     generate_recent_memories_view,
@@ -290,8 +291,36 @@ def write_tool():
 
 
 @mcp.tool()
-async def read_memory(uri: str) -> str:
-    '按 URI 读取记忆正文或系统视图。需要原文、代码、接口或参数时调用。\n\n同一会话中某 URI 已成功读取后，复用已读内容，不要重复读取；仅在正文已更新或明确需要最新版本时重读。父入口与专项子记忆已分别读取后，不要再次读取相同 URI。\n\n参数：uri — 记忆 URI；也支持 system://boot、system://index/<domain>、system://recent、system://glossary 等系统视图。'
+async def read_memory(
+    uri: str, detail: str = "full",
+    start_line: Optional[int] = None, end_line: Optional[int] = None,
+) -> str:
+    """按 URI 读取记忆或系统视图。已知 URI 或语义候选可先 detail="summary"，只取预算内摘要，缺失时不加载正文；摘要足够即停止。detail="full" 保持原有全文读取；只需部分证据时指定 start_line/end_line（从 1 开始、包含两端），不附带关联节点。摘要或局部读取不等于已读全文，修改前仍须读取完整正文。
+
+    索引仅用于导航，不是待读清单；禁止遍历整个 domain 或递归读取全部子节点。默认每项任务最多读取 3 条直接相关正文；用户明确要求完整盘点时除外。先用摘要/L0/L1筛选，只读取最相关 URI。
+
+    同一会话中某 URI 已成功读取后，复用已读内容，不要重复读取；仅在正文已更新、明确需要最新版本或需补充尚未读取的层级/行段时继续读取。同一 Memory ID 的已读行段应复用，版本变化后不要拼接新旧正文。
+
+    参数：uri — 记忆 URI，也支持 system://boot、system://index/<domain>、system://recent 等系统视图；detail — full（默认）或 summary；start_line/end_line — 可选正文行范围，仅 full 支持。系统视图不支持这些披露选项。
+    """
+    if detail not in {"full", "summary"}:
+        return "Error: detail must be 'full' or 'summary'."
+    has_line_range = start_line is not None or end_line is not None
+    if any(value is not None and (type(value) is not int or value < 1)
+           for value in (start_line, end_line)):
+        return "Error: start_line and end_line must be positive integers (1-based, inclusive)."
+    if start_line is not None and end_line is not None and end_line < start_line:
+        return "Error: end_line must be greater than or equal to start_line."
+    if detail == "summary" and has_line_range:
+        return "Error: line ranges require detail='full'."
+    if uri.strip().startswith("system://") and (detail != "full" or has_line_range):
+        return "Error: detail and line ranges apply to memory URIs, not system views."
+    if detail == "summary":
+        try:
+            return await fetch_and_format_summary(uri)
+        except Exception as exc:
+            return f"Error: {exc}"
+
     # HARDCODED SYSTEM INTERCEPTIONS
     # These bypass the database lookup to serve dynamic system content
     if uri.strip() == "system://boot":
@@ -364,7 +393,9 @@ async def read_memory(uri: str) -> str:
         return "Error: random command now requires a domain (e.g. system://random/core)"
 
     try:
-        content = await fetch_and_format_memory(uri, track_access=True)
+        content = await fetch_and_format_memory(
+            uri, track_access=True, start_line=start_line, end_line=end_line,
+        )
         return content
     except Exception as e:
         # Catch both ValueError (not found) and other exceptions
@@ -862,7 +893,7 @@ async def search_memory(
     query: str, domain: Optional[str] = None, limit: int = 10, include_obsolete: bool = False,
     include_partial: bool = False, token_budget: Optional[int] = None, include_snippets: bool = False,
 ) -> str:
-    '按路径和关键词全文检索，默认只返回严格匹配与策展短语别名的元数据和摘要，不返回正文片段。首轮保持 include_partial=false、include_snippets=false；此时不会自动返回 OR/PARTIAL 兜底候选。只有首轮无结果或已确认命中词与目标主题直接相关时，才可二次显式开启 include_partial=true。严格命中也只是词法候选，必须核对 URI、标题和主题。除非用户明确要求原文片段，不要开启 include_snippets；需要正文时使用 read_memory(uri)。\n\n参数：query — 搜索词；domain — 可选域过滤；limit — 返回数量，默认 10；include_obsolete — 是否包含 obsolete 记忆，默认 false；include_partial — 是否补充部分匹配，默认 false；token_budget — 摘要预算，默认使用服务端配置；include_snippets — 是否附带正文片段，默认 false。需要语义改写召回时可另行调用 semantic_search_memory。'
+    '按路径和关键词全文检索。自然语言问题先压缩为 2-5 个有区分度的关键词/短语，不要直接提交完整问题长句；优先使用记忆标题或正文中的专有术语。默认只返回严格匹配与策展短语别名的元数据和摘要，不返回正文片段。首轮保持 include_partial=false、include_snippets=false；此时不会自动返回 OR/PARTIAL 兜底候选。只有首轮无结果或已确认命中词与目标主题直接相关时，才可二次显式开启 include_partial=true。严格命中也只是词法候选，必须核对 URI、标题和主题。除非用户明确要求原文片段，不要开启 include_snippets；已知 URI 或纯定位/列表任务可显式 token_budget=0 获取 L0；判断陌生候选是否相关时保留默认摘要预算获取 L1，不要全局默认 0。摘要足够即停止，正文细节影响结论时才 read_memory(uri)。\n\n参数：query — 搜索词；domain — 可选域过滤；limit — 返回数量，默认 10；include_obsolete — 是否包含 obsolete 记忆，默认 false；include_partial — 是否补充部分匹配，默认 false；token_budget — 摘要预算，默认使用服务端配置；include_snippets — 是否附带正文片段，默认 false。需要语义改写召回时可另行调用 semantic_search_memory。'
     search = get_search_indexer()
 
     try:
@@ -883,6 +914,7 @@ async def search_memory(
         results = await search.search(
             query, limit, domain, namespace=get_namespace(),
             include_obsolete=include_obsolete, include_partial=include_partial,
+            include_snippets=include_snippets,
         )
         if not results:
             scope = f"in '{domain}'" if domain else "across all domains"
@@ -948,11 +980,20 @@ async def search_memory(
 @mcp.tool()
 async def semantic_search_memory(
     query: str, domain: Optional[str] = None, limit: int = 10,
+    token_budget: Optional[int] = None,
 ) -> str:
-    '按语义相似度检索候选记忆。结果只是近邻候选，不代表相关性已确认；使用前应读取正文核实。\n\n参数：query — 自然语言问题或改写表达；domain — 可选域过滤；limit — 候选数量，范围 1–50，默认 10。'
+    '显式语义检索，可能调用 Embedding API。返回经当前路径、版本和生命周期校验的近邻候选及预算内摘要，不返回正文；距离不代表相关性置信度，摘要足够即停止，确需原文证据再读行段或全文。\n\n参数：query — 自然语言问题；domain — 可选域；limit — 1–50，默认 10；token_budget — 摘要估算预算，默认 1200，0 仅元数据。'
     try:
         if domain is not None and domain not in get_valid_domains():
             return f"Error: Unknown domain '{domain}'. Valid domains: {', '.join(get_valid_domains())}"
+        if token_budget is None:
+            try:
+                configured = _cfg.get("search_summary_token_budget")
+                token_budget = 1200 if configured is None else max(0, min(20000, int(configured)))
+            except (TypeError, ValueError):
+                token_budget = 1200
+        elif type(token_budget) is not int or not 0 <= token_budget <= 20000:
+            return "Error: token_budget must be between 0 and 20000."
         results = await search_semantic_memories(
             query, limit=limit, namespace=get_namespace(), domain=domain
         )
@@ -961,15 +1002,36 @@ async def semantic_search_memory(
         lines = [
             f"Semantic candidates for: {query}",
             "These are nearest-neighbor candidates, not verified relevance judgments.",
-            "Read a candidate with read_memory(uri) before using its content.",
+            "Current path/version/lifecycle checked; summary-only edits may still require vector resync.",
+            "Use the summaries to assess relevance; read body evidence only if needed.",
             "",
         ]
+        used_summary_tokens = 0
         for rank, item in enumerate(results, 1):
             lines.append(
                 f"{rank}. {item['uri']}\n"
                 f"   Candidate distance: {item['distance']:.6f} (lower is nearer; not a confidence score)\n"
                 f"   Domain: {item.get('domain') or '(none)'} | Lifecycle: {item.get('lifecycle_status') or 'unspecified'}"
             )
+            lines.append(f"   Memory ID: {item['memory_id']}")
+            if item.get("disclosure"):
+                lines.append(f"   Disclosure: {item['disclosure']}")
+            summary = item.get("summary")
+            remaining = max(0, token_budget - used_summary_tokens)
+            if not summary:
+                lines.append("   Summary [MISSING]: (body was not expanded)")
+            elif not remaining:
+                lines.append("   Summary [OMITTED]: summary token budget reached.")
+            elif _estimate_context_tokens(summary) <= remaining:
+                lines.append(f"   Summary [VALID]: {summary}")
+                used_summary_tokens += _estimate_context_tokens(summary)
+            else:
+                delivered = _truncate_utf8_to_token_budget(summary, remaining)
+                lines.append(f"   Summary [TRUNCATED]: {delivered}... (summary budget reached)")
+                used_summary_tokens += _estimate_context_tokens(delivered)
+            if item.get("aliases"):
+                lines.append(f"   Aliases: {', '.join(item['aliases'])}")
+        lines.append(f"Summary budget: {used_summary_tokens}/{token_budget} estimated tokens. Body not expanded.")
         return "\n".join(lines)
     except Exception as exc:
         return f"Semantic search unavailable: {type(exc).__name__}: {exc}"

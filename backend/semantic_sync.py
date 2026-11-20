@@ -16,8 +16,9 @@ DIMENSIONS = 2048
 DOCUMENT_FORMAT_VERSION = 2
 
 
-def load_source_documents() -> tuple[Path, list[dict[str, Any]]]:
-    url = str(config.get("database_url") or "")
+def load_source_documents(database_url: str | None = None) -> tuple[Path, list[dict[str, Any]]]:
+    """Read configured source, or an explicit isolated snapshot for auditing."""
+    url = str(database_url if database_url is not None else config.get("database_url") or "")
     prefix = "sqlite+aiosqlite:///"
     if not url.startswith(prefix):
         raise RuntimeError("semantic index sync currently requires a SQLite memory database")

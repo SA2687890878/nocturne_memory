@@ -310,11 +310,14 @@ class SearchIndexer:
         namespace: str = "",
         include_obsolete: bool = False,
         include_partial: bool = False,
+        include_snippets: bool = True,
     ) -> List[Dict[str, Any]]:
         """Search memories by path and content using the derived FTS index.
 
         Obsolete nodes are excluded by default before ranking, de-duplication
         and LIMIT, so their slots go to still-valid memories.
+        Snippets remain opt-in at the MCP boundary. Partial matching still
+        computes its bounded evidence internally to preserve coverage/ranking.
         """
         async with self._session() as session:
             candidate_limit = max(limit * 5, 50)
@@ -337,6 +340,13 @@ class SearchIndexer:
                     return []
 
                 params["match_query"] = match_query
+                snippet_projection = "''"
+                if include_snippets or include_partial:
+                    snippet_projection = """CASE
+                            WHEN snippet(search_documents_fts, 6, '', '', ' … ', 24) != ''
+                            THEN snippet(search_documents_fts, 6, '', '', ' … ', 24)
+                            ELSE substr(sd.content, 1, 240)
+                        END"""
                 search_stmt = text(
                     f"""
                     SELECT
@@ -347,11 +357,7 @@ class SearchIndexer:
                         sd.priority,
                         sd.memory_id,
                         sd.summary_content,
-                        CASE
-                            WHEN snippet(search_documents_fts, 6, '', '', ' … ', 24) != ''
-                            THEN snippet(search_documents_fts, 6, '', '', ' … ', 24)
-                            ELSE substr(sd.content, 1, 240)
-                        END AS snippet,
+                        {snippet_projection} AS snippet,
                         sd.disclosure,
                         bm25(search_documents_fts, 0.0, 0.0, 2.5, 0.0, 2.0, 2.5, 1.0, 1.0, 0.75) AS score
                     FROM search_documents AS sd
@@ -441,6 +447,13 @@ class SearchIndexer:
                     return []
 
                 params["ts_query"] = normalized
+                snippet_projection = "''"
+                if include_snippets:
+                    snippet_projection = """ts_headline(
+                                'simple', coalesce(sd.content, ''),
+                                websearch_to_tsquery('simple', :ts_query),
+                                'MaxFragments=1, MinWords=8, MaxWords=24, ShortWord=2'
+                            )"""
                 result = await session.execute(
                     text(
                         f"""
@@ -452,11 +465,7 @@ class SearchIndexer:
                             sd.priority,
                             sd.memory_id,
                             sd.summary_content,
-                            ts_headline(
-                                'simple', coalesce(sd.content, ''),
-                                websearch_to_tsquery('simple', :ts_query),
-                                'MaxFragments=1, MinWords=8, MaxWords=24, ShortWord=2'
-                            ) AS snippet,
+                            {snippet_projection} AS snippet,
                             sd.disclosure,
                             ts_rank_cd(
                                 to_tsvector(
@@ -535,7 +544,7 @@ class SearchIndexer:
                     "summary": summary or None,
                     "summary_status": "VALID" if summary else "MISSING",
                     "expandable": True,
-                    "snippet": row["snippet"] or "",
+                    "snippet": (row["snippet"] or "") if include_snippets else "",
                     "aliases": [],
                 }
                 # Always expose relaxed-fallback provenance. Otherwise the

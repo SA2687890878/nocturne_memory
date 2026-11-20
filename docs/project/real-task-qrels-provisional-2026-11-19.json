@@ -1,0 +1,349 @@
+{
+  "dataset": "Nocturne real-task provisional graded qrels",
+  "created_at": "2026-11-19",
+  "assessor": "assistant preliminary semantic judgment of candidate summaries; not user-confirmed ground truth",
+  "relevance_scale": {
+    "0": "unrelated",
+    "1": "adjacent/useful context",
+    "2": "direct answer"
+  },
+  "query_count": 18,
+  "judged_pairs": 51,
+  "relevant_pairs": 33,
+  "precision_at_returned": 0.6471,
+  "precision_at_3": 0.6111,
+  "mrr": 0.963,
+  "ndcg_at_3": 0.9702,
+  "qrels": [
+    {
+      "case_id": "rt-01",
+      "query": "Nocturne唯一记忆真源，不要重新启用旧 memory 插件",
+      "target_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "judgments": [
+        {
+          "uri": "core://agent/memory-governance/single-source-memory-retirement",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/memory-governance",
+          "relevance": 1
+        },
+        {
+          "uri": "core://my_user/rewrite-consent",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-04",
+      "query": "需求设计开发验证几个阶段如何衔接交付",
+      "target_uri": "core://agent/delivery",
+      "judgments": [
+        {
+          "uri": "core://agent/delivery",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/verification",
+          "relevance": 1
+        },
+        {
+          "uri": "core://agent/delivery/requirements",
+          "relevance": 1
+        }
+      ]
+    },
+    {
+      "case_id": "rt-05",
+      "query": "排查软件故障时先怎么定位根因",
+      "target_uri": "core://agent/delivery/debugging",
+      "judgments": [
+        {
+          "uri": "core://agent/delivery/debugging",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/delivery/development",
+          "relevance": 0
+        },
+        {
+          "uri": "core://agent/delivery/task-contract",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-06",
+      "query": "实现新功能前应该怎样复用现有代码避免过度抽象",
+      "target_uri": "core://agent/delivery/development",
+      "judgments": [
+        {
+          "uri": "core://agent/delivery/development",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/delivery/design",
+          "relevance": 1
+        },
+        {
+          "uri": "core://agent/environment/postgrescompare-pipeline",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-07",
+      "query": "修改项目配置和核心文件之前如何做备份",
+      "target_uri": "core://agent/delivery/process",
+      "judgments": [
+        {
+          "uri": "core://agent/delivery/process",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/environment/workbuddy-office-checkin",
+          "relevance": 0
+        },
+        {
+          "uri": "core://agent/verification/test-design",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-08",
+      "query": "需求信息不完整时什么时候应该向用户提问",
+      "target_uri": "core://agent/delivery/requirements",
+      "judgments": [
+        {
+          "uri": "core://agent/environment/toolchain/iqa-low-integrity-tests",
+          "relevance": 0
+        },
+        {
+          "uri": "core://agent/environment/toolchain/deva-cli-tooling-codegraph-rtk",
+          "relevance": 0
+        },
+        {
+          "uri": "core://agent/delivery/requirements",
+          "relevance": 2
+        }
+      ]
+    },
+    {
+      "case_id": "rt-09",
+      "query": "复杂代码改动什么时候需要子代理做只读评审",
+      "target_uri": "core://agent/delivery/review",
+      "judgments": [
+        {
+          "uri": "core://agent/delivery/review",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/delivery",
+          "relevance": 1
+        },
+        {
+          "uri": "core://agent/environment/toolchain/deva-cli-tooling-codegraph-rtk",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-10",
+      "query": "测试策略如何按风险确定覆盖范围",
+      "target_uri": "core://agent/delivery/testing",
+      "judgments": [
+        {
+          "uri": "core://agent/delivery/testing",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/verification",
+          "relevance": 1
+        },
+        {
+          "uri": "core://agent/delivery/development",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-11",
+      "query": "引入新开发工具前需要比较哪些因素和成本",
+      "target_uri": "core://agent/delivery/tool-selection",
+      "judgments": [
+        {
+          "uri": "core://agent/delivery/tool-selection",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/verification",
+          "relevance": 1
+        },
+        {
+          "uri": "core://my_user",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-12",
+      "query": "Codex通过Copilot bridge使用模型时Responses协议怎么转换",
+      "target_uri": "core://agent/environment/codex-copilot-provider",
+      "judgments": [
+        {
+          "uri": "core://agent/environment/codex-copilot-provider",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/environment/deva-copilot-provider",
+          "relevance": 1
+        }
+      ]
+    },
+    {
+      "case_id": "rt-13",
+      "query": "Deva使用Copilot代理时认证转发和上游域名如何处理",
+      "target_uri": "core://agent/environment/deva-copilot-provider",
+      "judgments": [
+        {
+          "uri": "core://agent/environment/deva-copilot-provider",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/environment/dsh-copilot-latency",
+          "relevance": 0
+        },
+        {
+          "uri": "core://agent/environment/codex-copilot-provider",
+          "relevance": 1
+        }
+      ]
+    },
+    {
+      "case_id": "rt-14",
+      "query": "PostgresCompare Pipeline跨schema对象配对和函数误报",
+      "target_uri": "core://agent/environment/postgrescompare-pipeline",
+      "judgments": [
+        {
+          "uri": "core://agent/environment/postgrescompare-pipeline",
+          "relevance": 2
+        }
+      ]
+    },
+    {
+      "case_id": "rt-15",
+      "query": "SQL脚本说明步骤和数据库列注释必须使用中文",
+      "target_uri": "core://my_user/sql_chinese_comments",
+      "judgments": [
+        {
+          "uri": "core://my_user/sql_chinese_comments",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/source-catalog/database",
+          "relevance": 1
+        },
+        {
+          "uri": "core://my_user/technical-context",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-16",
+      "query": "数据库操作前核对数据库引擎目标环境身份和授权",
+      "target_uri": "core://agent/source-catalog/database",
+      "judgments": [
+        {
+          "uri": "core://agent/source-catalog/database",
+          "relevance": 2
+        },
+        {
+          "uri": "core://my_user/technical-context",
+          "relevance": 1
+        },
+        {
+          "uri": "core://my_user/sql_chinese_comments",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-17",
+      "query": "Vue2和Vue3前端规范应该如何按当前项目区分",
+      "target_uri": "core://agent/source-catalog/frontend",
+      "judgments": [
+        {
+          "uri": "core://agent/source-catalog/frontend",
+          "relevance": 2
+        },
+        {
+          "uri": "core://my_user/technical-context",
+          "relevance": 1
+        },
+        {
+          "uri": "core://agent/delivery/development",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-18",
+      "query": "Windows宿主网络配置端口IP网关等易变事实怎么核验",
+      "target_uri": "core://agent/environment",
+      "judgments": [
+        {
+          "uri": "core://agent/environment",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/environment/hangzhou-act-dual-nic",
+          "relevance": 1
+        },
+        {
+          "uri": "core://agent/environment/workbuddy-office-checkin",
+          "relevance": 1
+        }
+      ]
+    },
+    {
+      "case_id": "rt-19",
+      "query": "恢复工程任务时active json和历史index是唯一进度来源",
+      "target_uri": "core://agent/delivery/task-contract",
+      "judgments": [
+        {
+          "uri": "core://agent/delivery/task-contract",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/environment/deva-engineering-layer",
+          "relevance": 1
+        },
+        {
+          "uri": "core://agent/memory-governance/single-source-memory-retirement",
+          "relevance": 0
+        }
+      ]
+    },
+    {
+      "case_id": "rt-20",
+      "query": "改写已有规则文档和记忆前需要先确认草案",
+      "target_uri": "core://my_user/rewrite-consent",
+      "judgments": [
+        {
+          "uri": "core://my_user/rewrite-consent",
+          "relevance": 2
+        },
+        {
+          "uri": "core://agent/delivery/development",
+          "relevance": 0
+        },
+        {
+          "uri": "core://agent/environment/toolchain/iqa-low-integrity-tests",
+          "relevance": 0
+        }
+      ]
+    }
+  ]
+}

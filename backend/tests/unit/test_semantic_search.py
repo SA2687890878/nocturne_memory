@@ -21,7 +21,9 @@ def test_vector_index_path_rejects_non_sqlite_database(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_semantic_search_returns_explicit_nearest_candidates(monkeypatch, tmp_path):
+async def test_semantic_search_returns_explicit_nearest_candidates(monkeypatch, tmp_path, graph_service):
+    created = await graph_service.create_memory("", "Current candidate body", priority=2, title="candidate", namespace="personal")
+    memory_id = created["rows_after"]["memories"][0]["id"]
     db = tmp_path / "work-memory-vectors.db"
     monkeypatch.setattr(semantic_search.config, "get", lambda key: {
         "database_url": f"sqlite+aiosqlite:///{(tmp_path / 'work-memory.db').as_posix()}",
@@ -29,7 +31,7 @@ async def test_semantic_search_returns_explicit_nearest_candidates(monkeypatch, 
     }[key])
     with VectorIndex(db, dimensions=DIMS, model_name="test-model",
                      document_format_version=semantic_search.DOCUMENT_FORMAT_VERSION) as index:
-        index.upsert_many([{"memory_id": 7, "uri": "core://candidate", "content_hash": "hash",
+        index.upsert_many([{"memory_id": memory_id, "uri": "core://candidate", "content_hash": "hash",
                             "namespace": "personal", "domain": "core", "path": "candidate",
                             "lifecycle_status": "active", "vector": [1.0] + [0.0] * (DIMS - 1)}])
     async def fake_embed(texts, *, input_type):

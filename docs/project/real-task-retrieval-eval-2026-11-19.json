@@ -3,7 +3,28 @@
   "created_at": "2026-11-19",
   "count": 20,
   "precision_at_10": null,
-  "precision_note": "Not computed: only one positive target per case was labeled; unjudged candidates were not assumed irrelevant.",
+  "precision_note": "Precision@10 remains unavailable because the recorded result lists contain at most 3 candidates; do not treat missing slots as judged results.",
+  "keyword_query_contrast": {
+    "file": "keyword-retrieval-contrast-2026-11-19.json",
+    "queries": 18,
+    "natural_language_strict_hits": 0,
+    "natural_language_partial_retries": 18,
+    "keyword_strict_hits": 18,
+    "keyword_rank1": 18,
+    "calls_reduced_pct": 50.0,
+    "response_chars_reduced_pct": 55.3,
+    "caveat": "Manually curated keyword rewrites; response characters are not measured tokens."
+  },
+  "provisional_qrels": {
+    "file": "real-task-qrels-provisional-2026-11-19.json",
+    "assessor": "assistant preliminary semantic judgment of candidate summaries; not user-confirmed ground truth",
+    "judged_pairs": 51,
+    "relevant_pairs": 33,
+    "precision_at_returned": 0.6471,
+    "precision_at_3": 0.6111,
+    "mrr": 0.963,
+    "ndcg_at_3": 0.9702
+  },
   "cases": [
     {
       "query": "Nocturne唯一记忆真源，不要重新启用旧 memory 插件",

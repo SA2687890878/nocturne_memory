@@ -1,0 +1,424 @@
+{
+  "method": "Same 18 keyword queries; limit=10; strict-only; snippets off; token_budget=0 vs 1200; read-only",
+  "caveat": "Server context estimator, not model provider tokenizer; no end-to-end client accounting.",
+  "metrics": {
+    "queries": 18,
+    "l0_chars": 8004,
+    "summary_chars": 10537,
+    "l0_estimated_tokens": 3144,
+    "summary_estimated_tokens": 5459,
+    "estimated_token_reduction_pct": 42.41,
+    "same_candidate_sets": 18,
+    "l0_target_hits": 18,
+    "summary_target_hits": 18,
+    "summary_count": 22
+  },
+  "cases": [
+    {
+      "case_id": "rt-01",
+      "target": "core://agent/memory-governance/single-source-memory-retirement",
+      "l0": {
+        "budget": 0,
+        "chars": 437,
+        "est": 175,
+        "uris": [
+          "core://agent/memory-governance/single-source-memory-retirement"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 575,
+        "est": 285,
+        "uris": [
+          "core://agent/memory-governance/single-source-memory-retirement"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-02",
+      "target": "core://agent/delivery",
+      "l0": {
+        "budget": 0,
+        "chars": 353,
+        "est": 163,
+        "uris": [
+          "core://agent/delivery"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 439,
+        "est": 267,
+        "uris": [
+          "core://agent/delivery"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-03",
+      "target": "core://agent/delivery/debugging",
+      "l0": {
+        "budget": 0,
+        "chars": 330,
+        "est": 127,
+        "uris": [
+          "core://agent/delivery/debugging"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 399,
+        "est": 214,
+        "uris": [
+          "core://agent/delivery/debugging"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-04",
+      "target": "core://agent/delivery/development",
+      "l0": {
+        "budget": 0,
+        "chars": 329,
+        "est": 125,
+        "uris": [
+          "core://agent/delivery/development"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 398,
+        "est": 212,
+        "uris": [
+          "core://agent/delivery/development"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-05",
+      "target": "core://agent/delivery/process",
+      "l0": {
+        "budget": 0,
+        "chars": 625,
+        "est": 242,
+        "uris": [
+          "core://agent/delivery/process",
+          "core://agent/environment/workbuddy-office-checkin"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 855,
+        "est": 481,
+        "uris": [
+          "core://agent/delivery/process",
+          "core://agent/environment/workbuddy-office-checkin"
+        ],
+        "summaries": 2
+      }
+    },
+    {
+      "case_id": "rt-06",
+      "target": "core://agent/delivery/requirements",
+      "l0": {
+        "budget": 0,
+        "chars": 340,
+        "est": 133,
+        "uris": [
+          "core://agent/delivery/requirements"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 402,
+        "est": 213,
+        "uris": [
+          "core://agent/delivery/requirements"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-07",
+      "target": "core://agent/delivery/review",
+      "l0": {
+        "budget": 0,
+        "chars": 332,
+        "est": 128,
+        "uris": [
+          "core://agent/delivery/review"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 407,
+        "est": 221,
+        "uris": [
+          "core://agent/delivery/review"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-08",
+      "target": "core://agent/delivery/testing",
+      "l0": {
+        "budget": 0,
+        "chars": 327,
+        "est": 127,
+        "uris": [
+          "core://agent/delivery/testing"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 389,
+        "est": 207,
+        "uris": [
+          "core://agent/delivery/testing"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-09",
+      "target": "core://agent/delivery/tool-selection",
+      "l0": {
+        "budget": 0,
+        "chars": 346,
+        "est": 136,
+        "uris": [
+          "core://agent/delivery/tool-selection"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 415,
+        "est": 223,
+        "uris": [
+          "core://agent/delivery/tool-selection"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-10",
+      "target": "core://agent/environment/codex-copilot-provider",
+      "l0": {
+        "budget": 0,
+        "chars": 1166,
+        "est": 465,
+        "uris": [
+          "core://agent/environment/codex-copilot-provider",
+          "core://agent/environment/dsh-copilot-latency",
+          "core://agent/environment/zcode-weekend-build-limits"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 1513,
+        "est": 749,
+        "uris": [
+          "core://agent/environment/codex-copilot-provider",
+          "core://agent/environment/dsh-copilot-latency",
+          "core://agent/environment/zcode-weekend-build-limits"
+        ],
+        "summaries": 2
+      }
+    },
+    {
+      "case_id": "rt-11",
+      "target": "core://agent/environment/deva-copilot-provider",
+      "l0": {
+        "budget": 0,
+        "chars": 433,
+        "est": 167,
+        "uris": [
+          "core://agent/environment/deva-copilot-provider"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 653,
+        "est": 308,
+        "uris": [
+          "core://agent/environment/deva-copilot-provider"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-12",
+      "target": "core://agent/environment/postgrescompare-pipeline",
+      "l0": {
+        "budget": 0,
+        "chars": 478,
+        "est": 180,
+        "uris": [
+          "core://agent/environment/postgrescompare-pipeline"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 799,
+        "est": 389,
+        "uris": [
+          "core://agent/environment/postgrescompare-pipeline"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-13",
+      "target": "core://my_user/sql_chinese_comments",
+      "l0": {
+        "budget": 0,
+        "chars": 350,
+        "est": 137,
+        "uris": [
+          "core://my_user/sql_chinese_comments"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 469,
+        "est": 231,
+        "uris": [
+          "core://my_user/sql_chinese_comments"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-14",
+      "target": "core://agent/source-catalog/database",
+      "l0": {
+        "budget": 0,
+        "chars": 340,
+        "est": 130,
+        "uris": [
+          "core://agent/source-catalog/database"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 421,
+        "est": 193,
+        "uris": [
+          "core://agent/source-catalog/database"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-15",
+      "target": "core://agent/source-catalog/frontend",
+      "l0": {
+        "budget": 0,
+        "chars": 341,
+        "est": 125,
+        "uris": [
+          "core://agent/source-catalog/frontend"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 431,
+        "est": 215,
+        "uris": [
+          "core://agent/source-catalog/frontend"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-16",
+      "target": "core://agent/environment",
+      "l0": {
+        "budget": 0,
+        "chars": 795,
+        "est": 319,
+        "uris": [
+          "core://agent/environment",
+          "core://agent/dsh/profile",
+          "core://agent/environment/zcode-weekend-build-limits"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 1129,
+        "est": 620,
+        "uris": [
+          "core://agent/environment",
+          "core://agent/dsh/profile",
+          "core://agent/environment/zcode-weekend-build-limits"
+        ],
+        "summaries": 3
+      }
+    },
+    {
+      "case_id": "rt-17",
+      "target": "core://agent/delivery/task-contract",
+      "l0": {
+        "budget": 0,
+        "chars": 348,
+        "est": 133,
+        "uris": [
+          "core://agent/delivery/task-contract"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 445,
+        "est": 217,
+        "uris": [
+          "core://agent/delivery/task-contract"
+        ],
+        "summaries": 1
+      }
+    },
+    {
+      "case_id": "rt-18",
+      "target": "core://my_user/rewrite-consent",
+      "l0": {
+        "budget": 0,
+        "chars": 334,
+        "est": 132,
+        "uris": [
+          "core://my_user/rewrite-consent"
+        ],
+        "summaries": 0
+      },
+      "summary": {
+        "budget": 1200,
+        "chars": 398,
+        "est": 214,
+        "uris": [
+          "core://my_user/rewrite-consent"
+        ],
+        "summaries": 1
+      }
+    }
+  ]
+}

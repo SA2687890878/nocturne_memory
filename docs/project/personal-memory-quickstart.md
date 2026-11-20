@@ -1,14 +1,15 @@
 # Nocturne 个人记忆系统：本机使用说明
 
-## 当前运行状态（2026-11-19，客户端已确认可用）
+## 当前运行状态（2026-11-20，已按通用记忆写入复核）
 
 - 唯一活动数据源：项目 `config.json` 指向的个人 SQLite 工作库 `work-memory.db`。不要把旧库接回配置。
-- 可检索记忆：50 个 URI 路径，对应 48 条当前有效 Memory；48/48 当前有效 Memory 均有 L1 摘要；Memory ID 111 的摘要已补齐并验证。50/50 SearchDocument 与 URI 路径对齐。
-- 向量索引：独立 sidecar `work-memory-vectors.db`，49 条元数据、49 条向量，完整性检查通过。模型 `nvidia/nemotron-3-embed-1b`，2048 维。
+- 可检索记忆：70 个 URI 路径，对应 68 条当前有效 Memory；68/68 当前有效 Memory 均有 L1 摘要。70/70 SearchDocument 与 URI 路径对齐。
+- 向量索引：独立 sidecar `work-memory-vectors.db`，70 条元数据、70 条向量，完整性检查通过。模型 `nvidia/nemotron-3-embed-1b`，2048 维。
 - 默认 `search_memory` 仍走全文检索；语义检索由 `semantic_search_memory` 显式触发，不自动混入默认结果。
 - `search_memory` 默认只返回 L0 元数据与 L1 摘要，不返回正文片段；默认摘要预算 1200 estimated tokens，可由调用方传 `token_budget` 覆盖。需要原文线索时显式传 `include_snippets=true`。
 - 2026-11-19 用户任务样本评估：19 个检索任务的全文 Recall@10 为 18/19（94.7%），MRR 0.912；其中 1 个词法漏召回由显式语义检索在 Top-1 找回。另有 1 个启动任务走 `system://boot` 直接入口，不计入搜索指标。未计算 Precision，因未人工标注其余候选是否无关。
 - 新增自然语言改写专项：18 条改写查询 Recall@10 为 18/18（100%），MRR 0.9352；使用同一 Memory Node 身份核对。样本较小，Precision@10 仍未计算，详见 retrieval-paraphrase-eval-2026-11-19.md。
+- 2026-11-20 通用记忆写入后新增验收：9 个现有节点合并、11 个新节点创建；全文检索按规范压缩关键词后 16/16 Top-1 命中，语义原句 4/4 Top-1 命中；Boot 交付 204 estimated tokens。详见 real-task-eval-2026-11-20.md。
 - 变更快照位于工作库同目录 `.nocturne-snapshots`，与源码目录分离。
 
 ## 启动 Dashboard / REST / MCP HTTP
@@ -72,7 +73,7 @@
 
 ## 建设完成度
 
-当前系统已达到日常可用：V3.1 核心上下文交付已完成，V3.2 精准召回仍在验证，V3.3 记忆质量工程化和 V4.0 智能调度评估尚未全部完成。具体状态以 `nocturne-v3.1-iteration-plan.md` 文末“总体验收与路线状态”为准。
+当前系统已达到日常可用：V3.1 核心上下文交付已完成，V3.2 精准召回仍在验证，V3.3 记忆质量工程化和 V4.0 智能调度评估尚未全部完成。2026-11-20 新增集合的 Top-1 验收为 16/16，但尚未用同一批任务做写入前后完整 A/B，因此不声称精确的 token 节省比例。具体状态以 `nocturne-v3.1-iteration-plan.md` 文末“总体验收与路线状态”为准。
 
 
 ## 记忆质量检查

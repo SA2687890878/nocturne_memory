@@ -1,0 +1,1112 @@
+{
+  "created_at": "2026-11-20T10:46:02.040578+08:00",
+  "source_access": "Windows read-only handle excluding writers, no WAL sidecar, locked copy; no source writes/migration",
+  "snapshot_sha256_before_protocol": "90f13db51ee7f9be73428b45f21bbf42e2349585659f8486bf02f097d7bf5e83",
+  "token_method": "ceil(UTF-8 bytes / 3), complete response text; not provider token usage",
+  "limitations": [
+    "Existing 18-case manually compressed queries; no new blind recall claim.",
+    "Response-size comparison only; summaries/excerpts may not be sufficient evidence for every task.",
+    "Read-only SQL projection/namespace/version boundaries are covered by isolated regression tests.",
+    "Stdio on a temporary snapshot does not establish that an existing desktop client reloaded its tools."
+  ],
+  "evaluation": {
+    "candidate_comparisons": 72,
+    "candidate_comparisons_identical": 72,
+    "keyword_strict_target_hits": 18,
+    "keyword_cases": 18,
+    "negative_queries": 25,
+    "negative_strict_zero_candidates": 25,
+    "read_comparison_uris": 18,
+    "response_size_totals": {
+      "full_chars": 29553,
+      "summary_chars": 8056,
+      "first_three_lines_chars": 12591,
+      "full_estimated_tokens": 14080,
+      "summary_estimated_tokens": 4032,
+      "first_three_lines_estimated_tokens": 5885,
+      "summary_estimated_token_reduction_pct": 71.36
+    },
+    "retrieval_cases": [
+      {
+        "case_id": "rt-01",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/memory-governance/single-source-memory-retirement"
+        ]
+      },
+      {
+        "case_id": "rt-01",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/memory-governance/single-source-memory-retirement",
+          "core://agent/nocturne-memory",
+          "core://agent/memory-governance",
+          "core://my_user/rewrite-consent",
+          "core://agent/delivery/task-contract"
+        ]
+      },
+      {
+        "case_id": "rt-01",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-01",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/memory-governance/single-source-memory-retirement",
+          "core://agent/nocturne-memory",
+          "core://agent/memory-governance"
+        ]
+      },
+      {
+        "case_id": "rt-02",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery"
+        ]
+      },
+      {
+        "case_id": "rt-02",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery",
+          "core://agent/source-catalog/frontend",
+          "core://agent/delivery/design",
+          "core://agent/verification",
+          "core://agent/verification/test-design"
+        ]
+      },
+      {
+        "case_id": "rt-02",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-02",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery",
+          "core://agent/verification",
+          "core://agent/delivery/requirements"
+        ]
+      },
+      {
+        "case_id": "rt-03",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/debugging"
+        ]
+      },
+      {
+        "case_id": "rt-03",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/debugging",
+          "core://agent/delivery/development",
+          "core://agent/environment/toolchain/context-mode-deva-assessment",
+          "core://agent/environment/dsh-next-profile-acl-denied",
+          "core://agent/environment/toolchain/dsh-mcp-enoent-nvm-switch"
+        ]
+      },
+      {
+        "case_id": "rt-03",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-03",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/debugging",
+          "core://agent/delivery/development",
+          "core://agent/delivery/task-contract"
+        ]
+      },
+      {
+        "case_id": "rt-04",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/development"
+        ]
+      },
+      {
+        "case_id": "rt-04",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/development",
+          "core://agent/environment/deva-engineering-layer",
+          "core://agent/environment/dsh-next-profile-acl-denied",
+          "core://agent/environment/deva-copilot-provider",
+          "core://agent/environment/postgrescompare-pipeline"
+        ]
+      },
+      {
+        "case_id": "rt-04",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-04",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/development",
+          "core://agent/delivery/design",
+          "core://agent/environment/postgrescompare-pipeline"
+        ]
+      },
+      {
+        "case_id": "rt-05",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/process",
+          "core://agent/environment/workbuddy-office-checkin"
+        ]
+      },
+      {
+        "case_id": "rt-05",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/process",
+          "core://agent/environment/workbuddy-office-checkin",
+          "core://agent/source-catalog/database/sqlserver-ddl-safety",
+          "core://agent/environment/deva-global-injection",
+          "core://agent/environment/pcs-webbackend-ql-jenkins-iis-pipeline",
+          "core://agent/nocturne-memory"
+        ]
+      },
+      {
+        "case_id": "rt-05",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-05",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/process",
+          "core://agent/source-catalog/database/sqlserver-ddl-safety",
+          "core://agent/environment/nocturne-mcp-client-launcher"
+        ]
+      },
+      {
+        "case_id": "rt-06",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/requirements"
+        ]
+      },
+      {
+        "case_id": "rt-06",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/requirements",
+          "core://agent/delivery"
+        ]
+      },
+      {
+        "case_id": "rt-06",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-06",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 3,
+        "candidates": [
+          "core://agent/environment/toolchain/iqa-low-integrity-tests",
+          "core://agent/environment/toolchain/deva-cli-tooling-codegraph-rtk",
+          "core://agent/delivery/requirements"
+        ]
+      },
+      {
+        "case_id": "rt-07",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/review"
+        ]
+      },
+      {
+        "case_id": "rt-07",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/review"
+        ]
+      },
+      {
+        "case_id": "rt-07",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-07",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/review",
+          "core://agent/delivery",
+          "core://agent/environment/toolchain/deva-cli-tooling-codegraph-rtk"
+        ]
+      },
+      {
+        "case_id": "rt-08",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/testing"
+        ]
+      },
+      {
+        "case_id": "rt-08",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/testing",
+          "core://agent/verification/test-design",
+          "core://agent/verification",
+          "core://agent/delivery/engineering-workflow-guardrails",
+          "core://agent/delivery/requirements"
+        ]
+      },
+      {
+        "case_id": "rt-08",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-08",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/testing",
+          "core://agent/verification",
+          "core://agent/delivery/development"
+        ]
+      },
+      {
+        "case_id": "rt-09",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/tool-selection"
+        ]
+      },
+      {
+        "case_id": "rt-09",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/tool-selection",
+          "core://my_user/collaboration-preferences",
+          "core://my_user/visual-output-routing",
+          "core://agent/environment/toolchain",
+          "core://agent/environment/toolchain/iqa-low-integrity-tests"
+        ]
+      },
+      {
+        "case_id": "rt-09",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-09",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/tool-selection",
+          "core://agent/verification",
+          "core://my_user"
+        ]
+      },
+      {
+        "case_id": "rt-10",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment/codex-copilot-provider",
+          "core://agent/environment/dsh-copilot-latency",
+          "core://agent/environment/zcode-weekend-build-limits"
+        ]
+      },
+      {
+        "case_id": "rt-10",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment/codex-copilot-provider",
+          "core://agent/environment/dsh-copilot-latency",
+          "core://agent/environment/zcode-weekend-build-limits",
+          "core://agent/environment/magpie-gateway-integration",
+          "core://agent/environment/deva-copilot-provider"
+        ]
+      },
+      {
+        "case_id": "rt-10",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-10",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment/codex-copilot-provider",
+          "core://agent/environment/deva-copilot-provider"
+        ]
+      },
+      {
+        "case_id": "rt-11",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment/deva-copilot-provider"
+        ]
+      },
+      {
+        "case_id": "rt-11",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment/deva-copilot-provider",
+          "core://agent/environment/deva-copilot-provider/codex",
+          "core://agent/environment/magpie-gateway-integration",
+          "core://agent/environment/toolchain/context-mode-deva-assessment"
+        ]
+      },
+      {
+        "case_id": "rt-11",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-11",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment/deva-copilot-provider",
+          "core://agent/environment/dsh-copilot-latency",
+          "core://agent/environment/codex-copilot-provider"
+        ]
+      },
+      {
+        "case_id": "rt-12",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment/postgrescompare-pipeline"
+        ]
+      },
+      {
+        "case_id": "rt-12",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment/postgrescompare-pipeline"
+        ]
+      },
+      {
+        "case_id": "rt-12",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-12",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment/postgrescompare-pipeline"
+        ]
+      },
+      {
+        "case_id": "rt-13",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://my_user/sql_chinese_comments"
+        ]
+      },
+      {
+        "case_id": "rt-13",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://my_user/sql_chinese_comments",
+          "core://agent/source-catalog/database/sqlserver-ddl-safety",
+          "core://agent/delivery/engineering-workflow-guardrails",
+          "core://agent/environment/toolchain/dsh-mcp-enoent-nvm-switch"
+        ]
+      },
+      {
+        "case_id": "rt-13",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-13",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://my_user/sql_chinese_comments",
+          "core://agent/source-catalog/database/sqlserver-ddl-safety",
+          "core://agent/source-catalog/database"
+        ]
+      },
+      {
+        "case_id": "rt-14",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/source-catalog/database"
+        ]
+      },
+      {
+        "case_id": "rt-14",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/source-catalog/database",
+          "core://agent/source-catalog/database/sqlserver-ddl-safety",
+          "core://my_user/technical-context",
+          "core://my_user/sql_chinese_comments",
+          "core://agent/memory-governance/single-source-memory-retirement"
+        ]
+      },
+      {
+        "case_id": "rt-14",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-14",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/source-catalog/database",
+          "core://agent/source-catalog/database/sqlserver-ddl-safety",
+          "core://my_user/technical-context"
+        ]
+      },
+      {
+        "case_id": "rt-15",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/source-catalog/frontend"
+        ]
+      },
+      {
+        "case_id": "rt-15",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/source-catalog/frontend",
+          "core://my_user/technical-context",
+          "core://agent/delivery/development"
+        ]
+      },
+      {
+        "case_id": "rt-15",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-15",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/source-catalog/frontend",
+          "core://my_user/technical-context",
+          "core://agent/delivery/development"
+        ]
+      },
+      {
+        "case_id": "rt-16",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment",
+          "core://agent/dsh/profile",
+          "core://agent/environment/zcode-weekend-build-limits"
+        ]
+      },
+      {
+        "case_id": "rt-16",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment",
+          "core://agent/dsh/profile",
+          "core://agent/environment/zcode-weekend-build-limits",
+          "core://agent/source-catalog/research",
+          "core://agent/environment/deva-global-injection",
+          "core://agent/source-catalog/database"
+        ]
+      },
+      {
+        "case_id": "rt-16",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-16",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/environment",
+          "core://agent/environment/hangzhou-act-dual-nic",
+          "core://agent/dsh/profile"
+        ]
+      },
+      {
+        "case_id": "rt-17",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/task-contract"
+        ]
+      },
+      {
+        "case_id": "rt-17",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/task-contract",
+          "core://agent/environment/deva-engineering-layer",
+          "core://agent/memory-governance/single-source-memory-retirement",
+          "core://agent/dsh/compaction",
+          "core://agent/delivery"
+        ]
+      },
+      {
+        "case_id": "rt-17",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-17",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://agent/delivery/task-contract",
+          "core://agent/environment/deva-engineering-layer",
+          "core://agent/source-catalog"
+        ]
+      },
+      {
+        "case_id": "rt-18",
+        "query_kind": "keyword_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://my_user/rewrite-consent"
+        ]
+      },
+      {
+        "case_id": "rt-18",
+        "query_kind": "keyword_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://my_user/rewrite-consent",
+          "core://my_user/collaboration-preferences",
+          "core://agent/source-catalog/database",
+          "core://agent/memory-governance",
+          "core://agent/delivery/task-contract"
+        ]
+      },
+      {
+        "case_id": "rt-18",
+        "query_kind": "natural_query",
+        "include_partial": false,
+        "identical_except_snippet": true,
+        "target_rank": null,
+        "candidates": []
+      },
+      {
+        "case_id": "rt-18",
+        "query_kind": "natural_query",
+        "include_partial": true,
+        "identical_except_snippet": true,
+        "target_rank": 1,
+        "candidates": [
+          "core://my_user/rewrite-consent",
+          "core://agent/nocturne-memory",
+          "core://agent/source-catalog/database"
+        ]
+      }
+    ],
+    "negative_cases": [
+      {
+        "id": "N01",
+        "candidate_count": 0
+      },
+      {
+        "id": "N02",
+        "candidate_count": 0
+      },
+      {
+        "id": "N03",
+        "candidate_count": 0
+      },
+      {
+        "id": "N04",
+        "candidate_count": 0
+      },
+      {
+        "id": "N05",
+        "candidate_count": 0
+      },
+      {
+        "id": "N06",
+        "candidate_count": 0
+      },
+      {
+        "id": "N07",
+        "candidate_count": 0
+      },
+      {
+        "id": "N08",
+        "candidate_count": 0
+      },
+      {
+        "id": "N09",
+        "candidate_count": 0
+      },
+      {
+        "id": "N10",
+        "candidate_count": 0
+      },
+      {
+        "id": "N11",
+        "candidate_count": 0
+      },
+      {
+        "id": "N12",
+        "candidate_count": 0
+      },
+      {
+        "id": "N13",
+        "candidate_count": 0
+      },
+      {
+        "id": "N14",
+        "candidate_count": 0
+      },
+      {
+        "id": "N15",
+        "candidate_count": 0
+      },
+      {
+        "id": "N16",
+        "candidate_count": 0
+      },
+      {
+        "id": "N17",
+        "candidate_count": 0
+      },
+      {
+        "id": "N18",
+        "candidate_count": 0
+      },
+      {
+        "id": "N19",
+        "candidate_count": 0
+      },
+      {
+        "id": "N20",
+        "candidate_count": 0
+      },
+      {
+        "id": "N21",
+        "candidate_count": 0
+      },
+      {
+        "id": "N22",
+        "candidate_count": 0
+      },
+      {
+        "id": "N23",
+        "candidate_count": 0
+      },
+      {
+        "id": "N24",
+        "candidate_count": 0
+      },
+      {
+        "id": "N25",
+        "candidate_count": 0
+      }
+    ],
+    "read_cases": [
+      {
+        "uri": "core://agent/memory-governance/single-source-memory-retirement",
+        "full_chars": 1289,
+        "summary_chars": 556,
+        "first_three_lines_chars": 728,
+        "full_estimated_tokens": 579,
+        "summary_estimated_tokens": 271,
+        "first_three_lines_estimated_tokens": 294,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/delivery",
+        "full_chars": 2248,
+        "summary_chars": 430,
+        "first_three_lines_chars": 703,
+        "full_estimated_tokens": 1076,
+        "summary_estimated_tokens": 258,
+        "first_three_lines_estimated_tokens": 387,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/delivery/debugging",
+        "full_chars": 733,
+        "summary_chars": 390,
+        "first_three_lines_chars": 651,
+        "full_estimated_tokens": 360,
+        "summary_estimated_tokens": 206,
+        "first_three_lines_estimated_tokens": 313,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/delivery/development",
+        "full_chars": 802,
+        "summary_chars": 393,
+        "first_three_lines_chars": 737,
+        "full_estimated_tokens": 429,
+        "summary_estimated_tokens": 206,
+        "first_three_lines_estimated_tokens": 380,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/delivery/process",
+        "full_chars": 483,
+        "summary_chars": 385,
+        "first_three_lines_chars": 636,
+        "full_estimated_tokens": 267,
+        "summary_estimated_tokens": 203,
+        "first_three_lines_estimated_tokens": 310,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/delivery/requirements",
+        "full_chars": 892,
+        "summary_chars": 391,
+        "first_three_lines_chars": 640,
+        "full_estimated_tokens": 414,
+        "summary_estimated_tokens": 203,
+        "first_three_lines_estimated_tokens": 308,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/delivery/review",
+        "full_chars": 895,
+        "summary_chars": 396,
+        "first_three_lines_chars": 654,
+        "full_estimated_tokens": 425,
+        "summary_estimated_tokens": 210,
+        "first_three_lines_estimated_tokens": 326,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/delivery/testing",
+        "full_chars": 748,
+        "summary_chars": 378,
+        "first_three_lines_chars": 643,
+        "full_estimated_tokens": 362,
+        "summary_estimated_tokens": 196,
+        "first_three_lines_estimated_tokens": 299,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/delivery/tool-selection",
+        "full_chars": 607,
+        "summary_chars": 400,
+        "first_three_lines_chars": 637,
+        "full_estimated_tokens": 328,
+        "summary_estimated_tokens": 209,
+        "first_three_lines_estimated_tokens": 312,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/environment/codex-copilot-provider",
+        "full_chars": 4462,
+        "summary_chars": 457,
+        "first_three_lines_chars": 1120,
+        "full_estimated_tokens": 2198,
+        "summary_estimated_tokens": 175,
+        "first_three_lines_estimated_tokens": 486,
+        "summary_valid": false
+      },
+      {
+        "uri": "core://agent/environment/deva-copilot-provider",
+        "full_chars": 3601,
+        "summary_chars": 638,
+        "first_three_lines_chars": 698,
+        "full_estimated_tokens": 1775,
+        "summary_estimated_tokens": 299,
+        "first_three_lines_estimated_tokens": 275,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/environment/postgrescompare-pipeline",
+        "full_chars": 4771,
+        "summary_chars": 765,
+        "first_three_lines_chars": 682,
+        "full_estimated_tokens": 2179,
+        "summary_estimated_tokens": 375,
+        "first_three_lines_estimated_tokens": 250,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://my_user/sql_chinese_comments",
+        "full_chars": 614,
+        "summary_chars": 460,
+        "first_three_lines_chars": 751,
+        "full_estimated_tokens": 336,
+        "summary_estimated_tokens": 224,
+        "first_three_lines_estimated_tokens": 371,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/source-catalog/database",
+        "full_chars": 1141,
+        "summary_chars": 409,
+        "first_three_lines_chars": 744,
+        "full_estimated_tokens": 510,
+        "summary_estimated_tokens": 181,
+        "first_three_lines_estimated_tokens": 340,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/source-catalog/frontend",
+        "full_chars": 1034,
+        "summary_chars": 419,
+        "first_three_lines_chars": 669,
+        "full_estimated_tokens": 462,
+        "summary_estimated_tokens": 208,
+        "first_three_lines_estimated_tokens": 319,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/environment",
+        "full_chars": 3530,
+        "summary_chars": 375,
+        "first_three_lines_chars": 603,
+        "full_estimated_tokens": 1580,
+        "summary_estimated_tokens": 197,
+        "first_three_lines_estimated_tokens": 292,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://agent/delivery/task-contract",
+        "full_chars": 1199,
+        "summary_chars": 428,
+        "first_three_lines_chars": 670,
+        "full_estimated_tokens": 524,
+        "summary_estimated_tokens": 208,
+        "first_three_lines_estimated_tokens": 316,
+        "summary_valid": true
+      },
+      {
+        "uri": "core://my_user/rewrite-consent",
+        "full_chars": 504,
+        "summary_chars": 386,
+        "first_three_lines_chars": 625,
+        "full_estimated_tokens": 276,
+        "summary_estimated_tokens": 203,
+        "first_three_lines_estimated_tokens": 307,
+        "summary_valid": true
+      }
+    ]
+  },
+  "protocol": {
+    "transport": "stdio",
+    "database": "temporary snapshot only",
+    "tool_count": 11,
+    "read_memory_fields": [
+      "detail",
+      "end_line",
+      "start_line",
+      "uri"
+    ],
+    "summary_read_ok": true,
+    "line_range_read_ok": true,
+    "embedded_ui_disabled": true
+  },
+  "source_sha256_matches_snapshot_after_validation": true
+}

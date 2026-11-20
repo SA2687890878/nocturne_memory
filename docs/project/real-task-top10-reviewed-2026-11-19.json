@@ -1,0 +1,303 @@
+{
+  "dataset": "Nocturne real-task keyword strict Top10 reviewed snapshot",
+  "created_at": "2026-11-19",
+  "method": "Current search_memory implementation; limit=10; include_partial=false; include_snippets=false; token_budget=0; read-only; real configured work DB",
+  "judgment_source": "Assistant provisional summary-level judgments; new Top10 judgments include explicit rationale; not user-confirmed ground truth.",
+  "metrics": {
+    "query_count": 18,
+    "returned_candidates": 23,
+    "judged_candidates": 23,
+    "unjudged_candidates": 0,
+    "target_hits": 18,
+    "target_rank1": 18,
+    "recall_at_10": 1.0,
+    "precision_returned_grade_ge_1": 0.8696,
+    "precision_returned_grade_2": 0.7826,
+    "precision_at_10_grade_ge_1": 0.1111,
+    "precision_at_10_grade_2": 0.1,
+    "mean_candidates_per_query": 1.28,
+    "mean_response_chars": 444.7
+  },
+  "cases": [
+    {
+      "case_id": "rt-01",
+      "query": "Nocturne 唯一记忆真源 旧插件退役",
+      "target_uri": "core://agent/memory-governance/single-source-memory-retirement",
+      "top10": [
+        "core://agent/memory-governance/single-source-memory-retirement"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 437
+    },
+    {
+      "case_id": "rt-02",
+      "query": "需求 设计 实现 验证",
+      "target_uri": "core://agent/delivery",
+      "top10": [
+        "core://agent/delivery"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 353
+    },
+    {
+      "case_id": "rt-03",
+      "query": "故障 排查 根因 复现",
+      "target_uri": "core://agent/delivery/debugging",
+      "top10": [
+        "core://agent/delivery/debugging"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 330
+    },
+    {
+      "case_id": "rt-04",
+      "query": "复用 共享逻辑",
+      "target_uri": "core://agent/delivery/development",
+      "top10": [
+        "core://agent/delivery/development"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 329
+    },
+    {
+      "case_id": "rt-05",
+      "query": "核心文件 备份",
+      "target_uri": "core://agent/delivery/process",
+      "top10": [
+        "core://agent/delivery/process",
+        "core://agent/environment/workbuddy-office-checkin"
+      ],
+      "candidate_count": 2,
+      "target_rank": 1,
+      "judgments": [
+        2,
+        0
+      ],
+      "unjudged_uris": [],
+      "response_chars": 625
+    },
+    {
+      "case_id": "rt-06",
+      "query": "需求 阻塞 信息缺口 澄清",
+      "target_uri": "core://agent/delivery/requirements",
+      "top10": [
+        "core://agent/delivery/requirements"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 340
+    },
+    {
+      "case_id": "rt-07",
+      "query": "复杂改动 子代理 只读审查",
+      "target_uri": "core://agent/delivery/review",
+      "top10": [
+        "core://agent/delivery/review"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 332
+    },
+    {
+      "case_id": "rt-08",
+      "query": "测试 风险 验收条件 用例",
+      "target_uri": "core://agent/delivery/testing",
+      "top10": [
+        "core://agent/delivery/testing"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 327
+    },
+    {
+      "case_id": "rt-09",
+      "query": "工具比较 适用环节 代价 替代方案",
+      "target_uri": "core://agent/delivery/tool-selection",
+      "top10": [
+        "core://agent/delivery/tool-selection"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 346
+    },
+    {
+      "case_id": "rt-10",
+      "query": "Codex Responses",
+      "target_uri": "core://agent/environment/codex-copilot-provider",
+      "top10": [
+        "core://agent/environment/codex-copilot-provider",
+        "core://agent/environment/dsh-copilot-latency",
+        "core://agent/environment/zcode-weekend-build-limits"
+      ],
+      "candidate_count": 3,
+      "target_rank": 1,
+      "judgments": [
+        2,
+        0,
+        0
+      ],
+      "unjudged_uris": [],
+      "response_chars": 1166
+    },
+    {
+      "case_id": "rt-11",
+      "query": "Copilot bridge 凭据 自动续期",
+      "target_uri": "core://agent/environment/deva-copilot-provider",
+      "top10": [
+        "core://agent/environment/deva-copilot-provider"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 433
+    },
+    {
+      "case_id": "rt-12",
+      "query": "PostgresCompare Pipeline 跨schema 对象配对",
+      "target_uri": "core://agent/environment/postgrescompare-pipeline",
+      "top10": [
+        "core://agent/environment/postgrescompare-pipeline"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 478
+    },
+    {
+      "case_id": "rt-13",
+      "query": "SQL 脚本 中文注释",
+      "target_uri": "core://my_user/sql_chinese_comments",
+      "top10": [
+        "core://my_user/sql_chinese_comments"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 350
+    },
+    {
+      "case_id": "rt-14",
+      "query": "数据库 引擎 环境 身份 授权",
+      "target_uri": "core://agent/source-catalog/database",
+      "top10": [
+        "core://agent/source-catalog/database"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 340
+    },
+    {
+      "case_id": "rt-15",
+      "query": "Vue2 Vue3 项目规范",
+      "target_uri": "core://agent/source-catalog/frontend",
+      "top10": [
+        "core://agent/source-catalog/frontend"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 341
+    },
+    {
+      "case_id": "rt-16",
+      "query": "环境事实 核验",
+      "target_uri": "core://agent/environment",
+      "top10": [
+        "core://agent/environment",
+        "core://agent/dsh/profile",
+        "core://agent/environment/zcode-weekend-build-limits"
+      ],
+      "candidate_count": 3,
+      "target_rank": 1,
+      "judgments": [
+        2,
+        1,
+        1
+      ],
+      "unjudged_uris": [],
+      "response_chars": 795
+    },
+    {
+      "case_id": "rt-17",
+      "query": "active.json 任务进度 恢复",
+      "target_uri": "core://agent/delivery/task-contract",
+      "top10": [
+        "core://agent/delivery/task-contract"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 348
+    },
+    {
+      "case_id": "rt-18",
+      "query": "记忆 规则 改写 确认 草案",
+      "target_uri": "core://my_user/rewrite-consent",
+      "top10": [
+        "core://my_user/rewrite-consent"
+      ],
+      "candidate_count": 1,
+      "target_rank": 1,
+      "judgments": [
+        2
+      ],
+      "unjudged_uris": [],
+      "response_chars": 334
+    }
+  ]
+}

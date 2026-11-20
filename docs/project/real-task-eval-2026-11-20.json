@@ -1,0 +1,167 @@
+{
+  "schema_version": "real-task-eval-v1",
+  "created_at": "2026-11-20T19:33:51.498765+08:00",
+  "status": "verified_on_new_set",
+  "scope": "2026-11-20 通用记忆写入后的 20 个目标节点与新关键词",
+  "full_text_compressed": {
+    "queries": 16,
+    "top1_hits": 16,
+    "recall_top1": 1.0,
+    "avg_estimated_tokens": 107.0,
+    "min_estimated_tokens": 64,
+    "max_estimated_tokens": 244,
+    "cases": [
+      {
+        "query": "仓库根目录 工作树",
+        "expected_uri": "core://agent/environment/repository-identity",
+        "top1": "core://agent/environment/repository-identity",
+        "estimated_tokens": 81
+      },
+      {
+        "query": "验收层级 真实路径",
+        "expected_uri": "core://agent/verification/completion-and-evidence",
+        "top1": "core://agent/verification/completion-and-evidence",
+        "estimated_tokens": 99
+      },
+      {
+        "query": "active profile 加载目录",
+        "expected_uri": "core://agent/environment/toolchain/install-activation-check",
+        "top1": "core://agent/environment/toolchain/install-activation-check",
+        "estimated_tokens": 69
+      },
+      {
+        "query": "真实数据库 DDL",
+        "expected_uri": "core://agent/source-catalog/database/real-db-operation-safety",
+        "top1": "core://agent/source-catalog/database/real-db-operation-safety",
+        "estimated_tokens": 64
+      },
+      {
+        "query": "文档交付 权威载体",
+        "expected_uri": "core://agent/delivery/document-delivery",
+        "top1": "core://agent/delivery/document-delivery",
+        "estimated_tokens": 79
+      },
+      {
+        "query": "主代理验收 子代理",
+        "expected_uri": "core://agent/delivery/delegation-verification",
+        "top1": "core://agent/delivery/delegation-verification",
+        "estimated_tokens": 70
+      },
+      {
+        "query": "安全审计 投毒",
+        "expected_uri": "core://agent/delivery/security-audit",
+        "top1": "core://agent/delivery/security-audit",
+        "estimated_tokens": 78
+      },
+      {
+        "query": "来源哈希 证据复用",
+        "expected_uri": "core://agent/source-catalog/evidence-reuse",
+        "top1": "core://agent/source-catalog/evidence-reuse",
+        "estimated_tokens": 77
+      },
+      {
+        "query": "记忆效果 收益对照",
+        "expected_uri": "core://agent/memory-governance/effectiveness-and-measurement",
+        "top1": "core://agent/memory-governance/effectiveness-and-measurement",
+        "estimated_tokens": 104
+      },
+      {
+        "query": "压缩保留 量词约束",
+        "expected_uri": "core://agent/memory-governance/compression-preservation",
+        "top1": "core://agent/memory-governance/compression-preservation",
+        "estimated_tokens": 81
+      },
+      {
+        "query": "个人画像 样本不足",
+        "expected_uri": "core://agent/memory-governance/inference-limits",
+        "top1": "core://agent/memory-governance/inference-limits",
+        "estimated_tokens": 82
+      },
+      {
+        "query": "授权边界 选A",
+        "expected_uri": "core://agent/delivery/task-contract",
+        "top1": "core://agent/delivery/task-contract",
+        "estimated_tokens": 108
+      },
+      {
+        "query": "失败基线 退出码",
+        "expected_uri": "core://agent/delivery/testing",
+        "top1": "core://agent/delivery/testing",
+        "estimated_tokens": 244
+      },
+      {
+        "query": "暂停目标",
+        "expected_uri": "core://my_user/collaboration-preferences",
+        "top1": "core://my_user/collaboration-preferences",
+        "estimated_tokens": 145
+      },
+      {
+        "query": "长文件 未提交工作",
+        "expected_uri": "core://agent/delivery/engineering-workflow-guardrails",
+        "top1": "core://agent/delivery/engineering-workflow-guardrails",
+        "estimated_tokens": 163
+      },
+      {
+        "query": "短常驻索引 长期记忆",
+        "expected_uri": "core://agent/memory-governance",
+        "top1": "core://agent/memory-governance",
+        "estimated_tokens": 168
+      }
+    ]
+  },
+  "full_text_raw_sentence": {
+    "queries_tested": 8,
+    "top1_hits": 0,
+    "note": "全文检索按关键词工作；规范要求先把自然语言问题压缩为 2-5 个关键词。原句直搜无结果是预期边界，不是节点缺失。"
+  },
+  "semantic_raw_sentence": {
+    "queries": 4,
+    "top1_hits": 4,
+    "recall_top1": 1.0,
+    "avg_estimated_tokens": 488.0,
+    "cases": [
+      {
+        "query": "我准备在另一个checkout里改同样的服务，先确认哪些仓库身份信息",
+        "expected_uri": "core://agent/environment/repository-identity",
+        "top1": "core://agent/environment/repository-identity",
+        "estimated_tokens": 394
+      },
+      {
+        "query": "装了新的MCP文件也在了，怎么确认Codex真的加载了",
+        "expected_uri": "core://agent/environment/toolchain/install-activation-check",
+        "top1": "core://agent/environment/toolchain/install-activation-check",
+        "estimated_tokens": 525
+      },
+      {
+        "query": "这次安全审计没发现投毒，能不能给绝对安全保证",
+        "expected_uri": "core://agent/delivery/security-audit",
+        "top1": "core://agent/delivery/security-audit",
+        "estimated_tokens": 409
+      },
+      {
+        "query": "记忆系统改完后，怎么证明真的更省token、召回更好",
+        "expected_uri": "core://agent/memory-governance/effectiveness-and-measurement",
+        "top1": "core://agent/memory-governance/effectiveness-and-measurement",
+        "estimated_tokens": 624
+      }
+    ]
+  },
+  "load_cost": {
+    "active_memories": 68,
+    "valid_summaries": 68,
+    "full_content_chars": 56057,
+    "summary_chars": 9229,
+    "content_to_summary_ratio": 6.1,
+    "boot_estimated_tokens": 204,
+    "default_search_budget_estimated_tokens": 1200,
+    "note": "字符数和 estimated tokens 分开记录；未声称精确 tokenizer 或账单节省比例。"
+  },
+  "historical_baseline": {
+    "date": "2026-11-19",
+    "full_text_recall_at_10": "18/19",
+    "full_text_mrr": 0.912,
+    "paraphrase_recall_at_10": "18/18",
+    "paraphrase_mrr": 0.9352,
+    "source": "docs/project/retrieval-paraphrase-eval-2026-11-19.md"
+  }
+}
